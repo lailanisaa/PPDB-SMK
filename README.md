@@ -13,13 +13,12 @@ statistik pendaftaran — semuanya dalam satu platform terpadu.
 
 > 🎓 Proyek ini dikembangkan dalam rangka **Kuliah Magang
 > Mahasiswa (KMM)** Program Studi Informatika,
-> Universitas Sebelas Maret — Periode Juli–Agustus 2026.
 
 ---
 
 | Nama | NIM | Role |
 |------|-----|------|
-| Laila Khoirunnisa | (NIM) | Full Stack Developer / Project Lead |
+| Laila Khoirunnisa | l0122087 | Full Stack Developer / Project Lead |
 
 ---
 

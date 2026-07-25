@@ -1,0 +1,367 @@
+# Problem Statement
+## Sistem Informasi PPDB Terintegrasi SMK Kasatrian Solo
+
+Panitia PPDB dan calon peserta didik baru SMK Kasatrian Solo 
+mengalami kesulitan dalam mengelola dan mengikuti proses 
+penerimaan peserta didik baru secara efisien ketika proses 
+pendaftaran masih dilakukan secara manual atau melalui berbagai 
+platform yang tidak terintegrasi (formulir fisik, WhatsApp, 
+dan spreadsheet terpisah). Hal ini menyebabkan penumpukan 
+antrian fisik, keterlambatan verifikasi berkas, kesalahan 
+pencatatan data, serta ketidakjelasan informasi status 
+pendaftaran bagi calon siswa dan orang tua.
+
+Solusi berupa modul sistem informasi PPDB berbasis web yang 
+terintegrasi dengan website resmi SMK Kasatrian Solo 
+(smkkasatriansolo.sch.id) diharapkan dapat mempermudah 
+calon siswa mendaftar secara online, mempercepat proses 
+verifikasi berkas oleh panitia, serta memberikan transparansi 
+informasi status pendaftaran secara real-time kepada seluruh 
+pihak yang berkepentingan.
+
+
+# User Roles
+  
+1. Siswa / Calon Peserta Didik Baru
+   → Mendaftar, mengisi formulir, upload berkas,
+     memilih jurusan, memantau status pendaftaran
+
+2. Admin / Panitia PPDB
+   → Mengelola data pendaftar, verifikasi berkas,
+     menjadwalkan tes, memberi keputusan penerimaan
+
+3. Kepala Sekolah (Super Admin)
+   → Menyetujui akun admin, mengkonfigurasi PPDB,
+     melihat laporan statistik, membuat pengumuman final
+
+
+# User Stories — Sistem PPDB SMK Kasatrian Solo
+
+---
+
+## ROLE: SISWA
+
+---
+
+### US-01 — Registrasi Akun Siswa
+**As a** calon siswa,
+**I want** mendaftar akun menggunakan email dan data diri,
+**so that** saya dapat mengakses portal pendaftaran PPDB secara
+pribadi dan aman.
+
+**Acceptance Criteria:**
+- AC-01a: Given saya berada di halaman register siswa,
+  When saya mengisi nama lengkap, email valid, NISN, 
+  no. WhatsApp, dan password lalu klik "Daftar",
+  Then sistem membuat akun baru dan menampilkan pesan 
+  "Pendaftaran berhasil, silakan verifikasi email".
+
+- AC-01b: Given saya mengisi email yang sudah terdaftar,
+  When saya klik "Daftar",
+  Then sistem menampilkan pesan error 
+  "Email sudah digunakan, gunakan email lain".
+
+- AC-01c: Given saya mengisi password kurang dari 8 karakter,
+  When saya klik "Daftar",
+  Then sistem menampilkan pesan 
+  "Password minimal 8 karakter".
+
+---
+
+### US-02 — Login Siswa
+**As a** calon siswa yang sudah memiliki akun,
+**I want** masuk ke portal menggunakan email dan password,
+**so that** saya dapat melanjutkan proses pendaftaran dan 
+memantau status.
+
+**Acceptance Criteria:**
+- AC-02a: Given saya berada di halaman login siswa,
+  When saya memasukkan email dan password yang benar lalu
+  klik "Masuk",
+  Then sistem mengarahkan saya ke dashboard siswa.
+
+- AC-02b: Given saya memasukkan password yang salah,
+  When saya klik "Masuk",
+  Then sistem menampilkan pesan 
+  "Email atau password salah".
+
+- AC-02c: Given saya salah memasukkan password 3 kali,
+  When percobaan ke-4 dilakukan,
+  Then sistem memblokir login sementara selama 30 detik 
+  dan menampilkan countdown timer.
+
+---
+
+### US-03 — Mengisi Formulir Pendaftaran
+**As a** calon siswa yang sudah login,
+**I want** mengisi formulir pendaftaran secara bertahap 
+(data diri, data orang tua, asal sekolah),
+**so that** data saya tercatat lengkap dan valid di sistem 
+untuk diproses oleh panitia.
+
+**Acceptance Criteria:**
+- AC-03a: Given saya berada di halaman formulir step 1,
+  When saya mengisi semua field wajib (nama, NIK, TTL, 
+  alamat, kontak) lalu klik "Lanjutkan",
+  Then sistem menyimpan data dan berpindah ke step 2.
+
+- AC-03b: Given saya meninggalkan field wajib kosong,
+  When saya klik "Lanjutkan",
+  Then sistem menandai field kosong dengan border merah 
+  dan menampilkan pesan "Field ini wajib diisi".
+
+- AC-03c: Given saya telah mengisi sebagian formulir,
+  When saya menutup browser dan login kembali,
+  Then sistem menampilkan data yang sudah diisi sebelumnya
+  (auto-save draft).
+
+---
+
+### US-04 — Memilih Jurusan
+**As a** calon siswa,
+**I want** memilih jurusan pilihan utama dan cadangan 
+dari daftar jurusan yang tersedia,
+**so that** saya dapat mendaftar sesuai minat dan 
+melihat informasi kuota yang masih tersedia.
+
+**Acceptance Criteria:**
+- AC-04a: Given saya berada di halaman pilih jurusan,
+  When saya memilih jurusan pilihan utama,
+  Then sistem menampilkan informasi kuota tersisa 
+  dan progress bar pengisian kuota jurusan tersebut.
+
+- AC-04b: Given kuota suatu jurusan sudah penuh (0 sisa),
+  When saya mencoba memilih jurusan tersebut sebagai 
+  pilihan utama,
+  Then sistem menonaktifkan pilihan dan menampilkan 
+  label "Kuota Penuh".
+
+- AC-04c: Given saya memilih jurusan pilihan utama,
+  When saya memilih jurusan pilihan cadangan,
+  Then jurusan yang sudah dipilih sebagai utama 
+  tidak bisa dipilih lagi sebagai cadangan.
+
+---
+
+### US-05 — Upload Berkas Persyaratan
+**As a** calon siswa,
+**I want** mengunggah dokumen persyaratan (ijazah, rapor, 
+pas foto, KK, akta lahir) secara online,
+**so that** saya tidak perlu menyerahkan berkas fisik 
+dan dapat menggantinya jika ditolak.
+
+**Acceptance Criteria:**
+- AC-05a: Given saya berada di halaman upload berkas,
+  When saya mengunggah file berformat JPG/PNG/PDF 
+  dengan ukuran di bawah 5MB,
+  Then sistem menerima file dan menampilkan 
+  status "Menunggu Verifikasi".
+
+- AC-05b: Given saya mengunggah file berukuran lebih dari 5MB,
+  When proses upload berjalan,
+  Then sistem menolak file dan menampilkan pesan 
+  "Ukuran file melebihi batas 5MB".
+
+- AC-05c: Given berkas saya ditolak oleh admin 
+  dengan alasan "foto buram",
+  When saya membuka halaman berkas,
+  Then sistem menampilkan alasan penolakan dan 
+  tombol "Upload Ulang" pada berkas yang ditolak.
+
+---
+
+### US-06 — Memantau Status Pendaftaran
+**As a** calon siswa,
+**I want** melihat status pendaftaran saya secara real-time
+mulai dari registrasi hingga pengumuman hasil,
+**so that** saya mengetahui tahapan yang sudah dan belum 
+selesai tanpa harus menghubungi panitia.
+
+**Acceptance Criteria:**
+- AC-06a: Given saya sudah mengirimkan formulir,
+  When saya membuka halaman status pendaftaran,
+  Then sistem menampilkan timeline 4 tahap 
+  (Registrasi → Verifikasi Berkas → Tes → Pengumuman)
+  dengan indikator tahap mana yang sudah selesai, 
+  sedang berjalan, atau belum.
+
+- AC-06b: Given admin mengubah status berkas saya 
+  menjadi "Terverifikasi",
+  When saya membuka halaman status,
+  Then status berkas berubah menjadi 
+  "✅ Terverifikasi" secara otomatis.
+
+- AC-06c: Given pengumuman hasil sudah dirilis,
+  When saya membuka halaman status,
+  Then sistem menampilkan hasil penerimaan 
+  (Diterima / Ditolak / Cadangan) beserta jurusan 
+  yang diterima.
+
+---
+
+### US-07 — Menerima Notifikasi
+**As a** calon siswa,
+**I want** mendapatkan notifikasi di dalam aplikasi 
+ketika ada perubahan status berkas atau pengumuman baru,
+**so that** saya tidak ketinggalan informasi penting 
+tanpa harus selalu membuka portal.
+
+**Acceptance Criteria:**
+- AC-07a: Given admin memverifikasi atau menolak 
+  salah satu berkas saya,
+  When saya membuka portal,
+  Then notifikasi baru muncul di ikon lonceng 
+  dengan badge angka dan detail perubahan status.
+
+- AC-07b: Given ada pengumuman baru dari panitia,
+  When saya login ke portal,
+  Then pengumuman tampil di halaman beranda 
+  dashboard dengan label "Baru".
+
+---
+
+### US-08 — Download Kartu Pendaftaran
+**As a** calon siswa yang sudah mengirimkan formulir,
+**I want** mengunduh kartu pendaftaran berformat PDF,
+**so that** saya memiliki bukti resmi pendaftaran 
+yang dapat dibawa saat tes seleksi.
+
+**Acceptance Criteria:**
+- AC-08a: Given saya sudah mengirimkan formulir 
+  pendaftaran (step 7 selesai),
+  When saya klik tombol "Download Kartu Pendaftaran",
+  Then sistem mengunduh file PDF berisi nomor 
+  pendaftaran, nama, jurusan pilihan, jadwal tes, 
+  dan QR code verifikasi.
+
+- AC-08b: Given formulir saya belum selesai dikirim,
+  When saya mencoba mengakses halaman download kartu,
+  Then tombol download dinonaktifkan dan muncul 
+  pesan "Selesaikan formulir terlebih dahulu".
+
+---
+
+## ROLE: ADMIN / PANITIA PPDB
+
+---
+
+### US-09 — Login Admin
+**As a** panitia PPDB,
+**I want** masuk ke panel admin menggunakan email, 
+password, dan kode OTP,
+**so that** hanya staf berwenang yang dapat mengakses 
+data pendaftar dan mengelola sistem PPDB.
+
+**Acceptance Criteria:**
+- AC-09a: Given saya berada di halaman login admin,
+  When saya memasukkan email dan password yang benar,
+  Then sistem mengirimkan kode OTP ke WhatsApp 
+  terdaftar dan menampilkan form input OTP.
+
+- AC-09b: Given OTP sudah dikirim ke WhatsApp saya,
+  When saya memasukkan 6 digit OTP yang benar 
+  dalam batas waktu 5 menit,
+  Then sistem mengarahkan saya ke dashboard admin.
+
+- AC-09c: Given saya memasukkan OTP yang salah 3 kali,
+  When percobaan ke-3 gagal,
+  Then sistem memblokir login selama 10 menit 
+  dan menampilkan pesan peringatan.
+
+---
+
+### US-10 — Mengelola Konfigurasi PPDB
+**As a** admin / kepala sekolah,
+**I want** mengatur periode pendaftaran, kuota per jurusan,
+dan membuka/menutup pendaftaran,
+**so that** sistem PPDB berjalan sesuai jadwal dan 
+kebijakan yang telah ditetapkan sekolah.
+
+**Acceptance Criteria:**
+- AC-10a: Given saya berada di halaman konfigurasi PPDB,
+  When saya mengatur tanggal buka dan tutup pendaftaran
+  lalu klik "Simpan",
+  Then sistem menyimpan konfigurasi dan menampilkan 
+  periode tersebut di halaman publik PPDB.
+
+- AC-10b: Given pendaftaran sedang dibuka,
+  When saya mengaktifkan toggle "Tutup Pendaftaran",
+  Then sistem menampilkan konfirmasi dialog, 
+  dan setelah dikonfirmasi, formulir pendaftaran 
+  tidak bisa diakses oleh calon siswa baru.
+
+---
+
+### US-11 — Verifikasi Berkas Pendaftar
+**As a** panitia PPDB,
+**I want** memeriksa dan memverifikasi berkas yang 
+diunggah oleh calon siswa satu per satu,
+**so that** hanya pendaftar dengan berkas lengkap dan 
+valid yang dapat lanjut ke tahap seleksi berikutnya.
+
+**Acceptance Criteria:**
+- AC-11a: Given saya membuka detail pendaftar 
+  di panel admin,
+  When saya klik "Setujui" pada salah satu berkas,
+  Then status berkas berubah menjadi "Terverifikasi"
+  dan notifikasi terkirim ke dashboard siswa.
+
+- AC-11b: Given saya menemukan berkas yang tidak valid 
+  (foto buram, file salah),
+  When saya klik "Tolak" dan mengisi alasan penolakan,
+  Then status berkas berubah menjadi "Ditolak", 
+  alasan penolakan tampil di portal siswa, 
+  dan siswa dapat mengunggah ulang berkas.
+
+- AC-11c: Given semua berkas wajib sudah terverifikasi,
+  When saya membuka halaman detail pendaftar,
+  Then sistem menampilkan ringkasan 
+  "Semua berkas lengkap ✅" dan tombol keputusan 
+  penerimaan aktif.
+
+---
+
+### US-12 — Membuat dan Mengirim Pengumuman
+**As a** admin / kepala sekolah,
+**I want** membuat pengumuman dan mengirimkannya 
+kepada seluruh pendaftar atau kelompok tertentu,
+**so that** semua calon siswa mendapat informasi 
+penting secara tepat waktu melalui portal.
+
+**Acceptance Criteria:**
+- AC-12a: Given saya mengisi judul, isi pengumuman, 
+  dan memilih target penerima "Semua Pendaftar",
+  When saya klik "Kirim Pengumuman",
+  Then pengumuman tersimpan dan muncul di notifikasi 
+  seluruh pendaftar yang login ke portal.
+
+- AC-12b: Given saya memilih target "Filter per Jurusan",
+  When saya memilih jurusan TKJ dan klik "Kirim",
+  Then hanya pendaftar yang memilih TKJ yang 
+  menerima notifikasi pengumuman tersebut.
+
+---
+
+### US-13 — Melihat Laporan dan Statistik
+**As a** kepala sekolah,
+**I want** melihat laporan statistik pendaftaran 
+(total pendaftar, distribusi jurusan, tren harian),
+**so that** saya dapat memantau perkembangan PPDB 
+dan mengambil keputusan berbasis data.
+
+**Acceptance Criteria:**
+- AC-13a: Given saya membuka halaman laporan,
+  When halaman termuat,
+  Then sistem menampilkan grafik tren pendaftaran 
+  30 hari terakhir, donut chart distribusi jurusan, 
+  dan tabel rekap per jurusan dengan kuota terisi.
+
+- AC-13b: Given saya memilih rentang tanggal tertentu,
+  When saya klik "Terapkan Filter",
+  Then semua grafik dan tabel diperbarui 
+  sesuai rentang tanggal yang dipilih.
+
+- AC-13c: Given saya ingin menyimpan laporan,
+  When saya klik "Export Excel",
+  Then sistem mengunduh file .xlsx berisi 
+  semua data rekap pendaftaran.

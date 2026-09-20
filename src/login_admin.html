@@ -6,6 +6,8 @@
 <title>Masuk Panel Admin | SPMB SMK Kasatrian Solo</title>
 <link rel="icon" type="image/png" href="Logo_SMK.png">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *{font-family:'Poppins',sans-serif;}
@@ -69,6 +71,7 @@
   </div>
 </div>
 
+<script src="app.js"></script>
 <script>
   document.getElementById('form-login-admin').addEventListener('submit', async e => {
     e.preventDefault();
@@ -83,11 +86,11 @@
     });
     const result = await response.json();
     if (!result.success) {
-      alert(result.message);
+      window.spm.toast(result.message, 'error');
       return;
     }
     localStorage.setItem('smk_active_session', JSON.stringify({ role: 'admin', ...result.admin }));
-    window.location.href = 'portal_admin.html';
+    window.location.href = 'admin.html';
   });
 </script>
 </body>

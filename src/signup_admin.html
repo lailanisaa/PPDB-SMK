@@ -7,6 +7,7 @@
 <link rel="icon" type="image/png" href="Logo_SMK.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *{font-family:'Poppins',sans-serif;}
@@ -59,6 +60,7 @@
   </p>
 </div>
 
+<script src="app.js"></script>
 <script>
   document.getElementById('form-signup-admin').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -75,10 +77,10 @@
     });
     const result = await response.json();
     if (!result.success) {
-      alert(result.message);
+      window.spm.toast(result.message, 'error');
       return;
     }
-    alert(`Pendaftaran akun admin berhasil. Silakan masuk dengan akun ${email}.`);
+    window.spm.toast(`Pendaftaran akun admin berhasil. Silakan masuk dengan akun ${email}.`);
     window.location.href = 'login_admin.html';
   });
 </script>

@@ -7,6 +7,7 @@
 <link rel="icon" type="image/png" href="Logo_SMK.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *{font-family:'Poppins',sans-serif;}
@@ -368,6 +369,7 @@
   </div>
 </footer>
 
+<script src="app.js"></script>
 <script>
   lucide.createIcons();
   
@@ -387,7 +389,7 @@
 
     if (activeSession) {
       const isAdmin = activeSession.role === 'admin';
-      const targetPage = isAdmin ? 'portal_admin.html' : 'portal_siswa.html';
+      const targetPage = isAdmin ? 'admin.html' : 'siswa.html';
       const name = activeSession.nama;
 
       const actionsDesktop = document.getElementById('nav-actions-desktop');

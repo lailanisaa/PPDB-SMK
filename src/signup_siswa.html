@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pendaftaran Akun Siswa Baru | SPMB SMK Kasatrian</title>
+<link rel="icon" type="image/png" href="Logo_SMK.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{font-family:'Poppins',sans-serif;}
+  .nama-sekolah, .nama-sekolah *{font-family:'Kavoon',cursive !important;}
+  :root{ --dark-green:#1B4332; --mint:#D8F5E8; --accent-green:#22C55E; }
+</style>
+</head>
+<body class="min-h-screen bg-[var(--mint)] flex items-center justify-center p-4">
+
+<div class="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 border border-emerald-100 space-y-6">
+  <div class="text-center space-y-2">
+    <div class="w-12 h-12 mx-auto rounded-full bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center font-bold text-xl">🎓</div>
+    <h1 class="font-bold text-2xl text-[var(--dark-green)]">Buat Akun Siswa Baru</h1>
+    <p class="text-xs text-gray-500">Daftarkan diri Anda untuk mengikuti SPMB 2027/2028</p>
+  </div>
+
+  <form id="form-signup-siswa" class="space-y-4">
+    <div>
+      <label class="block text-xs font-bold text-gray-700 mb-1">Nama Lengkap Siswa</label>
+      <input type="text" id="siswa-nama" required placeholder="Masukkan nama lengkap" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-[var(--accent-green)] focus:outline-none">
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-gray-700 mb-1">Asal Sekolah (SMP/MTs)</label>
+      <input type="text" id="siswa-sekolah" required placeholder="Contoh: SMP N 1 Surakarta" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-[var(--accent-green)] focus:outline-none">
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-gray-700 mb-1">Pilihan Jurusan</label>
+      <select id="siswa-jurusan" required class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs font-semibold focus:ring-2 focus:ring-[var(--accent-green)] focus:outline-none">
+        <option value="TKJ (Teknik Komputer)">TKJ (Teknik Komputer & Jaringan)</option>
+        <option value="Perhotelan">Perhotelan</option>
+        <option value="Kuliner / Jasa Boga">Kuliner / Jasa Boga</option>
+        <option value="Teknik Sepeda Motor">TSM (Teknik Sepeda Motor)</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-gray-700 mb-1">Email</label>
+      <input type="email" id="siswa-email" required placeholder="nama@gmail.com" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-[var(--accent-green)] focus:outline-none">
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-gray-700 mb-1">Password</label>
+      <input type="password" id="siswa-password" required placeholder="••••••••" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-[var(--accent-green)] focus:outline-none">
+    </div>
+
+    <button type="submit" class="w-full py-3 bg-[var(--accent-green)] hover:bg-emerald-600 text-white font-bold text-xs rounded-xl shadow-lg transition">
+      Daftar SPMB Sekarang
+    </button>
+  </form>
+
+  <p class="text-center text-xs text-gray-500">
+    Sudah punya akun? <a href="login_siswa.html" class="text-[var(--accent-green)] font-bold hover:underline">Masuk</a>
+  </p>
+</div>
+
+<script>
+  document.getElementById('form-signup-siswa').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const response = await fetch('../api/register_siswa.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nama: document.getElementById('siswa-nama').value.trim(),
+        sekolah: document.getElementById('siswa-sekolah').value.trim(),
+        jurusan: document.getElementById('siswa-jurusan').value,
+        email: document.getElementById('siswa-email').value.trim(),
+        password: document.getElementById('siswa-password').value
+      })
+    });
+    const result = await response.json();
+    if (!result.success) {
+      alert(result.message);
+      return;
+    }
+    alert('Pendaftaran berhasil. Silakan masuk dengan akun yang baru dibuat.');
+    window.location.href = 'login_siswa.html';
+  });
+</script>
+</body>
+</html>

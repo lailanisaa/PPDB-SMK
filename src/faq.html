@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ Pertanyaan Umum | SMK Kasatrian Solo Sukoharjo</title>
+<link rel="icon" type="image/png" href="Logo_SMK.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{font-family:'Poppins',sans-serif;}
+  .nama-sekolah, .nama-sekolah *{font-family:'Kavoon',cursive !important;}
+  :root{ --dark-green:#1B4332; --mint:#D8F5E8; --accent-green:#22C55E; }
+  body{color:var(--dark-green); background:#FAFCFB;}
+</style>
+</head>
+<body class="antialiased flex flex-col min-h-screen justify-between">
+
+<!-- NAVBAR -->
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3">
+      <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-11 h-11 object-contain" onerror="this.src='https://via.placeholder.com/44'">
+      <div class="leading-tight nama-sekolah">
+        <p class="text-[16px] text-[var(--dark-green)] font-bold">SMK KASATRIAN</p>
+        <p class="text-[14px] text-[var(--dark-green)] -mt-1 opacity-90">SOLO SUKOHARJO</p>
+      </div>
+    </a>
+    <ul class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-700">
+      <li><a href="index.html" class="hover:text-[var(--accent-green)] transition">Beranda</a></li>
+      <li><a href="jurusan.html" class="hover:text-[var(--accent-green)] transition">Jurusan</a></li>
+      <li><a href="persyaratan.html" class="hover:text-[var(--accent-green)] transition">Persyaratan</a></li>
+      <li><a href="faq.html" class="text-[var(--accent-green)] font-bold transition">FAQ</a></li>
+    </ul>
+    <div id="nav-actions-desktop" class="hidden sm:flex items-center gap-3">
+      <a href="pilih_peran.html?mode=login" class="px-5 py-2 rounded-full border-2 border-[var(--dark-green)] text-[var(--dark-green)] font-semibold text-xs hover:bg-emerald-50 transition">Masuk</a>
+      <a href="pilih_peran.html?mode=signup" class="px-5 py-2 rounded-full bg-[var(--accent-green)] text-white font-bold text-xs hover:bg-emerald-600 transition">Daftar SPMB</a>
+    </div>
+  </nav>
+</header>
+
+<section class="bg-[var(--mint)] py-12 border-b border-emerald-100">
+  <div class="max-w-4xl mx-auto px-4 text-center space-y-3">
+    <h1 class="font-extrabold text-3xl sm:text-4xl text-[var(--dark-green)]">Pusat Bantuan & FAQ</h1>
+    <p class="text-gray-600 text-xs sm:text-sm">Temukan jawaban atas pertanyaan seputar SPMB SMK Kasatrian Solo Sukoharjo.</p>
+    
+    <div class="max-w-md mx-auto relative pt-3">
+      <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+      <input id="faq-search" type="text" placeholder="Cari pertanyaan..." class="w-full pl-9 pr-4 py-2 rounded-full border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-[var(--accent-green)]">
+    </div>
+  </div>
+</section>
+
+<main class="max-w-3xl mx-auto px-4 py-12 space-y-4 w-full flex-grow" id="faq-container"></main>
+
+<footer class="bg-[var(--dark-green)] text-white py-6 text-center text-xs border-t border-emerald-900">
+  Informasi pendaftaran: 082230660060 · © 2026 SMK Kasatrian Solo Sukoharjo
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  const faqData = [
+    {
+      q: 'Bagaimana cara melakukan pendaftaran siswa baru secara online?',
+      a: 'Klik menu "Daftar SPMB", kemudian pilih peran sebagai "Calon Siswa", buat akun pendaftaran baru, lengkapi formulir, dan unggah dokumen persyaratannya.'
+    },
+    {
+      q: 'Berapa biaya pendaftaran SPMB di SMK Kasatrian?',
+      a: 'Pendaftaran SPMB Gelombang 1 dibuka secara GRATIS tanpa dipungut biaya pendaftaran.'
+    },
+    {
+      q: 'Dokumen apa saja yang wajib diunggah?',
+      a: 'Dokumen wajib meliputi Scan KK, Ijazah SMP/SKL, Pas Foto 3x4, Akta Kelahiran, dan dokumen pendukung lainnya.'
+    },
+    {
+      q: 'Bagaimana jika berkas pendaftaran saya ditolak?',
+      a: 'Anda dapat masuk ke Portal Siswa untuk melihat catatan revisi dari panitia, kemudian mengunggah ulang dokumen yang sesuai.'
+    }
+  ];
+
+  function renderFaq(items) {
+    const container = document.getElementById('faq-container');
+    container.innerHTML = items.map((item, index) => `
+      <div class="faq-item border border-emerald-100 rounded-xl overflow-hidden bg-white shadow-sm">
+        <button onclick="toggleFaq(${index})" class="w-full p-4 text-left font-bold text-xs sm:text-sm text-[var(--dark-green)] flex justify-between items-center hover:bg-emerald-50/50 transition">
+          <span>${item.q}</span>
+          <i id="faq-icon-${index}" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform"></i>
+        </button>
+        <div id="faq-ans-${index}" class="hidden p-4 border-t border-emerald-100 text-xs text-gray-600 leading-relaxed bg-gray-50">
+          ${item.a}
+        </div>
+      </div>
+    `).join('');
+    lucide.createIcons();
+  }
+
+  function toggleFaq(index) {
+    const ans = document.getElementById(`faq-ans-${index}`);
+    const icon = document.getElementById(`faq-icon-${index}`);
+    ans.classList.toggle('hidden');
+    icon.classList.toggle('rotate-180');
+  }
+
+  document.getElementById('faq-search').addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+    const filtered = faqData.filter(f => f.q.toLowerCase().includes(query) || f.a.toLowerCase().includes(query));
+    renderFaq(filtered);
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    renderFaq(faqData);
+    const activeSession = JSON.parse(localStorage.getItem('smk_active_session'));
+    if (activeSession) {
+      const isAdmin = activeSession.role === 'admin';
+      const targetPage = isAdmin ? 'portal_admin.html' : 'portal_siswa.html';
+      const actionsDesktop = document.getElementById('nav-actions-desktop');
+      if (actionsDesktop) {
+        actionsDesktop.innerHTML = `
+          <a href="${targetPage}" class="px-5 py-2 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs hover:bg-emerald-200 transition flex items-center gap-2">
+            <i data-lucide="${isAdmin ? 'shield' : 'user'}" class="w-4 h-4"></i> ${activeSession.nama}
+          </a>
+        `;
+        lucide.createIcons();
+      }
+    }
+  });
+</script>
+</body>
+</html>

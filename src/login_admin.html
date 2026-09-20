@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masuk Panel Admin | SPMB SMK Kasatrian Solo</title>
+<link rel="icon" type="image/png" href="Logo_SMK.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{font-family:'Poppins',sans-serif;}
+  .nama-sekolah, .nama-sekolah *{font-family:'Kavoon',cursive !important;}
+  :root{ --dark-green:#1B4332; --purple:#7C3AED; --yellow:#FFD84D; }
+  body{font-family:'Poppins',sans-serif; color:var(--dark-green); background:#F3E8FF;}
+</style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 sm:p-8">
+
+<div class="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
+  <!-- PANEL KIRI -->
+  <div class="w-full md:w-1/2 bg-[var(--purple)] p-8 flex flex-col text-white justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-full bg-white/20 flex items-center justify-center font-bold text-lg">A</div>
+      <p class="nama-sekolah text-xl">Admin Panel</p>
+    </div>
+
+    <div class="text-center py-8">
+      <span class="text-6xl">🏛️</span>
+    </div>
+
+    <div>
+      <h2 class="font-bold text-2xl">Panel Admin SPMB</h2>
+      <p class="text-xs text-white/80 mt-2">Kelola pendaftaran, verifikasi berkas, dan sistem informasi sekolah.</p>
+    </div>
+  </div>
+
+  <!-- PANEL KANAN -->
+  <div class="w-full md:w-1/2 p-8 sm:p-10 space-y-6">
+    <div>
+      <a href="pilih_peran.html" class="text-xs text-gray-500 hover:text-[var(--dark-green)] font-semibold">← Pilih Peran</a>
+      <h1 class="font-bold text-2xl text-purple-900 mt-2">Masuk Panel Admin 🏛️</h1>
+      <p class="text-xs text-gray-500">Gunakan akun admin terdaftar Anda</p>
+    </div>
+
+    <form id="form-login-admin" class="space-y-4">
+      <div>
+        <label class="block text-xs font-bold text-gray-700 mb-1">Email Admin</label>
+        <input id="email" type="email" required placeholder="admin@smkkasatrian.sch.id" class="w-full px-3 py-2.5 rounded-lg border border-gray-300 text-xs focus:ring-2 focus:ring-[var(--purple)] focus:outline-none">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-gray-700 mb-1">Password</label>
+        <input id="password" type="password" required placeholder="••••••••" class="w-full px-3 py-2.5 rounded-lg border border-gray-300 text-xs focus:ring-2 focus:ring-[var(--purple)] focus:outline-none">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-gray-700 mb-1">Kode Akses Admin</label>
+        <input id="access-code" type="password" required placeholder="Masukkan kode akses" class="w-full px-3 py-2.5 rounded-lg border border-gray-300 text-xs focus:ring-2 focus:ring-[var(--purple)] focus:outline-none">
+      </div>
+
+      <button type="submit" class="w-full bg-[var(--purple)] hover:bg-purple-700 text-white font-bold py-3 rounded-full text-xs shadow-lg transition">
+        Masuk ke Panel Admin →
+      </button>
+    </form>
+
+    <div class="border-t border-gray-100 pt-4 text-center">
+      <p class="text-xs text-gray-500">Belum punya akun admin? <a href="signup_admin.html" class="text-[var(--purple)] font-bold hover:underline">Daftar Admin Baru →</a></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('form-login-admin').addEventListener('submit', async e => {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const accessCode = document.getElementById('access-code').value;
+
+    const response = await fetch('../api/login_admin.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, access_code: accessCode })
+    });
+    const result = await response.json();
+    if (!result.success) {
+      alert(result.message);
+      return;
+    }
+    localStorage.setItem('smk_active_session', JSON.stringify({ role: 'admin', ...result.admin }));
+    window.location.href = 'portal_admin.html';
+  });
+</script>
+</body>
+</html>

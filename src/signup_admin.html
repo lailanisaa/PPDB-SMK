@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daftar Staf Admin Baru | SPMB SMK Kasatrian</title>
+<link rel="icon" type="image/png" href="Logo_SMK.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{font-family:'Poppins',sans-serif;}
+  .nama-sekolah, .nama-sekolah *{font-family:'Kavoon',cursive !important;}
+  :root{ --dark-green:#1B4332; --purple:#7C3AED; }
+</style>
+</head>
+<body class="min-h-screen bg-purple-50 flex items-center justify-center p-4">
+
+<div class="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 border border-purple-100 space-y-6">
+  <div class="text-center space-y-2">
+    <div class="w-12 h-12 mx-auto rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-xl">🏛️</div>
+    <h1 class="font-bold text-2xl text-purple-900">Registrasi Staf Admin</h1>
+    <p class="text-xs text-gray-500">Buat akun staf baru untuk mengelola SPMB</p>
+  </div>
+
+  <form id="form-signup-admin" class="space-y-4">
+    <div>
+      <label class="block text-xs font-bold text-gray-700 mb-1">Nama Lengkap & Gelar</label>
+      <input type="text" id="reg-nama" required placeholder="Contoh: Nisa, S.Pd" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none">
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-gray-700 mb-1">Jabatan / Peran Staf</label>
+      <input type="text" id="reg-jabatan" required placeholder="Contoh: Panitia Verifikator / Staf TU" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none">
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-gray-700 mb-1">Email Resmi</label>
+      <input type="email" id="reg-email" required placeholder="nisa@smkkasatrian.sch.id" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none">
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-gray-700 mb-1">Password</label>
+      <input type="password" id="reg-password" required placeholder="••••••••" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none">
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-gray-700 mb-1">Kode Akses Admin</label>
+      <input type="password" id="reg-access-code" required placeholder="Masukkan kode akses" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none">
+    </div>
+
+    <button type="submit" class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shadow-lg transition">
+      Daftar Sebagai Staf Admin
+    </button>
+  </form>
+
+  <p class="text-center text-xs text-gray-500">
+    Sudah punya akun? <a href="login_admin.html" class="text-purple-600 font-bold hover:underline">Masuk</a>
+  </p>
+</div>
+
+<script>
+  document.getElementById('form-signup-admin').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nama = document.getElementById('reg-nama').value.trim();
+    const jabatan = document.getElementById('reg-jabatan').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const password = document.getElementById('reg-password').value;
+    const accessCode = document.getElementById('reg-access-code').value;
+
+    const response = await fetch('../api/register_admin.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nama, jabatan, email, password, access_code: accessCode })
+    });
+    const result = await response.json();
+    if (!result.success) {
+      alert(result.message);
+      return;
+    }
+    alert(`Pendaftaran akun admin berhasil. Silakan masuk dengan akun ${email}.`);
+    window.location.href = 'login_admin.html';
+  });
+</script>
+</body>
+</html>

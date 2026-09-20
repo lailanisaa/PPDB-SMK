@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | SPMB SMK Kasatrian Solo</title>
+  <link rel="icon" type="image/png" href="Logo_SMK.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{font-family:'Poppins',sans-serif;}
+    .nama-sekolah{font-family:'Kavoon',cursive !important;}
+    :root{ --dark-green:#1B4332; --mint:#D8F5E8; --accent-green:#22C55E; }
+    body{color:var(--dark-green); background:#F4F7F5;}
+    .menu-item{ color:#D1FAE5; transition:all .2s ease; }
+    .menu-item:hover{ background:rgba(255,255,255,.1); cursor:pointer; }
+    .menu-item.active{ background:var(--accent-green); color:#fff; font-weight:600; }
+    .page-section{ animation: fadeIn .2s ease-out; }
+    @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+    table.admin-table th{ font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:#6b7280; padding:12px; border-bottom:2px solid #E5E7EB; background:#F9FAFB; }
+    table.admin-table td{ padding:12px; font-size:13px; border-top:1px solid #F3F4F6; vertical-align:middle; }
+  </style>
+</head>
+<body class="h-screen overflow-hidden flex">
+
+<!-- OVERLAY MOBILE -->
+<div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/50 z-30 md:hidden"></div>
+
+<!-- SIDEBAR -->
+<aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-[var(--dark-green)] flex flex-col -translate-x-full md:translate-x-0 transition-transform duration-200">
+  <div class="p-5 border-b border-white/10 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <img src="Logo_SMK.png" alt="Logo" class="w-8 h-8 object-contain" onerror="this.src='https://via.placeholder.com/32'">
+      <span class="nama-sekolah text-white text-lg">SPMB Admin</span>
+    </div>
+    <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded uppercase">v2.0</span>
+  </div>
+
+  <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+    <p class="text-[10px] font-bold text-emerald-300/60 uppercase tracking-wider px-3 mb-2">Utama</p>
+    <button class="menu-item active w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-page="dashboard"><i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard</button>
+    <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-page="pendaftar"><i data-lucide="users" class="w-4 h-4"></i> Data Pendaftar</button>
+    <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-page="verifikasi"><i data-lucide="file-check-2" class="w-4 h-4"></i> Verifikasi Berkas</button>
+    <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-page="jadwal"><i data-lucide="calendar" class="w-4 h-4"></i> Jadwal Tes</button>
+    <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-page="jurusan"><i data-lucide="book-open" class="w-4 h-4"></i> Manajemen Jurusan</button>
+    <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-page="pengumuman"><i data-lucide="megaphone" class="w-4 h-4"></i> Pengumuman</button>
+    <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-page="laporan"><i data-lucide="bar-chart-3" class="w-4 h-4"></i> Laporan & Statistik</button>
+
+    <p class="text-[10px] font-bold text-emerald-300/60 uppercase tracking-wider px-3 mt-6 mb-2">Sistem</p>
+    <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-page="pengaturan"><i data-lucide="settings" class="w-4 h-4"></i> Pengaturan SPMB</button>
+    <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-left" data-page="manajemen-admin"><i data-lucide="shield" class="w-4 h-4"></i> Kelola Staf Admin</button>
+  </nav>
+
+  <div class="p-3 border-t border-white/10 relative">
+    <div class="w-full flex items-center gap-3 p-2 rounded-lg bg-white/5">
+      <img src="https://i.pravatar.cc/64?img=12" class="w-9 h-9 rounded-full object-cover border border-emerald-400">
+      <div class="text-left flex-1 min-w-0">
+        <p class="text-white text-xs font-semibold truncate">Budi Santoso, S.Kom</p>
+        <p class="text-emerald-300/70 text-[10px] truncate">Ketua Panitia SPMB</p>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT WRAPPER -->
+<div class="flex-1 flex flex-col min-w-0 h-screen">
+
+  <!-- TOPBAR -->
+  <header class="bg-white border-b border-gray-200 px-4 sm:px-6 py-3 flex items-center justify-between gap-4 z-10">
+    <div class="flex items-center gap-3 flex-1 max-w-md">
+      <button id="hamburger" class="md:hidden text-gray-700 hover:text-[var(--dark-green)]"><i data-lucide="menu" class="w-6 h-6"></i></button>
+      <div class="relative w-full">
+        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <input id="global-search" type="text" placeholder="Cari pendaftar (nama / sekolah)..." class="w-full pl-9 pr-4 py-2 rounded-lg border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-[var(--accent-green)]">
+      </div>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <a href="siswa.html" class="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded-lg hover:bg-emerald-100 transition"><i data-lucide="external-link" class="w-3.5 h-3.5"></i> Portal Siswa</a>
+      <button class="relative p-2 text-gray-600 hover:text-emerald-800 rounded-full hover:bg-gray-100">
+        <i data-lucide="bell" class="w-5 h-5"></i>
+        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENT CONTAINER -->
+  <main id="main-content" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+
+    <!-- DASHBOARD SECTION -->
+    <section data-page="dashboard" class="page-section space-y-6">
+      <div class="bg-gradient-to-r from-[var(--dark-green)] to-emerald-800 rounded-2xl p-6 text-white shadow-sm flex justify-between items-center">
+        <div>
+          <h1 class="text-xl sm:text-2xl font-bold">Selamat Datang, Pak Budi 👋</h1>
+          <p class="text-xs sm:text-sm text-emerald-100/80 mt-1">Ringkasan pendaftaran SPMB SMK Kasatrian Solo.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+          <p class="text-xs font-semibold text-gray-500">Total Pendaftar</p>
+          <p id="stat-total" class="text-2xl font-bold text-[var(--dark-green)] mt-1">0</p>
+          <p class="text-[10px] text-emerald-600 font-medium mt-1">↑ +8 hari ini</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+          <p class="text-xs font-semibold text-gray-500">Menunggu Verifikasi</p>
+          <p id="stat-waiting" class="text-2xl font-bold text-amber-500 mt-1">0</p>
+          <p class="text-[10px] text-amber-600 font-medium mt-1">Perlu ditinjau</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+          <p class="text-xs font-semibold text-gray-500">Diterima</p>
+          <p id="stat-accepted" class="text-2xl font-bold text-emerald-600 mt-1">0</p>
+          <p class="text-[10px] text-gray-400 mt-1">60.1% kuota</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+          <p class="text-xs font-semibold text-gray-500">Ditolak</p>
+          <p id="stat-rejected" class="text-2xl font-bold text-red-500 mt-1">0</p>
+          <p class="text-[10px] text-gray-400 mt-1">Berkas tidak sesuai</p>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-6">
+        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+          <h3 class="font-bold text-xs uppercase tracking-wider text-gray-500 mb-4">Tren Pendaftaran Harian</h3>
+          <canvas id="chart-tren" height="180"></canvas>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+          <h3 class="font-bold text-xs uppercase tracking-wider text-gray-500 mb-4">Distribusi Per Jurusan</h3>
+          <canvas id="chart-distribusi" height="180"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- DATA PENDAFTAR SECTION -->
+    <section data-page="pendaftar" class="page-section hidden space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 class="text-lg font-bold text-[var(--dark-green)]">Data Pendaftar SPMB</h1>
+          <p class="text-xs text-gray-500">Kelola dan lihat perkembangan status siswa.</p>
+        </div>
+        <select id="filter-status" class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-medium text-gray-700 focus:outline-none">
+          <option value="semua">Semua Status</option>
+          <option value="Diterima">Diterima</option>
+          <option value="Diproses">Diproses</option>
+          <option value="Menunggu">Menunggu</option>
+          <option value="Ditolak">Ditolak</option>
+        </select>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="admin-table w-full min-w-[650px]">
+            <thead>
+              <tr>
+                <th class="text-left">No</th>
+                <th class="text-left">Nama & Asal Sekolah</th>
+                <th class="text-left">Jurusan</th>
+                <th class="text-left">Tanggal</th>
+                <th class="text-left">Nilai</th>
+                <th class="text-left">Status</th>
+              </tr>
+            </thead>
+            <tbody id="pendaftar-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- VERIFIKASI BERKAS SECTION -->
+    <section data-page="verifikasi" class="page-section hidden space-y-4">
+      <h1 class="text-lg font-bold text-[var(--dark-green)]">Verifikasi Berkas Siswa</h1>
+      
+      <div class="grid lg:grid-cols-3 gap-6">
+        <div class="bg-white rounded-xl border border-gray-200 p-4 space-y-3">
+          <h3 class="font-bold text-xs text-gray-500 uppercase tracking-wider">Antrian Verifikasi</h3>
+          <div id="queue-list" class="space-y-2"></div>
+        </div>
+
+        <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6 space-y-6">
+          <div class="flex items-center gap-4 pb-4 border-b border-gray-100">
+            <img id="verif-avatar" src="https://i.pravatar.cc/64?img=33" class="w-12 h-12 rounded-full object-cover">
+            <div>
+              <h2 id="verif-nama" class="font-bold text-base text-[var(--dark-green)]">Anisa Rahmawati</h2>
+              <p id="verif-sekolah" class="text-xs text-gray-500">SMP N 1 Surakarta • Jurusan: TKJ</p>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="font-bold text-xs text-gray-700 uppercase">Dokumen Unggahan</h4>
+            <div id="verif-docs-grid" class="grid sm:grid-cols-2 gap-4"></div>
+          </div>
+
+          <div class="pt-4 border-t border-gray-100 space-y-3">
+            <label class="block text-xs font-bold text-gray-700">Catatan Revisi / Evaluasi:</label>
+            <textarea id="catatan-verif" rows="2" placeholder="Catatan opsional untuk siswa..." class="w-full p-2.5 border border-gray-200 rounded-lg text-xs focus:ring-2 focus:ring-[var(--accent-green)] focus:outline-none"></textarea>
+            
+            <div class="flex gap-3">
+              <button id="btn-tolak-verif" class="flex-1 py-2 bg-red-50 text-red-600 font-semibold rounded-lg hover:bg-red-100 text-xs transition">❌ Minta Revisi</button>
+              <button id="btn-terima-verif" class="flex-1 py-2 bg-[var(--accent-green)] text-white font-semibold rounded-lg hover:bg-emerald-600 text-xs transition">✅ Setujui Berkas</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OTHER SECTIONS -->
+    <section data-page="jadwal" class="page-section hidden space-y-4">
+      <h1 class="text-lg font-bold text-[var(--dark-green)]">Kelola Jadwal Tes SPMB</h1>
+      <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
+        <div class="flex justify-between items-center">
+          <p class="text-xs text-gray-500">Daftar Sesi Tes Gelombang 1</p>
+          <button onclick="alert('Tambah Sesi Baru')" class="px-3 py-1.5 bg-[var(--accent-green)] text-white text-xs font-semibold rounded-lg">+ Tambah Sesi</button>
+        </div>
+          <div id="admin-schedule-list" class="divide-y border rounded-lg">
+          <div class="p-3 text-xs text-gray-500">Memuat jadwal...</div>
+        </div>
+      </div>
+    </section>
+
+    <section data-page="jurusan" class="page-section hidden space-y-4">
+      <h1 class="text-lg font-bold text-[var(--dark-green)]">Manajemen Kuota Jurusan</h1>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-gray-200">
+          <p class="font-bold text-sm">TKJ (Teknik Komputer & Jaringan)</p>
+          <p class="text-xs text-gray-500 mt-1">Kuota: 100 | Terisi: 92 | Sisa: 8</p>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-gray-200">
+          <p class="font-bold text-sm">TKR (Teknik Kendaraan Ringan)</p>
+          <p class="text-xs text-gray-500 mt-1">Kuota: 90 | Terisi: 77 | Sisa: 13</p>
+        </div>
+      </div>
+    </section>
+
+    <section data-page="pengumuman" class="page-section hidden space-y-4">
+      <h1 class="text-lg font-bold text-[var(--dark-green)]">Buat Pengumuman</h1>
+      <div class="bg-white p-5 rounded-xl border border-gray-200 space-y-3">
+        <input type="text" placeholder="Judul Pengumuman" class="w-full p-2 border rounded text-xs">
+        <textarea rows="3" placeholder="Isi Pengumuman..." class="w-full p-2 border rounded text-xs"></textarea>
+        <button onclick="alert('Pengumuman Berhasil Diterbitkan!')" class="px-4 py-2 bg-[var(--accent-green)] text-white text-xs font-semibold rounded-lg">Terbitkan</button>
+      </div>
+    </section>
+
+    <section data-page="laporan" class="page-section hidden space-y-4">
+      <h1 class="text-lg font-bold text-[var(--dark-green)]">Laporan & Rekapitulasi Data</h1>
+      <div class="bg-white p-6 rounded-xl border border-gray-200 flex gap-3">
+        <button onclick="alert('Export Excel Berhasil')" class="px-4 py-2 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-lg">Export CSV/Excel</button>
+        <button onclick="alert('Export PDF Berhasil')" class="px-4 py-2 bg-red-100 text-red-800 text-xs font-bold rounded-lg">Cetak PDF</button>
+      </div>
+    </section>
+
+    <section data-page="pengaturan" class="page-section hidden space-y-4">
+      <h1 class="text-lg font-bold text-[var(--dark-green)]">Pengaturan Gelombang SPMB</h1>
+      <div class="bg-white p-5 rounded-xl border border-gray-200 space-y-3">
+        <label class="flex items-center gap-2 text-xs font-semibold">
+          <input type="checkbox" checked> Buka Registration Gelombang 1 (2026/2027)
+        </label>
+      </div>
+    </section>
+
+    <section data-page="manajemen-admin" class="page-section hidden space-y-4">
+      <h1 class="text-lg font-bold text-[var(--dark-green)]">Kelola Staf Admin</h1>
+      <div class="bg-white p-5 rounded-xl border border-gray-200">
+        <p class="text-xs text-gray-500">Daftar Akun Petugas Verifikasi & Panitia</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- MODAL PREVIEW DOKUMEN -->
+<div id="modal-doc" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+  <div class="bg-white max-w-lg w-full rounded-2xl overflow-hidden p-4 space-y-4">
+    <div class="flex justify-between items-center">
+      <h3 id="doc-modal-title" class="font-bold text-sm text-[var(--dark-green)]">Preview Dokumen</h3>
+      <button onclick="closeDocModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <div class="bg-gray-100 rounded-lg overflow-hidden h-64 flex items-center justify-center">
+      <img id="doc-modal-img" src="" class="max-h-full object-contain">
+    </div>
+  </div>
+</div>
+
+<script>
+  const adminSession = JSON.parse(localStorage.getItem('smk_active_session') || 'null');
+  if (!adminSession || adminSession.role !== 'admin') {
+    window.location.replace('login_admin.html');
+  }
+  lucide.createIcons();
+
+  const menuButtons = document.querySelectorAll('.menu-item');
+  const sections = document.querySelectorAll('.page-section');
+
+  menuButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const page = btn.dataset.page;
+      menuButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      sections.forEach(sec => {
+        sec.classList.toggle('hidden', sec.dataset.page !== page);
+      });
+
+      document.getElementById('sidebar').classList.add('-translate-x-full');
+      document.getElementById('sidebar-overlay').classList.add('hidden');
+    });
+  });
+
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  document.getElementById('hamburger').addEventListener('click', () => {
+    sidebar.classList.remove('-translate-x-full');
+    overlay.classList.remove('hidden');
+  });
+  overlay.addEventListener('click', () => {
+    sidebar.classList.add('-translate-x-full');
+    overlay.classList.add('hidden');
+  });
+
+  let pendaftarData = [];
+  let selectedPendaftarId = null;
+
+  async function loadPendaftarData() {
+    const response = await fetch('../api/list_siswa.php');
+    const result = await response.json();
+    if (result.success) {
+      pendaftarData = result.pendaftar;
+      renderPendaftarTable();
+      renderQueueList();
+      loadSelectedDocuments();
+    }
+  }
+
+  async function loadAdminStats() {
+    const response = await fetch('../api/admin_stats.php');
+    const result = await response.json();
+    if (!result.success) return;
+    document.getElementById('stat-total').textContent = result.stats.total;
+    document.getElementById('stat-waiting').textContent = result.stats.waiting;
+    document.getElementById('stat-accepted').textContent = result.stats.accepted;
+    document.getElementById('stat-rejected').textContent = result.stats.rejected;
+  }
+
+  async function loadAdminSchedules() {
+    const response = await fetch('../api/list_jadwal.php');
+    const result = await response.json();
+    if (!result.success) return;
+    document.getElementById('admin-schedule-list').innerHTML = result.jadwal.map(item => `
+      <div class="p-3 flex justify-between items-center text-xs">
+        <span>${item.tanggal} - ${item.jenis} (Sesi ${item.sesi}, ${item.jam})</span>
+        <span class="text-emerald-600 font-bold">Aktif</span>
+      </div>
+    `).join('');
+  }
+
+  function renderPendaftarTable() {
+    const tbody = document.getElementById('pendaftar-table-body');
+    const filter = document.getElementById('filter-status').value;
+    const search = document.getElementById('global-search').value.toLowerCase();
+
+    tbody.innerHTML = '';
+    
+    pendaftarData
+      .filter(item => (filter === 'semua' || item.status === filter) && (item.nama.toLowerCase().includes(search) || item.sekolah.toLowerCase().includes(search)))
+      .forEach((item, index) => {
+        const badgeColor = item.status === 'Diterima' ? 'bg-emerald-100 text-emerald-800' :
+                           item.status === 'Diproses' ? 'bg-blue-100 text-blue-800' :
+                           item.status === 'Ditolak' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800';
+
+        tbody.innerHTML += `
+          <tr>
+            <td class="font-semibold text-gray-400">${index + 1}</td>
+            <td>
+              <p class="font-semibold text-[var(--dark-green)]">${item.nama}</p>
+              <p class="text-[11px] text-gray-400">${item.sekolah}</p>
+            </td>
+            <td><span class="px-2 py-0.5 bg-gray-100 font-semibold text-[11px] rounded">${item.jurusan}</span></td>
+            <td class="text-xs text-gray-500">${item.tanggal}</td>
+            <td class="font-bold text-xs">${item.nilai}</td>
+            <td><span class="px-2.5 py-0.5 font-semibold text-[10px] rounded-full ${badgeColor}">${item.status}</span></td>
+          </tr>
+        `;
+      });
+  }
+
+  document.getElementById('filter-status').addEventListener('change', renderPendaftarTable);
+  document.getElementById('global-search').addEventListener('input', renderPendaftarTable);
+
+  let docsData = [];
+
+  function renderVerifikasiDocs() {
+    const grid = document.getElementById('verif-docs-grid');
+    grid.innerHTML = docsData.length ? docsData.map(doc => `
+      <div class="border border-gray-200 rounded-xl p-3 bg-gray-50 space-y-2">
+        <p class="font-semibold text-xs text-gray-700">${doc.title}</p>
+        <img src="${doc.url}" class="w-full h-24 object-cover rounded-lg border border-gray-200 cursor-pointer" onclick="openDocModal('${doc.title}', '${doc.url}')">
+        <button onclick="openDocModal('${doc.title}', '${doc.url}')" class="w-full text-center text-[11px] text-emerald-700 font-medium hover:underline">Pratinjau Dokumen</button>
+      </div>
+    `).join('') : '<p class="text-xs text-gray-400">Belum ada dokumen yang diunggah.</p>';
+  }
+
+  function renderQueueList() {
+    const list = document.getElementById('queue-list');
+    list.innerHTML = pendaftarData.map((item, i) => `
+      <div data-siswa-id="${item.id}" class="queue-item p-2.5 rounded-lg border ${i===0?'border-emerald-500 bg-emerald-50':'border-gray-200 hover:bg-gray-50'} cursor-pointer transition">
+        <p class="font-semibold text-xs text-[var(--dark-green)]">${item.nama}</p>
+        <p class="text-[10px] text-gray-500">${item.sekolah}</p>
+      </div>
+    `).join('');
+    selectedPendaftarId = selectedPendaftarId || pendaftarData[0]?.id || null;
+    list.querySelectorAll('.queue-item').forEach(item => item.addEventListener('click', () => {
+      selectedPendaftarId = Number(item.dataset.siswaId);
+      list.querySelectorAll('.queue-item').forEach(queueItem => queueItem.classList.remove('border-emerald-500', 'bg-emerald-50'));
+      item.classList.add('border-emerald-500', 'bg-emerald-50');
+      loadSelectedDocuments();
+    }));
+  }
+
+  async function loadSelectedDocuments() {
+    if (!selectedPendaftarId) return;
+    const response = await fetch(`../api/list_dokumen.php?siswa_id=${encodeURIComponent(selectedPendaftarId)}`);
+    const result = await response.json();
+    docsData = result.success ? result.documents : [];
+    renderVerifikasiDocs();
+  }
+
+  function openDocModal(title, img) {
+    document.getElementById('doc-modal-title').innerText = title;
+    document.getElementById('doc-modal-img').src = img;
+    document.getElementById('modal-doc').classList.remove('hidden');
+  }
+
+  function closeDocModal() {
+    document.getElementById('modal-doc').classList.add('hidden');
+  }
+
+  async function updateSelectedStatus(status) {
+    if (!selectedPendaftarId) { alert('Pilih siswa terlebih dahulu.'); return; }
+    const response = await fetch('../api/update_status_siswa.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ siswa_id: selectedPendaftarId, status, catatan: document.getElementById('catatan-verif').value })
+    });
+    const result = await response.json();
+    alert(result.message);
+    if (result.success) loadPendaftarData();
+  }
+
+  document.getElementById('btn-terima-verif').addEventListener('click', () => {
+    updateSelectedStatus('Diterima');
+  });
+  document.getElementById('btn-tolak-verif').addEventListener('click', () => {
+    updateSelectedStatus('Ditolak');
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    loadPendaftarData();
+    loadAdminStats();
+    loadAdminSchedules();
+    renderVerifikasiDocs();
+
+    new Chart(document.getElementById('chart-tren'), {
+      type: 'line',
+      data: {
+        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Ming'],
+        datasets: [{
+          data: [12, 19, 15, 25, 22, 30, 45],
+          borderColor: '#22C55E',
+          backgroundColor: 'rgba(34, 197, 94, 0.1)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: { plugins: { legend: { display: false } }, responsive: true }
+    });
+
+    new Chart(document.getElementById('chart-distribusi'), {
+      type: 'doughnut',
+      data: {
+        labels: ['TKJ', 'Perhotelan', 'Kuliner', 'TSM'],
+        datasets: [{
+          data: [120, 85, 74, 50],
+          backgroundColor: ['#22C55E', '#3B82F6', '#F59E0B', '#EF4444']
+        }]
+      },
+      options: { plugins: { legend: { position: 'bottom' } }, responsive: true }
+    });
+  });
+</script>
+</body>
+</html>

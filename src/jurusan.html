@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Program Keahlian | SMK Kasatrian Solo Sukoharjo</title>
+<link rel="icon" type="image/png" href="Logo_SMK.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{font-family:'Poppins',sans-serif;}
+  .nama-sekolah, .nama-sekolah *{font-family:'Kavoon',cursive !important;}
+  :root{ --dark-green:#1B4332; --mint:#D8F5E8; --accent-green:#22C55E; }
+  body{color:var(--dark-green); background:#FAFCFB;}
+</style>
+</head>
+<body class="antialiased flex flex-col min-h-screen justify-between">
+
+<!-- NAVBAR -->
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3">
+      <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-11 h-11 object-contain" onerror="this.src='https://via.placeholder.com/44'">
+      <div class="leading-tight nama-sekolah">
+        <p class="text-[16px] text-[var(--dark-green)] font-bold">SMK KASATRIAN</p>
+        <p class="text-[14px] text-[var(--dark-green)] -mt-1 opacity-90">SOLO SUKOHARJO</p>
+      </div>
+    </a>
+    <ul class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-700">
+      <li><a href="index.html" class="hover:text-[var(--accent-green)] transition">Beranda</a></li>
+      <li><a href="jurusan.html" class="text-[var(--accent-green)] font-bold transition">Jurusan</a></li>
+      <li><a href="persyaratan.html" class="hover:text-[var(--accent-green)] transition">Persyaratan</a></li>
+      <li><a href="faq.html" class="hover:text-[var(--accent-green)] transition">FAQ</a></li>
+    </ul>
+    <div id="nav-actions-desktop" class="hidden sm:flex items-center gap-3">
+      <a href="pilih_peran.html?mode=login" class="px-5 py-2 rounded-full border-2 border-[var(--dark-green)] text-[var(--dark-green)] font-semibold text-xs hover:bg-emerald-50 transition">Masuk</a>
+      <a href="pilih_peran.html?mode=signup" class="px-5 py-2 rounded-full bg-[var(--accent-green)] text-white font-bold text-xs hover:bg-emerald-600 transition">Daftar SPMB</a>
+    </div>
+  </nav>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 py-12 w-full">
+  <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
+    <span class="px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider">Program Keahlian</span>
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-[var(--dark-green)]">Pilihan Jurusan Unggulan</h1>
+    <p class="text-xs sm:text-sm text-gray-600">Diselaraskan dengan kebutuhan industri terdepan untuk menjamin masa depan lulusan.</p>
+  </div>
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm flex flex-col justify-between space-y-4">
+      <div>
+        <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center text-2xl mb-4">💻</div>
+        <h3 class="font-bold text-lg text-[var(--dark-green)]">TKJ (Teknik Komputer)</h3>
+        <p class="text-xs text-gray-500 mt-2 leading-relaxed">Administrator jaringan, Mikrotik, Cisco, Cybersecurity, & Cloud Computing.</p>
+      </div>
+      <a href="pilih_peran.html?mode=signup" class="w-full text-center py-2.5 rounded-xl bg-[var(--accent-green)] text-white font-bold text-xs hover:bg-emerald-600 transition block">Daftar Jurusan Ini</a>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm flex flex-col justify-between space-y-4">
+      <div>
+        <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mb-4">🏨</div>
+        <h3 class="font-bold text-lg text-[var(--dark-green)]">Perhotelan</h3>
+        <p class="text-xs text-gray-500 mt-2 leading-relaxed">Front Office, Housekeeping, Hotel Management, & Hospitality Standar Internasional.</p>
+      </div>
+      <a href="pilih_peran.html?mode=signup" class="w-full text-center py-2.5 rounded-xl bg-[var(--accent-green)] text-white font-bold text-xs hover:bg-emerald-600 transition block">Daftar Jurusan Ini</a>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm flex flex-col justify-between space-y-4">
+      <div>
+        <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl mb-4">🍳</div>
+        <h3 class="font-bold text-lg text-[var(--dark-green)]">Kuliner / Jasa Boga</h3>
+        <p class="text-xs text-gray-500 mt-2 leading-relaxed">Seni Memasak Profesional, Pastry & Bakery, Tata Hidang, & Manajemen Restoran.</p>
+      </div>
+      <a href="pilih_peran.html?mode=signup" class="w-full text-center py-2.5 rounded-xl bg-[var(--accent-green)] text-white font-bold text-xs hover:bg-emerald-600 transition block">Daftar Jurusan Ini</a>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm flex flex-col justify-between space-y-4">
+      <div>
+        <div class="w-12 h-12 rounded-xl bg-red-100 text-red-800 flex items-center justify-center text-2xl mb-4">🏍️</div>
+        <h3 class="font-bold text-lg text-[var(--dark-green)]">Teknik Sepeda Motor</h3>
+        <p class="text-xs text-gray-500 mt-2 leading-relaxed">Perawatan Mesin Injeksi EFI, Diagnosa Kelistrikan, & Kewirausahaan Bengkel.</p>
+      </div>
+      <a href="pilih_peran.html?mode=signup" class="w-full text-center py-2.5 rounded-xl bg-[var(--accent-green)] text-white font-bold text-xs hover:bg-emerald-600 transition block">Daftar Jurusan Ini</a>
+    </div>
+  </div>
+</main>
+
+<footer class="bg-[var(--dark-green)] text-white py-6 text-center text-xs border-t border-emerald-900">
+  Informasi pendaftaran: 082230660060 · © 2026 SMK Kasatrian Solo Sukoharjo
+</footer>
+
+<script>
+  lucide.createIcons();
+  window.addEventListener('DOMContentLoaded', () => {
+    const activeSession = JSON.parse(localStorage.getItem('smk_active_session'));
+    if (activeSession) {
+      const isAdmin = activeSession.role === 'admin';
+      const targetPage = isAdmin ? 'portal_admin.html' : 'portal_siswa.html';
+      const actionsDesktop = document.getElementById('nav-actions-desktop');
+      if (actionsDesktop) {
+        actionsDesktop.innerHTML = `
+          <a href="${targetPage}" class="px-5 py-2 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs hover:bg-emerald-200 transition flex items-center gap-2">
+            <i data-lucide="${isAdmin ? 'shield' : 'user'}" class="w-4 h-4"></i> ${activeSession.nama}
+          </a>
+        `;
+        lucide.createIcons();
+      }
+    }
+  });
+</script>
+</body>
+</html>

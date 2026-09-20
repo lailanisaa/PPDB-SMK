@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - Halaman Tidak Ditemukan | SMK Kasatrian Solo</title>
+<link rel="icon" type="image/png" href="Logo_SMK.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{font-family:'Poppins',sans-serif;}
+  .nama-sekolah, .nama-sekolah *{font-family:'Kavoon',cursive !important;}
+  :root{ --dark-green:#1B4332; --mint:#D8F5E8; --accent-green:#22C55E; }
+  body{color:var(--dark-green); background:var(--mint);}
+</style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6 text-center">
+
+<div class="max-w-md w-full bg-white p-8 rounded-3xl shadow-2xl space-y-6 border border-emerald-100">
+  <img src="Logo_SMK.png" alt="Logo SMK Kasatrian Solo" class="w-20 h-20 mx-auto object-contain">
+  
+  <div class="space-y-2">
+    <h1 class="font-black text-7xl text-[var(--accent-green)] animate-bounce">404</h1>
+    <h2 class="font-bold text-xl text-[var(--dark-green)]">Halaman Tidak Ditemukan</h2>
+    <p class="text-xs text-gray-500 leading-relaxed">Tautan yang Anda tuju salah, tidak tersedia, atau telah dipindahkan.</p>
+  </div>
+
+  <a href="index.html" class="inline-flex items-center gap-2 bg-[var(--accent-green)] hover:bg-emerald-600 text-white font-bold px-7 py-3 rounded-full text-xs shadow-lg transition">
+    <i data-lucide="home" class="w-4 h-4"></i>
+    <span>Kembali ke Beranda</span>
+  </a>
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

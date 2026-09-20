@@ -1,0 +1,155 @@
+/* SPMB Kasatrian visual system */
+:root {
+  --forest: #1b4332;
+  --forest-2: #245c43;
+  --mint: #d8f5e8;
+  --mint-2: #c8f0dd;
+  --leaf: #22c55e;
+  --sun: #ffd84d;
+  --coral: #ff8066;
+  --paper: #f7fbf8;
+  --ink: #17352a;
+  --muted: #64776f;
+  --stroke: rgba(27, 67, 50, .12);
+  --shadow: 0 20px 50px rgba(27, 67, 50, .10);
+}
+
+body {
+  color: var(--ink) !important;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(255, 216, 77, .17), transparent 23rem),
+    radial-gradient(circle at 100% 12%, rgba(216, 245, 232, .9), transparent 30rem),
+    var(--paper) !important;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .28;
+  z-index: -1;
+  background-image: linear-gradient(rgba(27,67,50,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(27,67,50,.025) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+header:not(.bg-\[var\(--dark-green\)\]) {
+  background: rgba(255, 255, 255, .86) !important;
+  border-color: var(--stroke) !important;
+  box-shadow: 0 8px 24px rgba(27, 67, 50, .05);
+}
+
+nav a, nav button { letter-spacing: .01em; }
+nav a:hover, nav button:hover { transform: translateY(-1px); }
+
+/* Public page hero surfaces */
+body > section:first-of-type,
+main > section:first-child.bg-\[var\(--mint\)\] {
+  position: relative;
+  overflow: hidden;
+}
+body > section:first-of-type::after,
+main > section:first-child.bg-\[var\(--mint\)\]::after {
+  content: '';
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -6rem;
+  top: -7rem;
+  border: 28px solid rgba(255, 216, 77, .28);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.bg-\[var\(--mint\)\], .bg-emerald-50, .bg-emerald-50\/30 {
+  background: linear-gradient(135deg, rgba(216,245,232,.92), rgba(255,255,255,.78)) !important;
+}
+
+.bg-\[var\(--dark-green\)\] {
+  background: linear-gradient(135deg, var(--forest), var(--forest-2)) !important;
+}
+
+.rounded-2xl, .rounded-3xl {
+  border-radius: 1.25rem !important;
+}
+
+.border-emerald-100, .border-gray-100, .border-gray-200 {
+  border-color: var(--stroke) !important;
+}
+
+.shadow-sm { box-shadow: 0 10px 28px rgba(27, 67, 50, .07) !important; }
+.shadow-xl, .shadow-2xl { box-shadow: var(--shadow) !important; }
+
+.card-hover, .bg-white.rounded-2xl, .bg-white.rounded-3xl {
+  border: 1px solid var(--stroke);
+}
+
+.card-hover:hover, .bg-white.rounded-2xl:hover {
+  border-color: rgba(34,197,94,.42);
+  box-shadow: 0 18px 42px rgba(27,67,50,.14) !important;
+}
+
+button.bg-\[var\(--yellow\)\], a.bg-\[var\(--yellow\)\] {
+  box-shadow: 0 10px 0 rgba(27,67,50,.12) !important;
+}
+button.bg-\[var\(--yellow\)\]:hover, a.bg-\[var\(--yellow\)\]:hover { transform: translateY(-2px); }
+
+input, select, textarea {
+  border-radius: .8rem !important;
+  border-color: var(--stroke) !important;
+  background-color: rgba(255,255,255,.86) !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--leaf) !important;
+  box-shadow: 0 0 0 4px rgba(34,197,94,.12) !important;
+}
+
+footer { background: var(--forest) !important; }
+
+/* Portals retain their information architecture but gain stronger hierarchy. */
+#main-content, body > main { scroll-behavior: smooth; }
+[data-page].page-section > h1 { letter-spacing: -.025em; }
+.admin-table thead th { color: var(--forest) !important; background: var(--mint) !important; }
+
+/* Portal shell: make dense workflows feel calm and scannable. */
+body.min-h-screen.relative.pb-12,
+body.h-screen.overflow-hidden.flex {
+  background:
+    radial-gradient(circle at 92% 0%, rgba(255,216,77,.16), transparent 22rem),
+    linear-gradient(135deg, #f7fbf8 0%, #edf8f1 100%) !important;
+}
+
+body.h-screen.overflow-hidden.flex aside {
+  background: linear-gradient(165deg, var(--forest), #103324) !important;
+  box-shadow: 12px 0 34px rgba(27,67,50,.12);
+}
+
+body.h-screen.overflow-hidden.flex header {
+  box-shadow: 0 8px 28px rgba(27,67,50,.06);
+}
+
+body.min-h-screen.relative.pb-12 > header {
+  box-shadow: 0 8px 28px rgba(27,67,50,.08);
+}
+
+body.min-h-screen.relative.pb-12 main > section > .bg-\[var\(--dark-green\)\] {
+  background:
+    radial-gradient(circle at 90% 20%, rgba(255,216,77,.24), transparent 14rem),
+    linear-gradient(135deg, var(--forest), #113a28) !important;
+}
+
+body.min-h-screen.relative.pb-12 main > section > div,
+body.h-screen.overflow-hidden.flex #main-content section > div {
+  backdrop-filter: blur(6px);
+}
+
+body.min-h-screen.relative.pb-12 .nav-item.active,
+body.h-screen.overflow-hidden.flex .menu-item.active {
+  box-shadow: 0 8px 18px rgba(34,197,94,.2);
+}
+
+@media (max-width: 640px) {
+  body::before { background-size: 22px 22px; }
+  body > section:first-of-type::after { width: 11rem; height: 11rem; right: -5rem; top: -5rem; border-width: 18px; }
+}

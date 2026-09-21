@@ -988,7 +988,7 @@ async function loadStudentData() {
   document.getElementById('student-registration-number').textContent = `KST-${new Date(siswa.tanggal_daftar).getFullYear()}-${String(siswa.id).padStart(5, '0')}`;
   document.getElementById('profile-registration-number').textContent = `KST-${new Date(siswa.tanggal_daftar).getFullYear()}-${String(siswa.id).padStart(5, '0')}`;
   if (data) {
-    Object.assign(formData.dataDiri, { nama: data.nama || formData.dataDiri.nama, nik: data.nik, tempat: data.tempat_lahir, tgl: data.tanggal_lahir, jk: data.jenis_kelamin, wa: data.no_wa, alamat: data.alamat });
+    Object.assign(formData.dataDiri, { nama: data.nama || formData.dataDiri.nama, nik: data.nik, tempat: data.tempat_lahir, tgl: data.tanggal_lahir, jk: data.jenis_kelamin, wa: data.no_wa, alamat: data.alamat, agama: agamaData.find(a => a.kode === data.agama)?.nama || data.agama });
     Object.assign(formData.dataOrtu, { ayah: data.nama_ayah, ibu: data.nama_ibu });
     Object.assign(formData.asalSekolah, { sekolah: data.sekolah_asal, nisn: data.nisn, tahunlulus: data.tahun_lulus });
     document.getElementById('profile-wa').textContent = data.no_wa || '-';

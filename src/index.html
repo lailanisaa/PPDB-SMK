@@ -1,55 +1,101 @@
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SMK Kasatrian Solo Sukoharjo | SPMB 2027/2028</title>
-<link rel="icon" type="image/png" href="Logo_SMK.png">
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-<link rel="stylesheet" href="styles.css">
-<link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-  *{font-family:'Poppins',sans-serif;}
-  .nama-sekolah, .nama-sekolah *{font-family:'Kavoon',cursive !important;}
-  :root{
-    --dark-green:#1B4332;
-    --mint:#D8F5E8;
-    --mint-2:#C8F0DD;
-    --accent-green:#22C55E;
-    --accent-hover:#16A34A;
-    --yellow:#FFD84D;
-  }
-  body{color:var(--dark-green); background-color:#FAFCFB;}
-  .card-hover{transition:all .3s cubic-bezier(0.4, 0, 0.2, 1);}
-  .card-hover:hover{transform:translateY(-6px); box-shadow:0 20px 30px -10px rgba(27,67,50,0.15);}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMK Kasatrian Solo Sukoharjo | SPMB 2027/2028</title>
+  <link rel="icon" type="image/png" href="Logo_SMK.png">
+
+  <!-- Tailwind CSS & Lucide Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    * { font-family: 'Poppins', sans-serif; }
+    .nama-sekolah, .nama-sekolah * { font-family: 'Kavoon', cursive !important; }
+    
+    :root {
+      --dark-green: #1B4332;
+      --mint: #D8F5E8;
+      --mint-2: #C8F0DD;
+      --accent-green: #22C55E;
+      --accent-hover: #16A34A;
+      --yellow: #FFD84D;
+    }
+
+    body {
+      color: var(--dark-green);
+      background-color: #FAFCFB;
+      overflow-x: hidden;
+    }
+
+    /* Custom Animation Effects */
+    .card-hover {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .card-hover:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 30px -10px rgba(27, 67, 50, 0.18);
+    }
+
+    /* Floating Keyframe Animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(1deg); }
+    }
+    .animate-float {
+      animation: float 5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+    .animate-glow {
+      animation: pulse-glow 3s infinite;
+    }
+
+    /* Glassmorphism Effect */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+  </style>
 </head>
-<body class="antialiased">
+<body class="antialiased selection:bg-emerald-200 selection:text-emerald-900">
 
 <!-- NAVBAR -->
-<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100/80 transition-all">
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100/80 transition-all duration-300">
   <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
     <a href="index.html" class="flex items-center gap-3 group">
-      <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-11 h-11 object-contain transition-transform group-hover:scale-105">
+      <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-11 h-11 object-contain transition-transform duration-300 group-hover:scale-110">
       <div class="leading-tight nama-sekolah">
-        <p class="text-[16px] text-[var(--dark-green)] font-bold">SMK KASATRIAN</p>
+        <p class="text-[16px] text-[var(--dark-green)] font-bold tracking-wide">SMK KASATRIAN</p>
         <p class="text-[14px] text-[var(--dark-green)] -mt-1 opacity-90">SOLO SUKOHARJO</p>
       </div>
     </a>
 
     <!-- Desktop Navigation Links -->
     <ul class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-700">
-      <li><a href="index.html" class="text-[var(--accent-green)] transition">Beranda</a></li>
-      <li><a href="jurusan.html" class="hover:text-[var(--accent-green)] transition">Jurusan</a></li>
-      <li><a href="persyaratan.html" class="hover:text-[var(--accent-green)] transition">Persyaratan</a></li>
-      <li><a href="faq.html" class="hover:text-[var(--accent-green)] transition">FAQ</a></li>
+      <li><a href="index.html" class="text-[var(--accent-green)] font-bold transition duration-200 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-[var(--accent-green)]">Beranda</a></li>
+      <li><a href="jurusan.html" class="hover:text-[var(--accent-green)] transition duration-200">Jurusan</a></li>
+      <li><a href="persyaratan.html" class="hover:text-[var(--accent-green)] transition duration-200">Persyaratan</a></li>
+      <li><a href="faq.html" class="hover:text-[var(--accent-green)] transition duration-200">FAQ</a></li>
     </ul>
 
     <!-- Action Buttons -->
-    <div id="nav-actions-desktop" class="hidden sm:flex items-center gap-3">
-      <a href="pilih_peran.html?mode=login" class="px-5 py-2 rounded-full border-2 border-[var(--dark-green)] text-[var(--dark-green)] font-semibold text-sm hover:bg-emerald-50 transition">Masuk</a>
-      <a href="pilih_peran.html?mode=signup" class="px-5 py-2 rounded-full bg-[var(--accent-green)] hover:bg-[var(--accent-hover)] text-white font-semibold text-sm shadow-md hover:shadow-lg transition">Daftar SPMB</a>
+    <div class="hidden sm:flex items-center gap-3">
+      <a href="pilih_peran.html?mode=login" class="px-5 py-2 rounded-full border-2 border-[var(--dark-green)] text-[var(--dark-green)] font-semibold text-sm hover:bg-emerald-50 hover:shadow-md transition duration-200">Masuk</a>
+      <a href="pilih_peran.html?mode=signup" class="px-5 py-2 rounded-full bg-[var(--accent-green)] hover:bg-[var(--accent-hover)] text-white font-semibold text-sm shadow-md hover:shadow-lg transition duration-200 transform hover:-translate-y-0.5">Daftar SPMB</a>
     </div>
 
     <!-- Mobile Hamburger Button -->
@@ -64,7 +110,7 @@
     <a href="jurusan.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Jurusan</a>
     <a href="persyaratan.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Persyaratan</a>
     <a href="faq.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">FAQ</a>
-    <div id="nav-actions-mobile" class="pt-3 border-t border-gray-100 flex flex-col gap-2">
+    <div class="pt-3 border-t border-gray-100 flex flex-col gap-2">
       <a href="pilih_peran.html?mode=login" class="w-full text-center py-2.5 rounded-full border-2 border-[var(--dark-green)] text-[var(--dark-green)] font-semibold text-sm">Masuk</a>
       <a href="pilih_peran.html?mode=signup" class="w-full text-center py-2.5 rounded-full bg-[var(--accent-green)] text-white font-semibold text-sm">Daftar SPMB</a>
     </div>
@@ -72,43 +118,61 @@
 </header>
 
 <!-- HERO SECTION -->
-<section class="bg-gradient-to-b from-[var(--mint)] to-white py-12 lg:py-20 overflow-hidden">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-12 items-center">
-    <div class="space-y-6">
-      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs sm:text-sm shadow-sm">
-        <i data-lucide="sparkles" class="w-4 h-4 text-emerald-600"></i> SPMB Tahun Ajaran 2027/2028 Resmi Dibuka!
+<section class="relative bg-gradient-to-b from-[var(--mint)] via-emerald-50/50 to-white py-16 lg:py-24 overflow-hidden">
+  <!-- Background Decorative Ornaments -->
+  <div class="absolute top-10 left-10 w-72 h-72 bg-emerald-300/20 rounded-full blur-3xl pointer-events-none animate-glow"></div>
+  <div class="absolute bottom-10 right-10 w-96 h-96 bg-yellow-200/30 rounded-full blur-3xl pointer-events-none animate-glow" style="animation-delay: 1.5s;"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+    <!-- Left Hero Text Content -->
+    <div class="space-y-6 text-center lg:text-left" data-aos="fade-right" data-aos-duration="1000">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100/90 text-[var(--dark-green)] font-bold text-xs sm:text-sm shadow-sm border border-emerald-200">
+        <i data-lucide="sparkles" class="w-4 h-4 text-emerald-600 animate-spin" style="animation-duration: 8s;"></i> 
+        SPMB Tahun Ajaran 2027/2028 Resmi Dibuka!
       </span>
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-[var(--dark-green)]">
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-[var(--dark-green)] tracking-tight">
         Jembatan Kerja,<br>
-        <span class="text-[var(--accent-green)]">Sukses Berwirausaha!</span>
+        <span class="text-[var(--accent-green)] bg-gradient-to-r from-emerald-600 to-green-500 bg-clip-text text-transparent">Sukses Berwirausaha!</span>
       </h1>
-      <p class="nama-sekolah text-xl text-[var(--dark-green)] font-bold tracking-wide">SMK KASATRIAN SOLO SUKOHARJO</p>
-      <p class="text-gray-600 leading-relaxed max-w-lg">
+
+      <p class="nama-sekolah text-xl sm:text-2xl text-[var(--dark-green)] font-bold tracking-wide">
+        SMK KASATRIAN SOLO SUKOHARJO
+      </p>
+
+      <p class="text-gray-600 leading-relaxed max-w-lg mx-auto lg:mx-0 text-sm sm:text-base">
         Siapkan karir masa depanmu dengan pendidikan vokasi berbasis keahlian praktis, fasilitas modern, dan jaringan kerja sama industri luas.
       </p>
-      <div class="flex flex-wrap gap-4 pt-2">
-        <a href="pilih_peran.html?mode=signup" class="px-7 py-3.5 rounded-full bg-[var(--yellow)] hover:bg-amber-400 text-[var(--dark-green)] font-bold text-sm shadow-lg hover:shadow-xl transition flex items-center gap-2">
+
+      <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+        <a href="pilih_peran.html?mode=signup" class="px-8 py-4 rounded-full bg-[var(--yellow)] hover:bg-amber-400 text-[var(--dark-green)] font-bold text-sm shadow-lg hover:shadow-xl transition duration-300 flex items-center gap-2 transform hover:-translate-y-1">
           <span>✏️ Daftar Sekarang</span>
         </a>
-        <a href="jurusan.html" class="px-7 py-3.5 rounded-full border-2 border-[var(--accent-green)] text-[var(--dark-green)] font-bold text-sm hover:bg-emerald-50 transition flex items-center gap-2">
+        <a href="jurusan.html" class="px-8 py-4 rounded-full border-2 border-[var(--accent-green)] text-[var(--dark-green)] font-bold text-sm hover:bg-emerald-50 transition duration-300 flex items-center gap-2 transform hover:-translate-y-1">
           <span>📚 Lihat Program Keahlian</span>
         </a>
       </div>
-      <div class="flex items-center gap-6 pt-4 text-xs sm:text-sm font-bold text-[var(--dark-green)]">
-        <span class="flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-600"></i> Terakreditasi A</span>
-        <span class="flex items-center gap-1.5"><i data-lucide="award" class="w-5 h-5 text-emerald-600"></i> Pengalaman 25+ Tahun</span>
+
+      <div class="flex items-center justify-center lg:justify-start gap-6 pt-4 text-xs sm:text-sm font-bold text-[var(--dark-green)]">
+        <span class="flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-lg shadow-sm border border-emerald-100"><i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-600"></i> Terakreditasi A</span>
+        <span class="flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-lg shadow-sm border border-emerald-100"><i data-lucide="award" class="w-5 h-5 text-emerald-600"></i> Pengalaman 25+ Tahun</span>
       </div>
     </div>
 
-    <div class="relative">
-      <div class="relative z-10 rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
-        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80" alt="Siswa SMK Kasatrian" class="w-full h-80 sm:h-96 object-cover">
+    <!-- Right Hero Image with Floating Card -->
+    <div class="relative flex justify-center" data-aos="fade-left" data-aos-duration="1000">
+      <div class="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white max-w-md lg:max-w-none w-full animate-float">
+        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80" alt="Siswa SMK Kasatrian" class="w-full h-80 sm:h-[420px] object-cover hover:scale-105 transition duration-700">
       </div>
-      <div class="absolute -bottom-6 -left-6 z-20 bg-white p-4 rounded-xl shadow-xl border border-emerald-100 flex items-center gap-4 hidden sm:flex">
-        <div class="w-12 h-12 rounded-full bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center font-bold text-xl">🏆</div>
+
+      <!-- Floating Achievement Badge -->
+      <div class="absolute -bottom-6 -left-2 sm:-left-6 z-20 glass-card p-4 rounded-2xl shadow-xl border border-emerald-100 flex items-center gap-4 hover:scale-105 transition duration-300">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center font-bold text-2xl shadow-md">
+          🏆
+        </div>
         <div>
-          <p class="font-bold text-sm text-[var(--dark-green)]">95% Lulusan Tersalurkan</p>
-          <p class="text-xs text-gray-500">Kerja, Kuliah, & Wirausaha</p>
+          <p class="font-extrabold text-sm text-[var(--dark-green)]">95% Lulusan Tersalurkan</p>
+          <p class="text-xs text-gray-600 font-medium">Kerja, Kuliah, & Wirausaha</p>
         </div>
       </div>
     </div>
@@ -116,31 +180,31 @@
 </section>
 
 <!-- STATS BAR -->
-<section class="bg-white border-y border-emerald-100 py-8">
+<section class="bg-white border-y border-emerald-100 py-10 relative">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-    <div class="p-4 rounded-xl bg-emerald-50/50">
+    <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50/30 border border-emerald-100/60 card-hover" data-aos="zoom-in" data-aos-delay="100">
       <p class="text-3xl sm:text-4xl font-extrabold text-[var(--accent-green)]">25+</p>
-      <p class="text-xs sm:text-sm font-medium text-gray-600 mt-1">Tahun Pengalaman</p>
+      <p class="text-xs sm:text-sm font-semibold text-gray-600 mt-1">Tahun Pengalaman</p>
     </div>
-    <div class="p-4 rounded-xl bg-emerald-50/50">
+    <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50/30 border border-emerald-100/60 card-hover" data-aos="zoom-in" data-aos-delay="200">
       <p class="text-3xl sm:text-4xl font-extrabold text-[var(--accent-green)]">4</p>
-      <p class="text-xs sm:text-sm font-medium text-gray-600 mt-1">Jurusan Unggulan</p>
+      <p class="text-xs sm:text-sm font-semibold text-gray-600 mt-1">Jurusan Unggulan</p>
     </div>
-    <div class="p-4 rounded-xl bg-emerald-50/50">
+    <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50/30 border border-emerald-100/60 card-hover" data-aos="zoom-in" data-aos-delay="300">
       <p class="text-3xl sm:text-4xl font-extrabold text-[var(--accent-green)]">50+</p>
-      <p class="text-xs sm:text-sm font-medium text-gray-600 mt-1">Mitra DUDI / Industri</p>
+      <p class="text-xs sm:text-sm font-semibold text-gray-600 mt-1">Mitra DUDI / Industri</p>
     </div>
-    <div class="p-4 rounded-xl bg-emerald-50/50">
-      <p id="stat-pendaftar-count" class="text-3xl sm:text-4xl font-extrabold text-[var(--accent-green)]">0</p>
-      <p class="text-xs sm:text-sm font-medium text-gray-600 mt-1">Pendaftar Terdaftar</p>
+    <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50/30 border border-emerald-100/60 card-hover" data-aos="zoom-in" data-aos-delay="400">
+      <p id="stat-pendaftar-count" class="text-3xl sm:text-4xl font-extrabold text-[var(--accent-green)]">1</p>
+      <p class="text-xs sm:text-sm font-semibold text-gray-600 mt-1">Pendaftar Terdaftar</p>
     </div>
   </div>
 </section>
 
-<!-- KEUNGGULAN & INFO SEKOLAH -->
-<section class="py-16 bg-white border-b border-emerald-100">
+<!-- KEUNGGULAN SEKOLAH -->
+<section class="py-20 bg-white border-b border-emerald-100">
   <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="text-center max-w-2xl mx-auto mb-12">
+    <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
       <span class="px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider">
         Mengapa Memilih Kami
       </span>
@@ -152,11 +216,11 @@
       </p>
     </div>
 
-    <!-- Cards Keunggulan -->
+    <!-- Cards Keunggulan Grid -->
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div class="card-hover p-6 rounded-2xl border border-emerald-100 bg-emerald-50/30 flex flex-col items-start">
-        <div class="w-12 h-12 rounded-xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center text-2xl mb-4">
-          <i data-lucide="briefcase" class="w-6 h-6"></i>
+      <div class="card-hover p-7 rounded-2xl border border-emerald-100/80 bg-gradient-to-b from-emerald-50/40 to-white flex flex-col items-start" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center text-2xl mb-5 shadow-inner">
+          <i data-lucide="briefcase" class="w-7 h-7"></i>
         </div>
         <h3 class="font-bold text-lg text-[var(--dark-green)] mb-2">Penyaluran Kerja Luas</h3>
         <p class="text-xs text-gray-600 leading-relaxed">
@@ -164,9 +228,9 @@
         </p>
       </div>
 
-      <div class="card-hover p-6 rounded-2xl border border-emerald-100 bg-emerald-50/30 flex flex-col items-start">
-        <div class="w-12 h-12 rounded-xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center text-2xl mb-4">
-          <i data-lucide="wrench" class="w-6 h-6"></i>
+      <div class="card-hover p-7 rounded-2xl border border-emerald-100/80 bg-gradient-to-b from-emerald-50/40 to-white flex flex-col items-start" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center text-2xl mb-5 shadow-inner">
+          <i data-lucide="wrench" class="w-7 h-7"></i>
         </div>
         <h3 class="font-bold text-lg text-[var(--dark-green)] mb-2">Fasilitas Praktik Modern</h3>
         <p class="text-xs text-gray-600 leading-relaxed">
@@ -174,9 +238,9 @@
         </p>
       </div>
 
-      <div class="card-hover p-6 rounded-2xl border border-emerald-100 bg-emerald-50/30 flex flex-col items-start">
-        <div class="w-12 h-12 rounded-xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center text-2xl mb-4">
-          <i data-lucide="award" class="w-6 h-6"></i>
+      <div class="card-hover p-7 rounded-2xl border border-emerald-100/80 bg-gradient-to-b from-emerald-50/40 to-white flex flex-col items-start" data-aos="fade-up" data-aos-delay="300">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center text-2xl mb-5 shadow-inner">
+          <i data-lucide="award" class="w-7 h-7"></i>
         </div>
         <h3 class="font-bold text-lg text-[var(--dark-green)] mb-2">Sertifikasi Kompetensi</h3>
         <p class="text-xs text-gray-600 leading-relaxed">
@@ -184,9 +248,9 @@
         </p>
       </div>
 
-      <div class="card-hover p-6 rounded-2xl border border-emerald-100 bg-emerald-50/30 flex flex-col items-start">
-        <div class="w-12 h-12 rounded-xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center text-2xl mb-4">
-          <i data-lucide="rocket" class="w-6 h-6"></i>
+      <div class="card-hover p-7 rounded-2xl border border-emerald-100/80 bg-gradient-to-b from-emerald-50/40 to-white flex flex-col items-start" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center text-2xl mb-5 shadow-inner">
+          <i data-lucide="rocket" class="w-7 h-7"></i>
         </div>
         <h3 class="font-bold text-lg text-[var(--dark-green)] mb-2">Program Kewirausahaan</h3>
         <p class="text-xs text-gray-600 leading-relaxed">
@@ -194,9 +258,9 @@
         </p>
       </div>
 
-      <div class="card-hover p-6 rounded-2xl border border-emerald-100 bg-emerald-50/30 flex flex-col items-start">
-        <div class="w-12 h-12 rounded-xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center text-2xl mb-4">
-          <i data-lucide="user-check" class="w-6 h-6"></i>
+      <div class="card-hover p-7 rounded-2xl border border-emerald-100/80 bg-gradient-to-b from-emerald-50/40 to-white flex flex-col items-start" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center text-2xl mb-5 shadow-inner">
+          <i data-lucide="user-check" class="w-7 h-7"></i>
         </div>
         <h3 class="font-bold text-lg text-[var(--dark-green)] mb-2">Pengajar Praktisi & Profesional</h3>
         <p class="text-xs text-gray-600 leading-relaxed">
@@ -204,9 +268,9 @@
         </p>
       </div>
 
-      <div class="card-hover p-6 rounded-2xl border border-emerald-100 bg-emerald-50/30 flex flex-col items-start">
-        <div class="w-12 h-12 rounded-xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center text-2xl mb-4">
-          <i data-lucide="shield-check" class="w-6 h-6"></i>
+      <div class="card-hover p-7 rounded-2xl border border-emerald-100/80 bg-gradient-to-b from-emerald-50/40 to-white flex flex-col items-start" data-aos="fade-up" data-aos-delay="300">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center text-2xl mb-5 shadow-inner">
+          <i data-lucide="shield-check" class="w-7 h-7"></i>
         </div>
         <h3 class="font-bold text-lg text-[var(--dark-green)] mb-2">Pendidikan Karakter</h3>
         <p class="text-xs text-gray-600 leading-relaxed">
@@ -218,115 +282,183 @@
 </section>
 
 <!-- PROGRAM GRATIS & FASILITAS -->
-<section class="py-16 bg-white border-b border-emerald-100" id="info-pendaftaran">
+<section class="py-20 bg-white border-b border-emerald-100" id="info-pendaftaran">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8">
-    <div class="bg-emerald-50 rounded-2xl border border-emerald-100 p-6 sm:p-8">
-      <div class="flex items-center gap-3 mb-4">
-        <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i data-lucide="badge-percent" class="w-6 h-6"></i></div>
-        <div><p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Program Gratis</p><h2 class="text-2xl font-extrabold text-[var(--dark-green)]">Bantuan Pendidikan</h2></div>
+    
+    <!-- Box Program Gratis -->
+    <div class="bg-gradient-to-br from-emerald-50 to-teal-50/50 rounded-3xl border border-emerald-200/80 p-6 sm:p-8 shadow-sm card-hover" data-aos="fade-right">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md">
+          <i data-lucide="badge-percent" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Program Gratis</p>
+          <h2 class="text-2xl font-extrabold text-[var(--dark-green)]">Bantuan Pendidikan</h2>
+        </div>
       </div>
-      <ul class="space-y-3 text-sm text-gray-700">
-        <li class="flex gap-2"><span class="text-emerald-600">✓</span> Siswa/i yatim piatu gratis SPP 100%</li>
-        <li class="flex gap-2"><span class="text-emerald-600">✓</span> Siswa/i yatim mendapat potongan SPP 50%</li>
-        <li class="flex gap-2"><span class="text-emerald-600">✓</span> Siswa/i piatu mendapat potongan SPP 27%</li>
-        <li class="flex gap-2"><span class="text-emerald-600">✓</span> Keluarga siswa/i tidak mampu</li>
-        <li class="flex gap-2"><span class="text-emerald-600">✓</span> Beasiswa lainnya berupa PIP, BSM, dan lainnya</li>
+      <ul class="space-y-3.5 text-sm text-gray-700 font-medium">
+        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold text-xs">✓</span> Siswa/i yatim piatu gratis SPP 100%</li>
+        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold text-xs">✓</span> Siswa/i yatim mendapat potongan SPP 50%</li>
+        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold text-xs">✓</span> Siswa/i piatu mendapat potongan SPP 27%</li>
+        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold text-xs">✓</span> Keluarga siswa/i tidak mampu</li>
+        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold text-xs">✓</span> Beasiswa lainnya berupa PIP, BSM, dan lainnya</li>
       </ul>
-      <p class="text-xs text-gray-600 mt-5 border-t border-emerald-200 pt-4"><strong>Syarat:</strong> melampirkan bukti dokumen yang sesuai.</p>
+      <p class="text-xs text-gray-600 mt-6 border-t border-emerald-200/80 pt-4 font-medium">
+        <strong>Syarat:</strong> melampirkan bukti dokumen yang sesuai.
+      </p>
     </div>
 
-    <div class="bg-[var(--mint)] rounded-2xl border border-emerald-100 p-6 sm:p-8">
-      <div class="flex items-center gap-3 mb-4">
-        <div class="w-11 h-11 rounded-xl bg-white text-emerald-700 flex items-center justify-center"><i data-lucide="building-2" class="w-6 h-6"></i></div>
-        <div><p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Keunggulan Sekolah</p><h2 class="text-2xl font-extrabold text-[var(--dark-green)]">Fasilitas & Program</h2></div>
+    <!-- Box Keunggulan Sekolah -->
+    <div class="bg-gradient-to-br from-[var(--mint)] to-emerald-100/60 rounded-3xl border border-emerald-200/80 p-6 sm:p-8 shadow-sm card-hover" data-aos="fade-left">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-white text-emerald-700 flex items-center justify-center shadow-md">
+          <i data-lucide="building-2" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider text-emerald-800">Keunggulan Sekolah</p>
+          <h2 class="text-2xl font-extrabold text-[var(--dark-green)]">Fasilitas & Program</h2>
+        </div>
       </div>
-      <ol class="grid sm:grid-cols-2 gap-x-5 gap-y-2 text-xs text-gray-700 list-decimal list-inside">
-        <li>Kelas kewirausahaan Kasoka Cafe & Resto</li><li>Kelas kewirausahaan Bakso Rudi</li>
-        <li>Kelas kewirausahaan Relasi Jaya</li><li>Kelas industri AHM UMS</li>
-        <li>Kelas industri The Amrani Syariah Hotel</li><li>Kelas Magang Industri</li>
-        <li>Kelas Aman, Nyaman & Ber-CCTV</li><li>Beragam ekstrakurikuler</li>
-        <li>Tenaga pengajar profesional</li><li>Bursa Kerja Khusus (BKK)</li>
-        <li>Uji Kompetensi (LSP-P1)</li><li>Teaching Factory</li>
-        <li>Lulusan siap kerja dalam dan luar negeri maupun menjadi pengusaha</li>
+      <ol class="grid sm:grid-cols-2 gap-x-6 gap-y-2.5 text-xs text-gray-700 font-semibold list-decimal list-inside leading-relaxed">
+        <li>Kelas kewirausahaan Kasoka Cafe & Resto</li>
+        <li>Kelas kewirausahaan Bakso Rudi</li>
+        <li>Kelas kewirausahaan Relasi Jaya</li>
+        <li>Kelas industri AHM UMS</li>
+        <li>Kelas industri The Amrani Syariah Hotel</li>
+        <li>Kelas Magang Industri</li>
+        <li>Kelas Aman, Nyaman & Ber-CCTV</li>
+        <li>Beragam ekstrakurikuler</li>
+        <li>Tenaga pengajar profesional</li>
+        <li>Bursa Kerja Khusus (BKK)</li>
+        <li>Uji Kompetensi (LSP-P1)</li>
+        <li>Teaching Factory</li>
+        <li class="sm:col-span-2">Lulusan siap kerja dalam dan luar negeri maupun menjadi pengusaha</li>
       </ol>
     </div>
+
   </div>
 </section>
 
 <!-- PROGRAM KEAHLIAN PREVIEW -->
-<section class="py-16 bg-[var(--mint)]">
+<section class="py-20 bg-gradient-to-b from-[var(--mint)] to-emerald-50/30">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-    <span class="px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider">Program Keahlian</span>
-    <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--dark-green)] mt-3">Pilih Jurusan Masa Depanmu</h2>
-    <p class="text-gray-600 max-w-xl mx-auto mt-2 text-sm sm:text-base">Kurikulum selaras industri yang membekali siswa dengan keterampilan nyata.</p>
+    <div data-aos="fade-up">
+      <span class="px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider">Program Keahlian</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--dark-green)] mt-3">Pilih Jurusan Masa Depanmu</h2>
+      <p class="text-gray-600 max-w-xl mx-auto mt-2 text-sm sm:text-base">Kurikulum selaras industri yang membekali siswa dengan keterampilan nyata.</p>
+    </div>
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 text-left">
-      <a href="jurusan.html" class="card-hover bg-white p-6 rounded-2xl border border-emerald-100 flex flex-col justify-between">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-12 text-left">
+      
+      <!-- TKJ -->
+      <div class="group bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent-green)] hover:shadow-xl" data-aos="zoom-in" data-aos-delay="100">
         <div>
-          <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mb-4">🏨</div>
-          <h3 class="font-bold text-lg text-[var(--dark-green)]">Perhotelan</h3>
-          <p class="text-xs text-gray-500 mt-2 leading-relaxed">Manajemen operasional hotel, front office, housekeeping, & hospitality standar internasional.</p>
+          <div class="relative h-44 overflow-hidden">
+            <img src="pct_tkj.jpg" alt="TKJ" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='https://via.placeholder.com/400x300?text=TKJ'">
+            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-base shadow-md">💻</div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-lg text-[var(--dark-green)]">TKJ (Teknik Komputer)</h3>
+            <p class="text-xs text-gray-500 mt-2 leading-relaxed">Administrasi jaringan, Mikrotik, Cisco, Cybersecurity, & Cloud Computing.</p>
+          </div>
         </div>
-        <span class="inline-flex items-center gap-1 text-sm font-bold text-[var(--accent-green)] mt-6">Lihat Detail <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
-      </a>
+        <div class="p-5 pt-0">
+          <a href="jurusan.html" class="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--accent-green)] group-hover:translate-x-1 transition duration-200">
+            Lihat Detail Jurusan <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
 
-      <a href="jurusan.html" class="card-hover bg-white p-6 rounded-2xl border border-emerald-100 flex flex-col justify-between">
+      <!-- Perhotelan -->
+      <div class="group bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent-green)] hover:shadow-xl" data-aos="zoom-in" data-aos-delay="200">
         <div>
-          <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl mb-4">🍳</div>
-          <h3 class="font-bold text-lg text-[var(--dark-green)]">Kuliner / Jasa Boga</h3>
-          <p class="text-xs text-gray-500 mt-2 leading-relaxed">Seni memasak profesional, tata hidang, pastry, bakery, dan manajemen usaha kuliner.</p>
+          <div class="relative h-44 overflow-hidden">
+            <img src="pct_perhotelan.png" alt="Perhotelan" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='https://via.placeholder.com/400x300?text=Perhotelan'">
+            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-base shadow-md">🏨</div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-lg text-[var(--dark-green)]">Perhotelan</h3>
+            <p class="text-xs text-gray-500 mt-2 leading-relaxed">Manajemen hotel, Front Office, Housekeeping, & Service Hospitality.</p>
+          </div>
         </div>
-        <span class="inline-flex items-center gap-1 text-sm font-bold text-[var(--accent-green)] mt-6">Lihat Detail <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
-      </a>
+        <div class="p-5 pt-0">
+          <a href="jurusan.html" class="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--accent-green)] group-hover:translate-x-1 transition duration-200">
+            Lihat Detail Jurusan <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
 
-      <a href="jurusan.html" class="card-hover bg-white p-6 rounded-2xl border border-emerald-100 flex flex-col justify-between">
+      <!-- Kuliner -->
+      <div class="group bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent-green)] hover:shadow-xl" data-aos="zoom-in" data-aos-delay="300">
         <div>
-          <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center text-2xl mb-4">💻</div>
-          <h3 class="font-bold text-lg text-[var(--dark-green)]">TKJ (Teknik Komputer)</h3>
-          <p class="text-xs text-gray-500 mt-2 leading-relaxed">Infrastruktur jaringan, administrasi server, Mikrotik, Cisco, serta keamanan siber.</p>
+          <div class="relative h-44 overflow-hidden">
+            <img src="pct_jasaboga.jpg" alt="Kuliner" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='https://via.placeholder.com/400x300?text=Kuliner'">
+            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-base shadow-md">🍳</div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-lg text-[var(--dark-green)]">Kuliner / Jasa Boga</h3>
+            <p class="text-xs text-gray-500 mt-2 leading-relaxed">Seni memasak profesional, Pastry, Tata Hidang, & Bisnis Kuliner.</p>
+          </div>
         </div>
-        <span class="inline-flex items-center gap-1 text-sm font-bold text-[var(--accent-green)] mt-6">Lihat Detail <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
-      </a>
+        <div class="p-5 pt-0">
+          <a href="jurusan.html" class="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--accent-green)] group-hover:translate-x-1 transition duration-200">
+            Lihat Detail Jurusan <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
 
-      <a href="jurusan.html" class="card-hover bg-white p-6 rounded-2xl border border-emerald-100 flex flex-col justify-between">
+      <!-- TSM -->
+      <div class="group bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent-green)] hover:shadow-xl" data-aos="zoom-in" data-aos-delay="400">
         <div>
-          <div class="w-12 h-12 rounded-xl bg-red-100 text-red-800 flex items-center justify-center text-2xl mb-4">🏍️</div>
-          <h3 class="font-bold text-lg text-[var(--dark-green)]">Teknik Sepeda Motor</h3>
-          <p class="text-xs text-gray-500 mt-2 leading-relaxed">Perawatan & perbaikan mesin sepeda motor, sistem injeksi EFI, serta kewirausahaan bengkel.</p>
+          <div class="relative h-44 overflow-hidden">
+            <img src="pct_tsm.jpg" alt="TSM" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='https://via.placeholder.com/400x300?text=TSM'">
+            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-base shadow-md">🏍️</div>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-lg text-[var(--dark-green)]">Teknik Sepeda Motor</h3>
+            <p class="text-xs text-gray-500 mt-2 leading-relaxed">Perawatan mesin sepeda motor, sistem injeksi EFI, & manajemen bengkel.</p>
+          </div>
         </div>
-        <span class="inline-flex items-center gap-1 text-sm font-bold text-[var(--accent-green)] mt-6">Lihat Detail <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
-      </a>
+        <div class="p-5 pt-0">
+          <a href="jurusan.html" class="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--accent-green)] group-hover:translate-x-1 transition duration-200">
+            Lihat Detail Jurusan <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
 <!-- TAHAPAN PENDAFTARAN -->
-<section class="py-16 bg-white">
+<section class="py-20 bg-white">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
-    <h2 class="text-3xl font-extrabold text-[var(--dark-green)]">Alur Pendaftaran SPMB 📅</h2>
-    <p class="text-gray-500 text-sm mt-2">Proses pendaftaran cepat, transparan, dan dapat diakses secara online.</p>
+    <div data-aos="fade-up">
+      <h2 class="text-3xl font-extrabold text-[var(--dark-green)]">Alur Pendaftaran SPMB 📅</h2>
+      <p class="text-gray-500 text-sm mt-2">Proses pendaftaran cepat, transparan, dan dapat diakses secara online.</p>
+    </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mt-12 relative">
-      <div class="p-6 rounded-xl bg-gray-50 border border-gray-100 text-center relative z-10">
-        <div class="w-12 h-12 mx-auto rounded-full bg-[var(--accent-green)] text-white font-bold text-lg flex items-center justify-center mb-3">1</div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12 relative">
+      <div class="p-6 rounded-2xl bg-emerald-50/40 border border-emerald-100 text-center relative z-10 card-hover" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-[var(--accent-green)] text-white font-bold text-lg flex items-center justify-center mb-3 shadow-md">1</div>
         <h4 class="font-bold text-sm text-[var(--dark-green)]">Isi Formulir</h4>
         <p class="text-xs text-gray-500 mt-1">Daftar akun & lengkapi data diri secara online.</p>
       </div>
 
-      <div class="p-6 rounded-xl bg-gray-50 border border-gray-100 text-center relative z-10">
-        <div class="w-12 h-12 mx-auto rounded-full bg-[var(--accent-green)] text-white font-bold text-lg flex items-center justify-center mb-3">2</div>
+      <div class="p-6 rounded-2xl bg-emerald-50/40 border border-emerald-100 text-center relative z-10 card-hover" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-[var(--accent-green)] text-white font-bold text-lg flex items-center justify-center mb-3 shadow-md">2</div>
         <h4 class="font-bold text-sm text-[var(--dark-green)]">Upload Berkas</h4>
         <p class="text-xs text-gray-500 mt-1">Unggah KK, Ijazah/SKL, & pas foto terbaru.</p>
       </div>
 
-      <div class="p-6 rounded-xl bg-gray-50 border border-gray-100 text-center relative z-10">
-        <div class="w-12 h-12 mx-auto rounded-full bg-[var(--accent-green)] text-white font-bold text-lg flex items-center justify-center mb-3">3</div>
+      <div class="p-6 rounded-2xl bg-emerald-50/40 border border-emerald-100 text-center relative z-10 card-hover" data-aos="fade-up" data-aos-delay="300">
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-[var(--accent-green)] text-white font-bold text-lg flex items-center justify-center mb-3 shadow-md">3</div>
         <h4 class="font-bold text-sm text-[var(--dark-green)]">Tes & Seleksi</h4>
         <p class="text-xs text-gray-500 mt-1">Ikuti tes pemetaan minat & wawancara.</p>
       </div>
 
-      <div class="p-6 rounded-xl bg-gray-50 border border-gray-100 text-center relative z-10">
-        <div class="w-12 h-12 mx-auto rounded-full bg-[var(--yellow)] text-[var(--dark-green)] font-bold text-lg flex items-center justify-center mb-3">4</div>
+      <div class="p-6 rounded-2xl bg-emerald-50/40 border border-emerald-100 text-center relative z-10 card-hover" data-aos="fade-up" data-aos-delay="400">
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-[var(--yellow)] text-[var(--dark-green)] font-bold text-lg flex items-center justify-center mb-3 shadow-md">4</div>
         <h4 class="font-bold text-sm text-[var(--dark-green)]">Pengumuman</h4>
         <p class="text-xs text-gray-500 mt-1">Cek hasil seleksi & daftar ulang.</p>
       </div>
@@ -334,44 +466,71 @@
   </div>
 </section>
 
+<!-- FLOATING WHATSAPP BUTTON (POJOK KANAN BAWAH) -->
+<a href="https://wa.me/6282230660060?text=Halo%20Admin%20SMK%20Kasatrian,%20saya%20ingin%20bertanya%20mengenai%20pendaftaran%20SPMB" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-3.5 sm:p-4 rounded-full shadow-2xl flex items-center gap-3 transition-all duration-300 hover:scale-110 group animate-bounce">
+  <i data-lucide="message-circle" class="w-6 h-6 fill-current"></i>
+  <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-500 ease-in-out text-xs sm:text-sm font-bold">Chat Whatsapp</span>
+</a>
+
 <!-- FOOTER -->
-<footer class="bg-[var(--dark-green)] text-white pt-12 pb-6 border-t border-emerald-900">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-3 gap-8">
-    <div class="space-y-3">
+<footer class="bg-[var(--dark-green)] text-white pt-14 pb-8 border-t border-emerald-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-3 gap-10">
+    <!-- Brand Info -->
+    <div class="space-y-4">
       <div class="flex items-center gap-3">
-        <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-10 h-10 object-contain">
+        <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-11 h-11 object-contain">
         <div class="nama-sekolah">
-          <p class="text-base text-white">SMK KASATRIAN</p>
+          <p class="text-lg text-white">SMK KASATRIAN</p>
           <p class="text-xs text-white/80 -mt-1">SOLO SUKOHARJO</p>
         </div>
       </div>
-      <p class="text-xs text-emerald-100/70 leading-relaxed">Menciptakan lulusan berkarakter, berkompeten, dan siap bersaing di era industri global.</p>
+      <p class="text-xs text-emerald-100/70 leading-relaxed">
+        Menciptakan lulusan berkarakter, berkompeten, dan siap bersaing di era industri global.
+      </p>
     </div>
 
+    <!-- Navigasi Cepat -->
     <div>
-      <h4 class="font-bold text-sm text-emerald-300 mb-3 uppercase tracking-wider">Navigasi Cepat</h4>
-      <ul class="space-y-2 text-xs text-emerald-100/80">
-        <li><a href="index.html" class="hover:text-white transition">Beranda</a></li>
-        <li><a href="jurusan.html" class="hover:text-white transition">Jurusan & Kurikulum</a></li>
-        <li><a href="persyaratan.html" class="hover:text-white transition">Syarat Pendaftaran</a></li>
-        <li><a href="faq.html" class="hover:text-white transition">Pusat Bantuan (FAQ)</a></li>
+      <h4 class="font-bold text-sm text-emerald-300 mb-4 uppercase tracking-wider">Navigasi Cepat</h4>
+      <ul class="space-y-2.5 text-xs text-emerald-100/80 font-medium">
+        <li><a href="index.html" class="hover:text-white hover:underline transition">Beranda</a></li>
+        <li><a href="jurusan.html" class="hover:text-white hover:underline transition">Jurusan & Kurikulum</a></li>
+        <li><a href="persyaratan.html" class="hover:text-white hover:underline transition">Syarat Pendaftaran</a></li>
+        <li><a href="faq.html" class="hover:text-white hover:underline transition">Pusat Bantuan (FAQ)</a></li>
       </ul>
     </div>
 
+    <!-- Kontak Sekolah dengan Logo WhatsApp Direct Link -->
     <div>
-      <h4 class="font-bold text-sm text-emerald-300 mb-3 uppercase tracking-wider">Kontak Sekolah</h4>
-      <p class="text-xs text-emerald-100/80 leading-relaxed">Jl. Mendungan No.3, Pabelan, Kartasura, Sukoharjo, Jawa Tengah</p>
-      <p class="text-xs text-emerald-100/80 mt-2">Informasi pendaftaran: 082230660060</p>
+      <h4 class="font-bold text-sm text-emerald-300 mb-4 uppercase tracking-wider">Kontak Sekolah</h4>
+      <p class="text-xs text-emerald-100/80 leading-relaxed flex items-start gap-2">
+        <i data-lucide="map-pin" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+        Jl. Mendungan No.3, Pabelan, Kartasura, Sukoharjo, Jawa Tengah
+      </p>
+      
+      <div class="mt-4 pt-3 border-t border-emerald-800/80">
+        <p class="text-xs text-emerald-100/80 mb-2">Informasi pendaftaran:</p>
+        <a href="https://wa.me/6282230660060?text=Halo%20Admin%20SMK%20Kasatrian,%20saya%20ingin%20bertanya%20mengenai%20pendaftaran%20SPMB" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-emerald-800/80 hover:bg-emerald-700 text-white text-xs font-semibold border border-emerald-700 transition duration-300 shadow-md hover:shadow-lg">
+          <i data-lucide="message-circle" class="w-4 h-4 text-green-400 fill-current"></i>
+          <span>082230660060</span>
+        </a>
+      </div>
     </div>
   </div>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-8 pt-6 border-t border-emerald-900/60 text-center text-xs text-emerald-200/60">
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-12 pt-6 border-t border-emerald-900/80 text-center text-xs text-emerald-200/60 font-medium">
     © 2027 SMK Kasatrian Solo Sukoharjo. All Rights Reserved.
   </div>
 </footer>
 
-<script src="app.js"></script>
 <script>
+  // Inisialisasi Lucide Icons & AOS Animation
   lucide.createIcons();
+  AOS.init({
+    duration: 800,
+    once: true,
+    easing: 'ease-out-cubic'
+  });
   
   // Mobile Menu Toggle
   const btn = document.getElementById('mobile-menu-btn');
@@ -380,30 +539,16 @@
     menu.classList.toggle('hidden');
   });
 
-  // Dynamic Session Check & Stats Engine
+  // Fetch Total Pendaftar (API Backend)
   window.addEventListener('DOMContentLoaded', async () => {
-    const activeSession = JSON.parse(localStorage.getItem('smk_active_session'));
-    const response = await fetch('../api/list_siswa.php');
-    const result = await response.json();
-    document.getElementById('stat-pendaftar-count').innerText = result.success ? result.pendaftar.length : '0';
-
-    if (activeSession) {
-      const isAdmin = activeSession.role === 'admin';
-      const targetPage = isAdmin ? 'admin.html' : 'siswa.html';
-      const name = activeSession.nama;
-
-      const actionsDesktop = document.getElementById('nav-actions-desktop');
-      const actionsMobile = document.getElementById('nav-actions-mobile');
-
-      const userBtnHTML = `
-        <a href="${targetPage}" class="px-5 py-2 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-sm hover:bg-emerald-200 transition flex items-center gap-2">
-          <i data-lucide="${isAdmin ? 'shield' : 'user'}" class="w-4 h-4"></i> ${name}
-        </a>
-      `;
-
-      actionsDesktop.innerHTML = userBtnHTML;
-      actionsMobile.innerHTML = userBtnHTML;
-      lucide.createIcons();
+    try {
+      const response = await fetch('../api/list_siswa.php');
+      const result = await response.json();
+      if (result && result.success) {
+        document.getElementById('stat-pendaftar-count').innerText = result.pendaftar.length;
+      }
+    } catch (e) {
+      console.log("Statistik pendaftar siap.");
     }
   });
 </script>

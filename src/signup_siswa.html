@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pendaftaran Akun Siswa Baru | SPMB SMK Kasatrian</title>
+<title>Pendaftaran Akun Siswa Baru | SPMB SMK Kasatrian Solo</title>
 <link rel="icon" type="image/png" href="Logo_SMK.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
@@ -13,60 +13,151 @@
   *{font-family:'Poppins',sans-serif;}
   .nama-sekolah, .nama-sekolah *{font-family:'Kavoon',cursive !important;}
   :root{ --dark-green:#1B4332; --mint:#D8F5E8; --accent-green:#22C55E; }
+  body{
+    font-family:'Poppins',sans-serif;
+    color:var(--dark-green);
+    background: radial-gradient(circle at top left, #e8f8f0 0%, #fafcfb 50%, #d8f5e8 100%);
+  }
 </style>
 </head>
-<body class="min-h-screen bg-[var(--mint)] flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-4 sm:p-8 relative overflow-x-hidden">
 
-<div class="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 border border-emerald-100 space-y-6">
-  <div class="text-center space-y-2">
-    <div class="w-12 h-12 mx-auto rounded-full bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center font-bold text-xl">🎓</div>
-    <h1 class="font-bold text-2xl text-[var(--dark-green)]">Buat Akun Siswa Baru</h1>
-    <p class="text-xs text-gray-500">Daftarkan diri Anda untuk mengikuti SPMB 2027/2028</p>
+<!-- Ambient Mesh Gradient / Floating Glows -->
+<div class="absolute -top-20 -left-20 w-96 h-96 bg-emerald-300/30 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+<div class="absolute -bottom-20 -right-20 w-96 h-96 bg-teal-300/30 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+
+<div class="w-full max-w-4xl bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl shadow-emerald-950/10 border border-white/60 overflow-hidden flex flex-col md:flex-row relative z-10 transition-all duration-300">
+
+  <!-- PANEL KIRI -->
+  <div class="w-full md:w-5/12 bg-gradient-to-br from-emerald-700 via-emerald-800 to-teal-900 p-8 sm:p-10 flex flex-col text-white justify-between relative overflow-hidden">
+    <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+    <div class="absolute -left-12 -top-12 w-40 h-40 bg-emerald-400/20 rounded-full blur-xl pointer-events-none"></div>
+
+    <!-- Header Logo & Nama Sekolah -->
+    <div class="flex items-center gap-3 relative z-10">
+      <div class="w-11 h-11 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-lg">
+        <i data-lucide="graduation-cap" class="w-6 h-6 text-emerald-300"></i>
+      </div>
+      <p class="nama-sekolah text-base leading-tight">SMK KASATRIAN<br><span class="text-xs opacity-90 tracking-wider">SOLO SUKOHARJO</span></p>
+    </div>
+
+    <!-- Kartu Visual Glassmorphism Persona Pendaftaran -->
+    <div class="py-8 relative z-10 my-auto flex justify-center">
+      <div class="relative w-full max-w-[260px] bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-5 shadow-2xl space-y-4 hover:scale-105 transition-transform duration-300">
+
+        <!-- Status Floating Badge -->
+        <div class="absolute -top-3 -right-3 bg-emerald-400 text-emerald-950 text-[10px] font-extrabold px-3 py-1 rounded-full shadow-lg flex items-center gap-1 border border-white/40">
+          <i data-lucide="sparkles" class="w-3 h-3"></i> SPMB 2027/2028
+        </div>
+
+        <div class="flex items-center gap-3.5">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-400 to-teal-300 text-emerald-950 flex items-center justify-center font-bold shadow-md">
+            <i data-lucide="user-plus" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-sm text-white">Registrasi Siswa</h4>
+            <p class="text-[11px] text-emerald-200">Langkah Awal Suksesmu</p>
+          </div>
+        </div>
+
+        <div class="space-y-2 pt-1">
+          <div class="flex justify-between items-center text-[10px] text-emerald-100/80">
+            <span>Proses Registrasi</span>
+            <span class="font-bold text-emerald-300">Cepat & Mudah</span>
+          </div>
+          <div class="w-full bg-black/20 h-2 rounded-full overflow-hidden p-0.5 border border-white/10">
+            <div class="bg-gradient-to-r from-emerald-400 to-teal-300 h-full rounded-full w-3/4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Description Panel Kiri -->
+    <div class="relative z-10 space-y-2">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/20 backdrop-blur-md rounded-full text-[10px] font-semibold tracking-wider uppercase border border-emerald-300/20 text-emerald-200">
+        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> SPMB Online Portal
+      </div>
+      <h2 class="font-bold text-2xl tracking-tight leading-snug">Bergabung Bersama Kami</h2>
+      <p class="text-xs text-emerald-100/80 leading-relaxed">Buat akun pendaftaranmu sekarang untuk memilih jurusan impian di SMK Kasatrian Solo.</p>
+    </div>
   </div>
 
-  <form id="form-signup-siswa" class="space-y-4">
+  <!-- PANEL KANAN (FORM SIGNUP) -->
+  <div class="w-full md:w-7/12 p-8 sm:p-10 flex flex-col justify-between space-y-6 bg-white/90">
     <div>
-      <label class="block text-xs font-bold text-gray-700 mb-1">Nama Lengkap Siswa</label>
-      <input type="text" id="siswa-nama" required placeholder="Masukkan nama lengkap" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-[var(--accent-green)] focus:outline-none">
+      <a href="login_siswa.html" class="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-[var(--dark-green)] font-semibold transition-colors group">
+        <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i> Kembalikan ke Login
+      </a>
+      <div class="flex items-center gap-2 mt-3">
+        <h1 class="font-extrabold text-2xl sm:text-3xl text-[var(--dark-green)]">Buat Akun Siswa Baru</h1>
+        <i data-lucide="user-plus" class="w-6 h-6 text-[var(--accent-green)]"></i>
+      </div>
+      <p class="text-xs text-gray-500 mt-1">Daftarkan diri Anda untuk mengikuti SPMB 2027/2028</p>
     </div>
 
-    <div>
-      <label class="block text-xs font-bold text-gray-700 mb-1">Asal Sekolah (SMP/MTs)</label>
-      <input type="text" id="siswa-sekolah" required placeholder="Contoh: SMP N 1 Surakarta" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-[var(--accent-green)] focus:outline-none">
+    <form id="form-signup-siswa" class="space-y-3.5">
+      <div>
+        <label class="block text-xs font-bold text-gray-700 mb-1">Nama Lengkap Siswa</label>
+        <div class="relative group">
+          <i data-lucide="user" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[var(--accent-green)] transition-colors"></i>
+          <input type="text" id="siswa-nama" required placeholder="Masukkan nama lengkap" class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-[var(--accent-green)]/20 focus:border-[var(--accent-green)] focus:outline-none transition bg-slate-50/50 focus:bg-white">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-gray-700 mb-1">Asal Sekolah (SMP/MTs)</label>
+        <div class="relative group">
+          <i data-lucide="building-2" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[var(--accent-green)] transition-colors"></i>
+          <input type="text" id="siswa-sekolah" required placeholder="Contoh: SMP N 1 Surakarta" class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-[var(--accent-green)]/20 focus:border-[var(--accent-green)] focus:outline-none transition bg-slate-50/50 focus:bg-white">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-gray-700 mb-1">Pilihan Jurusan</label>
+        <div class="relative group">
+          <i data-lucide="book-open" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[var(--accent-green)] transition-colors"></i>
+          <select id="siswa-jurusan" required class="w-full pl-10 pr-8 py-2.5 rounded-xl border border-gray-200 text-xs font-semibold focus:ring-2 focus:ring-[var(--accent-green)]/20 focus:border-[var(--accent-green)] focus:outline-none transition bg-slate-50/50 focus:bg-white appearance-none">
+            <option value="TKJ (Teknik Komputer)">TKJ (Teknik Komputer & Jaringan)</option>
+            <option value="Perhotelan">Perhotelan</option>
+            <option value="Kuliner / Jasa Boga">Kuliner / Jasa Boga</option>
+            <option value="Teknik Sepeda Motor">TSM (Teknik Sepeda Motor)</option>
+          </select>
+          <i data-lucide="chevron-down" class="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-gray-700 mb-1">Email</label>
+        <div class="relative group">
+          <i data-lucide="mail" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[var(--accent-green)] transition-colors"></i>
+          <input type="email" id="siswa-email" required placeholder="nama@gmail.com" class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-[var(--accent-green)]/20 focus:border-[var(--accent-green)] focus:outline-none transition bg-slate-50/50 focus:bg-white">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-gray-700 mb-1">Password</label>
+        <div class="relative group">
+          <i data-lucide="lock" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[var(--accent-green)] transition-colors"></i>
+          <input type="password" id="siswa-password" required placeholder="••••••••" class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-[var(--accent-green)]/20 focus:border-[var(--accent-green)] focus:outline-none transition bg-slate-50/50 focus:bg-white">
+        </div>
+      </div>
+
+      <button type="submit" class="w-full bg-gradient-to-r from-[var(--accent-green)] to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold py-3.5 rounded-xl text-xs shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 group mt-2">
+        <span>Daftar SPMB Sekarang</span>
+        <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+      </button>
+    </form>
+
+    <div class="border-t border-gray-100 pt-4 text-center">
+      <p class="text-xs text-gray-500">Sudah punya akun? <a href="login_siswa.html" class="text-[var(--accent-green)] font-bold hover:underline inline-flex items-center gap-1">Masuk Ke Akun <i data-lucide="chevron-right" class="w-3 h-3"></i></a></p>
     </div>
-
-    <div>
-      <label class="block text-xs font-bold text-gray-700 mb-1">Pilihan Jurusan</label>
-      <select id="siswa-jurusan" required class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs font-semibold focus:ring-2 focus:ring-[var(--accent-green)] focus:outline-none">
-        <option value="TKJ (Teknik Komputer)">TKJ (Teknik Komputer & Jaringan)</option>
-        <option value="Perhotelan">Perhotelan</option>
-        <option value="Kuliner / Jasa Boga">Kuliner / Jasa Boga</option>
-        <option value="Teknik Sepeda Motor">TSM (Teknik Sepeda Motor)</option>
-      </select>
-    </div>
-
-    <div>
-      <label class="block text-xs font-bold text-gray-700 mb-1">Email</label>
-      <input type="email" id="siswa-email" required placeholder="nama@gmail.com" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-[var(--accent-green)] focus:outline-none">
-    </div>
-
-    <div>
-      <label class="block text-xs font-bold text-gray-700 mb-1">Password</label>
-      <input type="password" id="siswa-password" required placeholder="••••••••" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-[var(--accent-green)] focus:outline-none">
-    </div>
-
-    <button type="submit" class="w-full py-3 bg-[var(--accent-green)] hover:bg-emerald-600 text-white font-bold text-xs rounded-xl shadow-lg transition">
-      Daftar SPMB Sekarang
-    </button>
-  </form>
-
-  <p class="text-center text-xs text-gray-500">
-    Sudah punya akun? <a href="login_siswa.html" class="text-[var(--accent-green)] font-bold hover:underline">Masuk</a>
-  </p>
+  </div>
 </div>
 
 <script src="app.js"></script>
 <script>
+  lucide.createIcons();
+
   document.getElementById('form-signup-siswa').addEventListener('submit', async (e) => {
     e.preventDefault();
     const response = await fetch('../api/register_siswa.php', {

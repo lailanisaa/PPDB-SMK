@@ -16,11 +16,11 @@
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  
+
   <style>
     * { font-family: 'Poppins', sans-serif; }
     .nama-sekolah, .nama-sekolah * { font-family: 'Kavoon', cursive !important; }
-    
+
     :root {
       --dark-green: #1B4332;
       --mint: #D8F5E8;
@@ -127,7 +127,7 @@
     <!-- Left Hero Text Content -->
     <div class="space-y-6 text-center lg:text-left" data-aos="fade-right" data-aos-duration="1000">
       <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100/90 text-[var(--dark-green)] font-bold text-xs sm:text-sm shadow-sm border border-emerald-200">
-        <i data-lucide="sparkles" class="w-4 h-4 text-emerald-600 animate-spin" style="animation-duration: 8s;"></i> 
+        <i data-lucide="sparkles" class="w-4 h-4 text-emerald-600 animate-spin" style="animation-duration: 8s;"></i>
         SPMB Tahun Ajaran 2027/2028 Resmi Dibuka!
       </span>
 
@@ -284,7 +284,7 @@
 <!-- PROGRAM GRATIS & FASILITAS -->
 <section class="py-20 bg-white border-b border-emerald-100" id="info-pendaftaran">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8">
-    
+
     <!-- Box Program Gratis -->
     <div class="bg-gradient-to-br from-emerald-50 to-teal-50/50 rounded-3xl border border-emerald-200/80 p-6 sm:p-8 shadow-sm card-hover" data-aos="fade-right">
       <div class="flex items-center gap-4 mb-6">
@@ -349,7 +349,7 @@
     </div>
 
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-12 text-left">
-      
+
       <!-- TKJ -->
       <div class="group bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:border-[var(--accent-green)] hover:shadow-xl" data-aos="zoom-in" data-aos-delay="100">
         <div>
@@ -431,7 +431,7 @@
 </section>
 
 <!-- TAHAPAN PENDAFTARAN -->
-<section class="py-20 bg-white">
+<section class="py-20 bg-white border-b border-emerald-100">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
     <div data-aos="fade-up">
       <h2 class="text-3xl font-extrabold text-[var(--dark-green)]">Alur Pendaftaran SPMB 📅</h2>
@@ -463,6 +463,247 @@
         <p class="text-xs text-gray-500 mt-1">Cek hasil seleksi & daftar ulang.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- SEKSI INFORMASI BIAYA & SELEKSI (SPMB UNS STYLE) -->
+<section class="py-20 bg-gradient-to-b from-emerald-50/50 to-white border-b border-emerald-100" id="informasi-spmb">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+    <!-- Header Seksi -->
+    <div class="text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">
+      <span class="px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider">
+        Portal Informasi SPMB
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--dark-green)] mt-3">
+        Informasi Pendaftaran & Biaya
+      </h2>
+      <p class="text-gray-600 text-sm sm:text-base mt-2">
+        Rincian biaya pendaftaran, jadwal seleksi, dan skema biaya pendidikan transparan di SMK Kasatrian Solo.
+      </p>
+    </div>
+
+    <!-- Switcher Tab Navigation -->
+    <div class="flex justify-center mb-10" data-aos="fade-up" data-aos-delay="100">
+      <div class="inline-flex p-1.5 bg-white rounded-2xl shadow-md border border-emerald-100/80 max-w-full overflow-x-auto gap-1">
+        <button onclick="switchTab('tab-biaya-daftar')" id="btn-tab-biaya-daftar" class="spmb-tab-btn active-tab px-5 py-3 rounded-xl text-xs sm:text-sm font-bold transition duration-200 flex items-center gap-2 whitespace-nowrap bg-[var(--accent-green)] text-white shadow-md">
+          <i data-lucide="credit-card" class="w-4 h-4"></i> <span>Biaya Pendaftaran</span>
+        </button>
+        <button onclick="switchTab('tab-info-seleksi')" id="btn-tab-info-seleksi" class="spmb-tab-btn px-5 py-3 rounded-xl text-xs sm:text-sm font-bold text-gray-600 hover:text-[var(--dark-green)] transition duration-200 flex items-center gap-2 whitespace-nowrap">
+          <i data-lucide="calendar-check" class="w-4 h-4"></i> <span>Informasi Pendaftaran & Seleksi</span>
+        </button>
+        <button onclick="switchTab('tab-biaya-pendidikan')" id="btn-tab-biaya-pendidikan" class="spmb-tab-btn px-5 py-3 rounded-xl text-xs sm:text-sm font-bold text-gray-600 hover:text-[var(--dark-green)] transition duration-200 flex items-center gap-2 whitespace-nowrap">
+          <i data-lucide="wallet" class="w-4 h-4"></i> <span>Biaya Pendidikan</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB 1: BIAYA PENDAFTARAN -->
+    <div id="tab-biaya-daftar" class="spmb-tab-content block transition-all duration-300" data-aos="fade-up">
+      <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+
+        <!-- Card Biaya Formulir -->
+        <div class="bg-white p-6 sm:p-8 rounded-3xl border border-emerald-100 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center font-bold mb-4 shadow-inner">
+              <i data-lucide="receipt" class="w-6 h-6"></i>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">Formulir SPMB</span>
+            <h3 class="text-xl font-bold text-[var(--dark-green)] mt-2">Biaya Pendaftaran Akun</h3>
+            <p class="text-xs text-gray-500 mt-1">Berlaku untuk seluruh pilihan program keahlian / jurusan.</p>
+
+            <div class="my-6 p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100/80">
+              <span class="text-3xl font-extrabold text-[var(--dark-green)]">Rp 150.000</span>
+              <span class="text-xs text-gray-500 font-medium"> / calon siswa</span>
+            </div>
+
+            <ul class="space-y-3 text-xs text-gray-600 font-medium border-t border-gray-100 pt-4">
+              <li class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">✓</span> Akses penuh Portal SPMB Online</li>
+              <li class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">✓</span> Pelaksanaan Tes Pemetaan Minat & Wawancara</li>
+              <li class="flex items-center gap-2.5"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">✓</span> Cetak Kartu Tes & Pengumuman Hasil Seleksi</li>
+            </ul>
+          </div>
+
+          <a href="pilih_peran.html?mode=signup" class="mt-8 w-full py-3.5 bg-[var(--accent-green)] hover:bg-emerald-600 text-white text-center font-bold rounded-xl text-xs shadow-md shadow-emerald-500/20 hover:shadow-lg transition flex items-center justify-center gap-2">
+            <span>Daftar & Bayar Sekarang</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+
+        <!-- Card Metode Pembayaran -->
+        <div class="bg-gradient-to-br from-[var(--dark-green)] via-emerald-900 to-teal-900 p-6 sm:p-8 rounded-3xl text-white flex flex-col justify-between shadow-lg relative overflow-hidden">
+          <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-emerald-300 flex items-center justify-center font-bold mb-4">
+              <i data-lucide="building-2" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Metode Pembayaran Resmi</h3>
+            <p class="text-xs text-emerald-100/80 mt-1">Dapat dilakukan melalui transfer bank atau pembayaran langsung.</p>
+
+            <div class="mt-6 space-y-3.5 text-xs">
+              <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10">
+                <p class="font-bold text-emerald-300 uppercase tracking-wider text-[10px]">Transfer Bank (BRI)</p>
+                <p class="text-base tracking-wider font-mono font-bold text-white mt-1">0123-01-000123-53-0</p>
+                <p class="text-[11px] opacity-80 mt-0.5">a.n. SMK Kasatrian Solo</p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10">
+                <p class="font-bold text-emerald-300 uppercase tracking-wider text-[10px]">Pembayaran Langsung (Tunai / EDC)</p>
+                <p class="text-xs font-medium text-emerald-50 mt-1">Loket SPMB Gedung Utama SMK Kasatrian Solo</p>
+                <p class="text-[10px] opacity-70 mt-0.5">Senin - Sabtu | Pukul 08.00 - 15.00 WIB</p>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-[11px] text-emerald-200/70 mt-6 border-t border-white/10 pt-3">
+            *Simpan resi/bukti pembayaran untuk diunggah pada portal pendaftaran.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 2: INFORMASI PENDAFTARAN & SELEKSI -->
+    <div id="tab-info-seleksi" class="spmb-tab-content hidden transition-all duration-300">
+      <div class="bg-white p-6 sm:p-8 rounded-3xl border border-emerald-100 shadow-sm max-w-5xl mx-auto space-y-8">
+
+        <!-- Header Gelombang -->
+        <div>
+          <h3 class="font-bold text-lg text-[var(--dark-green)] mb-1 flex items-center gap-2">
+            <i data-lucide="calendar" class="w-5 h-5 text-emerald-600"></i> Jadwal Gelombang Pendaftaran TA 2027/2028
+          </h3>
+          <p class="text-xs text-gray-500">Pilih gelombang pendaftaran lebih awal untuk mendapatkan berbagai kemudahan & potongan biaya.</p>
+        </div>
+
+        <div class="grid sm:grid-cols-3 gap-6">
+          <div class="p-5 rounded-2xl bg-emerald-50/60 border border-emerald-100 flex flex-col justify-between">
+            <div>
+              <span class="px-3 py-1 rounded-full bg-emerald-200 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">Gelombang 1</span>
+              <h4 class="font-bold text-base text-[var(--dark-green)] mt-3">Jalur Dini / Inden</h4>
+              <p class="text-xs text-gray-500 mt-1">1 November - 28 Februari</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-emerald-200/60">
+              <span class="text-xs font-semibold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-lg inline-block">🎁 Bebas Biaya Formulir + Cashback Seragam</span>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-white border-2 border-[var(--accent-green)] shadow-md flex flex-col justify-between relative">
+            <span class="absolute -top-3 right-4 bg-[var(--yellow)] text-[var(--dark-green)] font-extrabold text-[9px] px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">Direkomendasikan</span>
+            <div>
+              <span class="px-3 py-1 rounded-full bg-[var(--accent-green)] text-white text-[10px] font-bold uppercase tracking-wider">Gelombang 2</span>
+              <h4 class="font-bold text-base text-[var(--dark-green)] mt-3">Jalur Reguler A</h4>
+              <p class="text-xs text-gray-500 mt-1">1 Maret - 31 Mei</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-emerald-100">
+              <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg inline-block">✨ Potongan SPP Bulan Pertama</span>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-gray-50 border border-gray-200 flex flex-col justify-between opacity-90">
+            <div>
+              <span class="px-3 py-1 rounded-full bg-gray-200 text-gray-700 text-[10px] font-bold uppercase tracking-wider">Gelombang 3</span>
+              <h4 class="font-bold text-base text-[var(--dark-green)] mt-3">Jalur Reguler B</h4>
+              <p class="text-xs text-gray-500 mt-1">1 Juni - Juli (Pagu Terpenuhi)</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-gray-200">
+              <span class="text-xs font-medium text-gray-600 bg-gray-200/60 px-2.5 py-1 rounded-lg inline-block">📌 Kuota Terbatas</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Materi Seleksi -->
+        <div class="border-t border-gray-100 pt-6">
+          <h4 class="font-bold text-sm text-[var(--dark-green)] mb-3 flex items-center gap-2">
+            <i data-lucide="clipboard-check" class="w-4 h-4 text-emerald-600"></i> Tahapan & Tahap Seleksi
+          </h4>
+          <div class="grid sm:grid-cols-2 gap-4 text-xs text-gray-600 font-medium">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 flex items-start gap-3">
+              <span class="w-6 h-6 rounded-lg bg-emerald-100 text-[var(--dark-green)] font-bold flex items-center justify-center shrink-0">1</span>
+              <div>
+                <p class="font-bold text-gray-800">Tes Pemetaan Minat & Bakat</p>
+                <p class="text-[11px] text-gray-500 mt-0.5">Penilaian potensi akademik dasar dan minat jurusan yang dipilih.</p>
+              </div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 flex items-start gap-3">
+              <span class="w-6 h-6 rounded-lg bg-emerald-100 text-[var(--dark-green)] font-bold flex items-center justify-center shrink-0">2</span>
+              <div>
+                <p class="font-bold text-gray-800">Wawancara Calon Siswa & Orang Tua</p>
+                <p class="text-[11px] text-gray-500 mt-0.5">Verifikasi komitmen belajar, wawancara motivasi, dan pendataan kesiapan.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 3: BIAYA PENDIDIKAN -->
+    <div id="tab-biaya-pendidikan" class="spmb-tab-content hidden transition-all duration-300">
+      <div class="bg-white p-6 sm:p-8 rounded-3xl border border-emerald-100 shadow-sm max-w-5xl mx-auto space-y-6">
+
+        <div>
+          <h3 class="font-bold text-lg text-[var(--dark-green)] flex items-center gap-2">
+            <i data-lucide="badge-dollar-sign" class="w-5 h-5 text-emerald-600"></i> Tabel Estimasi Biaya Pendidikan
+          </h3>
+          <p class="text-xs text-gray-500 mt-1">Rincian biaya pendidikan transparan untuk tahun ajaran baru per jurusan.</p>
+        </div>
+
+        <!-- Table Rincian Biaya -->
+        <div class="overflow-x-auto rounded-2xl border border-emerald-100">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-emerald-50/80 text-[var(--dark-green)] font-bold uppercase text-[11px] tracking-wider border-b border-emerald-100">
+              <tr>
+                <th class="py-3.5 px-4">Program Keahlian (Jurusan)</th>
+                <th class="py-3.5 px-4">SPP / Bulan</th>
+                <th class="py-3.5 px-4">Infaq Pengembangan</th>
+                <th class="py-3.5 px-4">Seragam & Praktik</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 text-gray-700 font-medium">
+              <tr class="hover:bg-emerald-50/30 transition">
+                <td class="py-3.5 px-4 font-bold text-[var(--dark-green)]">TKJ (Teknik Komputer & Jaringan)</td>
+                <td class="py-3.5 px-4">Rp 250.000</td>
+                <td class="py-3.5 px-4 text-emerald-700 font-semibold">Dapat Diangsur</td>
+                <td class="py-3.5 px-4">Lengkap (5 Stel)</td>
+              </tr>
+              <tr class="hover:bg-emerald-50/30 transition">
+                <td class="py-3.5 px-4 font-bold text-[var(--dark-green)]">Perhotelan</td>
+                <td class="py-3.5 px-4">Rp 250.000</td>
+                <td class="py-3.5 px-4 text-emerald-700 font-semibold">Dapat Diangsur</td>
+                <td class="py-3.5 px-4">Lengkap (5 Stel)</td>
+              </tr>
+              <tr class="hover:bg-emerald-50/30 transition">
+                <td class="py-3.5 px-4 font-bold text-[var(--dark-green)]">Kuliner / Jasa Boga</td>
+                <td class="py-3.5 px-4">Rp 250.000</td>
+                <td class="py-3.5 px-4 text-emerald-700 font-semibold">Dapat Diangsur</td>
+                <td class="py-3.5 px-4">Lengkap (5 Stel)</td>
+              </tr>
+              <tr class="hover:bg-emerald-50/30 transition">
+                <td class="py-3.5 px-4 font-bold text-[var(--dark-green)]">TSM (Teknik Sepeda Motor)</td>
+                <td class="py-3.5 px-4">Rp 250.000</td>
+                <td class="py-3.5 px-4 text-emerald-700 font-semibold">Dapat Diangsur</td>
+                <td class="py-3.5 px-4">Lengkap (5 Stel)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Callout Banner Bantuan Pendidikan -->
+        <div class="p-5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-md">
+          <div class="space-y-1">
+            <span class="px-2.5 py-0.5 rounded-full bg-white/20 text-emerald-100 font-bold text-[10px] uppercase">Program Beasiswa SPP</span>
+            <h4 class="font-bold text-sm sm:text-base">Tersedia Bantuan SPP Hingga 100% Bebas Biaya!</h4>
+            <p class="text-xs text-emerald-100/90">Program khusus untuk siswa Yatim Piatu (Gratis 100%), Yatim (50%), Piatu (27%), serta PIP/BSM.</p>
+          </div>
+          <a href="#info-pendaftaran" class="px-5 py-2.5 rounded-xl bg-[var(--yellow)] hover:bg-amber-400 text-[var(--dark-green)] font-bold text-xs shrink-0 transition shadow">
+            Cek Syarat Beasiswa
+          </a>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -507,7 +748,7 @@
         <i data-lucide="map-pin" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
         Jl. Mendungan No.3, Pabelan, Kartasura, Sukoharjo, Jawa Tengah
       </p>
-      
+
       <div class="mt-4 pt-3 border-t border-emerald-800/80">
         <p class="text-xs text-emerald-100/80 mb-2">Informasi pendaftaran:</p>
         <a href="https://wa.me/6282230660060?text=Halo%20Admin%20SMK%20Kasatrian,%20saya%20ingin%20bertanya%20mengenai%20pendaftaran%20SPMB" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-emerald-800/80 hover:bg-emerald-700 text-white text-xs font-semibold border border-emerald-700 transition duration-300 shadow-md hover:shadow-lg">
@@ -531,7 +772,7 @@
     once: true,
     easing: 'ease-out-cubic'
   });
-  
+
   // Mobile Menu Toggle
   const btn = document.getElementById('mobile-menu-btn');
   const menu = document.getElementById('mobile-menu');
@@ -551,6 +792,31 @@
       console.log("Statistik pendaftar siap.");
     }
   });
+
+  // JavaScript Switcher Tab SPMB
+  function switchTab(tabId) {
+    document.querySelectorAll('.spmb-tab-content').forEach(el => {
+      el.classList.add('hidden');
+      el.classList.remove('block');
+    });
+
+    document.querySelectorAll('.spmb-tab-btn').forEach(btn => {
+      btn.classList.remove('bg-[var(--accent-green)]', 'text-white', 'shadow-md');
+      btn.classList.add('text-gray-600');
+    });
+
+    const selectedTab = document.getElementById(tabId);
+    if (selectedTab) {
+      selectedTab.classList.remove('hidden');
+      selectedTab.classList.add('block');
+    }
+
+    const activeBtn = document.getElementById('btn-' + tabId);
+    if (activeBtn) {
+      activeBtn.classList.add('bg-[var(--accent-green)]', 'text-white', 'shadow-md');
+      activeBtn.classList.remove('text-gray-600');
+    }
+  }
 </script>
 </body>
 </html>

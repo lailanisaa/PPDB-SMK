@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Siswa | SPMB SMK Kasatrian Solo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="icon" type="image/png" href="Logo_SMK.png">
+  <link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Poppins', sans-serif; }
+    .nama-sekolah, .nama-sekolah * { font-family: 'Kavoon', cursive !important; }
+    :root {
+      --dark-green: #1B4332;
+      --mint: #D8F5E8;
+      --mint-2: #C8F0DD;
+      --green: #22C55E;
+      --purple: #7C3AED;
+      --yellow: #FFD84D;
+      --red: #EF4444;
+    }
+    body {
+      color: var(--dark-green);
+      background: #FAFCFB;
+    }
+    .nav-item {
+      color: #D1FAE5;
+      transition: all .2s ease;
+      cursor: pointer;
+    }
+    .nav-item:hover {
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .nav-item.active {
+      color: #fff;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .page-section {
+      animation: slideUpFade 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideUpFade {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .step-item {
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .step-item.current {
+      background: var(--mint-2);
+      border-left: 4px solid var(--dark-green);
+    }
+    .step-item .num {
+      background: #E5E7EB;
+      color: #6B7280;
+    }
+    .step-item.current .num, .step-item.done .num {
+      background: var(--green);
+      color: #fff;
+    }
+    .jurusan-card {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    .jurusan-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px -5px rgba(0,0,0,0.1);
+    }
+    .jurusan-card.selected-utama {
+      border-color: var(--green);
+      box-shadow: 0 0 0 2px var(--green), 0 8px 20px -4px rgba(34, 197, 94, 0.3);
+      background: #F0FDF4;
+    }
+    .jurusan-card.selected-cadangan {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 2px var(--purple), 0 8px 20px -4px rgba(124, 58, 237, 0.3);
+      background: #F5F3FF;
+    }
+    .btn-glow:hover {
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+    }
+    ::-webkit-scrollbar { height: 8px; width: 8px; }
+    ::-webkit-scrollbar-thumb { background: #C7D2CC; border-radius: 8px; }
+
+    @media print {
+      body * { visibility: hidden; }
+      #modal-kartu, #modal-kartu * { visibility: visible; }
+      #modal-kartu { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: white; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="min-h-screen relative pb-12">
+
+<!-- TOAST NOTIFICATION CONTAINER -->
+<div id="toast-container" class="fixed top-20 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+<!-- NAVBAR -->
+<header class="sticky top-0 z-40 bg-[var(--dark-green)] shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3 shrink-0">
+      <img src="Logo_SMK.png" alt="Logo SMK" class="w-10 h-10 object-contain drop-shadow" onerror="this.src='https://via.placeholder.com/40'">
+      <p class="nama-sekolah text-white text-xs leading-tight hidden sm:block">SMK KASATRIAN<br>SOLO SUKOHARJO</p>
+    </div>
+
+    <nav class="hidden md:flex items-center gap-1">
+      <button class="nav-item active px-4 py-2 rounded-xl text-sm font-medium" data-page="beranda">Beranda</button>
+      <button class="nav-item px-4 py-2 rounded-xl text-sm font-medium" data-page="pengumuman">Pengumuman</button>
+      <button class="nav-item px-4 py-2 rounded-xl text-sm font-medium" data-page="formulir">Formulir</button>
+      <button class="nav-item px-4 py-2 rounded-xl text-sm font-medium" data-page="berkas">Berkas</button>
+      <button class="nav-item px-4 py-2 rounded-xl text-sm font-medium" data-page="notif">Notif</button>
+      <button class="nav-item px-4 py-2 rounded-xl text-sm font-medium" data-page="profil">Profil</button>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <button id="bell-btn" data-page-link="notif" class="page-nav-btn relative text-white p-2 hover:bg-white/10 rounded-full transition">
+        <i data-lucide="bell" class="w-5 h-5"></i>
+        <span id="bell-badge" class="absolute top-1 right-1 bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center"></span>
+      </button>
+      <button data-page-link="profil" class="page-nav-btn flex items-center gap-2 p-1 hover:bg-white/10 rounded-xl transition text-left">
+        <img id="nav-avatar" src="https://i.pravatar.cc/64?img=47" class="w-8 h-8 rounded-full object-cover border-2 border-emerald-400" alt="Foto profil">
+        <span id="nav-student-name" class="hidden sm:block text-white text-xs font-semibold pr-1">Siswa</span>
+      </button>
+      <button id="btn-logout" class="text-white hover:bg-red-500/20 hover:text-red-300 transition p-2 rounded-full" title="Keluar Ke Landing Page">
+        <i data-lucide="log-out" class="w-5 h-5"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Nav -->
+  <div class="md:hidden flex overflow-x-auto gap-1 px-4 pb-2 border-t border-white/10 pt-2">
+    <button class="nav-item active px-3 py-1.5 rounded-lg text-xs whitespace-nowrap" data-page="beranda">Beranda</button>
+    <button class="nav-item px-3 py-1.5 rounded-lg text-xs whitespace-nowrap" data-page="pengumuman">Pengumuman</button>
+    <button class="nav-item px-3 py-1.5 rounded-lg text-xs whitespace-nowrap" data-page="formulir">Formulir</button>
+    <button class="nav-item px-3 py-1.5 rounded-lg text-xs whitespace-nowrap" data-page="berkas">Berkas</button>
+    <button class="nav-item px-3 py-1.5 rounded-lg text-xs whitespace-nowrap" data-page="notif">Notif</button>
+    <button class="nav-item px-3 py-1.5 rounded-lg text-xs whitespace-nowrap" data-page="profil">Profil</button>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+
+  <!-- ============ BERANDA ============ -->
+  <section data-page="beranda" class="page-section space-y-6">
+    <!-- HERO DASHBOARD BANNER -->
+    <div class="bg-gradient-to-r from-[var(--dark-green)] via-emerald-800 to-teal-900 rounded-3xl p-6 sm:p-8 relative overflow-hidden text-white shadow-xl">
+      <div class="relative z-10 max-w-xl">
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-xs text-emerald-200 border border-white/20 mb-3">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-yellow-300"></i> SPMB Gelombang 1 TA 2026/2027
+        </div>
+        <h1 id="student-greeting" class="font-extrabold text-2xl sm:text-4xl leading-tight">Hai, Calon Siswa Baru! 👋</h1>
+        <p class="text-emerald-100 text-xs sm:text-sm mt-2">Selamat datang di Portal Resmi Pendaftaran Siswa Baru SMK Kasatrian Solo Sukoharjo.</p>
+        
+        <div class="flex flex-wrap gap-2 mt-4">
+          <span class="bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5">
+            <i data-lucide="target" class="w-3.5 h-3.5 text-emerald-300"></i> <span id="hero-major-badge">Pilihan Jurusan</span>
+          </span>
+          <span class="bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5">
+            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i> Terakreditasi A
+          </span>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 mt-6">
+          <button data-page-link="formulir" class="page-nav-btn bg-[var(--yellow)] hover:bg-yellow-400 text-[var(--dark-green)] font-extrabold px-6 py-3 rounded-full text-xs sm:text-sm inline-flex items-center gap-2 transition transform hover:scale-105 shadow-md">
+            Lanjutkan Formulir Pendaftaran <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+          <button data-page-link="pengumuman" class="page-nav-btn bg-white/10 hover:bg-white/20 text-white border border-white/30 font-semibold px-5 py-3 rounded-full text-xs inline-flex items-center gap-2 transition">
+            <i data-lucide="megaphone" class="w-4 h-4 text-amber-300"></i> Pengumuman Admin
+          </button>
+        </div>
+      </div>
+      <!-- FOTO BERANDA DARI LANDING PAGE (pict_2.jpeg) -->
+      <div class="hidden lg:block absolute right-6 top-1/2 -translate-y-1/2 w-80 h-52 rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20 transform rotate-1 transition hover:rotate-0 duration-300">
+        <img src="pict_2.jpeg" class="w-full h-full object-cover object-top" alt="Siswa Berprestasi SMK Kasatrian">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+        <span class="absolute bottom-3 left-3 bg-emerald-600/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-full border border-white/30">
+          🏆 Siswa Berprestasi
+        </span>
+      </div>
+    </div>
+
+    <!-- CARDS INFORMASI STATUS & PEMBAYARAN -->
+<div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-emerald-100 space-y-6" data-aos="fade-up">
+  <div class="flex items-center justify-between flex-wrap gap-3 border-b border-emerald-100 pb-4">
+    <div>
+      <h2 class="font-bold text-lg sm:text-xl text-[var(--dark-green)] flex items-center gap-2">
+        <i data-lucide="wallet" class="w-6 h-6 text-emerald-600"></i> Rincian Skema Biaya & Jalur Pendaftaran SPMB
+      </h2>
+      <p class="text-xs text-gray-500 mt-1">
+        Informasi resmi pembiayaan pendaftaran, seragam, serta kuota pengembangan sekolah TA 2026/2027.
+      </p>
+    </div>
+    <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+      <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Informasi Resmi SPMB
+    </span>
+  </div>
+
+  <!-- GRID JALUR PENDAFTARAN (GELOMBANG 1 SKEMA KUOTA KHUSUS vs REGULER) -->
+  <div class="grid md:grid-cols-2 gap-6">
+    <!-- JALUR 1: NO. 1 - 33 (KUOTA KHUSUS / GRATIS PENGEMBANGAN) -->
+    <div class="relative bg-gradient-to-br from-emerald-900 via-[var(--dark-green)] to-emerald-950 text-white rounded-2xl p-6 shadow-md border-2 border-amber-400 overflow-hidden flex flex-col justify-between">
+      <div class="absolute -right-6 -top-6 w-24 h-24 bg-yellow-400/20 rounded-full blur-xl pointer-events-none"></div>
+      
+      <div>
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <span class="bg-amber-400 text-[var(--dark-green)] text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+            Jalur 1: Kuota Khusus
+          </span>
+          <span class="text-[11px] font-semibold text-emerald-200">Pendaftar No. 1 – 33</span>
+        </div>
+
+        <h3 class="font-extrabold text-xl sm:text-2xl text-white">Biaya Pengembangan</h3>
+        <div class="my-3 flex items-baseline gap-2">
+          <span class="font-black text-3xl sm:text-4xl text-amber-300">GRATIS 100%</span>
+        </div>
+        <p class="text-xs text-emerald-100 font-medium mb-4">
+          Bebas seluruh biaya pengembangan sekolah untuk 33 pendaftar pertama!
+        </p>
+
+        <div class="bg-white/10 backdrop-blur-md rounded-xl p-3.5 border border-white/15 space-y-2 text-xs">
+          <p class="font-bold text-amber-300 flex items-center gap-1.5">
+            <i data-lucide="shirt" class="w-4 h-4"></i> Hanya Perlu Membayar Seragam & Perlengkapan:
+          </p>
+          <ul class="space-y-1.5 text-emerald-50 text-[11px] pl-1">
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i> 1 Kain Batik Sekolah</li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i> Atribut Sekolah Lengkap</li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i> 1 Setel Seragam Olahraga</li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i> Topi dan Dasi</li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i> Jas Almamater</li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i> Wearpack / Baju Cook Sesuai Jurusan</li>
+          </ul>
+        </div>
+      </div>
+
+      <button data-page-link="formulir" class="page-nav-btn mt-6 w-full bg-amber-400 hover:bg-amber-300 text-[var(--dark-green)] font-extrabold py-3 rounded-xl text-xs transition shadow-lg flex items-center justify-center gap-2">
+        <i data-lucide="zap" class="w-4 h-4"></i> Amankan Kuota Khusus Sekarang
+      </button>
+    </div>
+
+    <!-- JALUR 2: NO. 34 - SETERUSNYA (REGULER / BIASA) -->
+    <div class="bg-emerald-50/50 rounded-2xl p-6 border border-emerald-200 flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <span class="bg-emerald-200 text-emerald-900 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+            Jalur 2: Reguler / Biasa
+          </span>
+          <span class="text-[11px] font-semibold text-gray-500">Pendaftar No. 34 – Seterusnya</span>
+        </div>
+
+        <h3 class="font-extrabold text-xl text-gray-800">Skema Pembayaran Reguler</h3>
+        <p class="font-semibold text-xs text-emerald-700 mt-1">Uang Pengembangan + Seragam</p>
+        <p class="text-xs text-gray-600 mt-1">Sesuai ketentuan jurusan & perlengkapan yang dipilih.</p>
+
+        <div class="mt-4 bg-white rounded-xl p-3.5 border border-emerald-100 space-y-2 text-xs">
+          <p class="font-bold text-gray-800 flex items-center gap-1.5">
+            <i data-lucide="list-checks" class="w-4 h-4 text-emerald-600"></i> Rincian Komponen Pembayaran:
+          </p>
+          <ul class="space-y-1 text-gray-600 text-[11px] pl-1">
+            <li class="flex items-center gap-2"><i data-lucide="dot" class="w-4 h-4 text-emerald-600 shrink-0"></i> Biaya Masuk & Uang Pengembangan (Per Jurusan)</li>
+            <li class="flex items-center gap-2"><i data-lucide="dot" class="w-4 h-4 text-emerald-600 shrink-0"></i> Kain Batik Sekolah & Atribut Lengkap</li>
+            <li class="flex items-center gap-2"><i data-lucide="dot" class="w-4 h-4 text-emerald-600 shrink-0"></i> 1 Setel Seragam Olahraga, Topi, Dasi</li>
+            <li class="flex items-center gap-2"><i data-lucide="dot" class="w-4 h-4 text-emerald-600 shrink-0"></i> Jas Almamater & Wearpack / Baju Cook Jurusan</li>
+          </ul>
+        </div>
+      </div>
+
+      <button data-page-link="formulir" class="page-nav-btn mt-6 w-full border-2 border-[var(--dark-green)] hover:bg-[var(--dark-green)] hover:text-white text-[var(--dark-green)] font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2">
+        Daftar Jalur Reguler <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- TABEL TARIF BIAYA MASUK & PENGEMBANGAN PER JURUSAN -->
+  <div class="bg-gray-50/80 rounded-2xl p-5 border border-emerald-100 space-y-3">
+    <div class="flex items-center justify-between flex-wrap gap-2">
+      <p class="font-bold text-sm text-[var(--dark-green)] flex items-center gap-2">
+        <i data-lucide="table" class="w-4 h-4 text-emerald-600"></i> A. Biaya Masuk & Pengembangan Per Program Keahlian
+      </p>
+      <span class="text-[11px] text-gray-500 font-medium">Sudah termasuk Biaya Pendaftaran & Pengembangan</span>
+    </div>
+
+    <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+      <table class="w-full text-left text-xs border-collapse">
+        <thead>
+          <tr class="bg-[var(--dark-green)] text-white font-semibold">
+            <th class="p-3 border-b">Program Keahlian (Jurusan)</th>
+            <th class="p-3 border-b text-right">Biaya Masuk & Pengembangan</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 text-gray-700 font-medium">
+          <tr class="hover:bg-emerald-50/50 transition">
+            <td class="p-3 flex items-center gap-2">
+              <i data-lucide="utensils" class="w-4 h-4 text-amber-500 shrink-0"></i> Kuliner / Jasa Boga
+            </td>
+            <td class="p-3 text-right font-bold text-emerald-800">Rp 800.000,00</td>
+          </tr>
+          <tr class="hover:bg-emerald-50/50 transition">
+            <td class="p-3 flex items-center gap-2">
+              <i data-lucide="building-2" class="w-4 h-4 text-emerald-500 shrink-0"></i> Perhotelan
+            </td>
+            <td class="p-3 text-right font-bold text-emerald-800">Rp 800.000,00</td>
+          </tr>
+          <tr class="hover:bg-emerald-50/50 transition">
+            <td class="p-3 flex items-center gap-2">
+              <i data-lucide="laptop" class="w-4 h-4 text-purple-500 shrink-0"></i> TKJ (Teknik Komputer & Jaringan)
+            </td>
+            <td class="p-3 text-right font-bold text-emerald-800">Rp 950.000,00</td>
+          </tr>
+          <tr class="hover:bg-emerald-50/50 transition">
+            <td class="p-3 flex items-center gap-2">
+              <i data-lucide="bike" class="w-4 h-4 text-red-500 shrink-0"></i> Teknik Otomotif / TSM
+            </td>
+            <td class="p-3 text-right font-bold text-emerald-800">Rp 950.000,00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+      <!-- Status Berkas -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 hover:border-emerald-300 transition">
+        <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center mb-2">
+          <i data-lucide="file-check" class="w-5 h-5"></i>
+        </div>
+        <p class="text-[11px] text-gray-400 font-medium">Status Berkas</p>
+        <p id="student-document-status" class="font-bold text-xs text-blue-600 mt-0.5">Diproses Admin</p>
+        <p class="text-[10px] text-gray-400 mt-1">Verifikasi dokumen 1x24 jam</p>
+      </div>
+      <!-- Jadwal Tes -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 hover:border-emerald-300 transition">
+        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center mb-2">
+          <i data-lucide="calendar" class="w-5 h-5"></i>
+        </div>
+        <p class="text-[11px] text-gray-400 font-medium">Jadwal Tes Seleksi</p>
+        <p id="student-test-schedule" class="font-bold text-xs text-gray-800 mt-0.5">Belum dipilih</p>
+        <p class="text-[10px] text-gray-400 mt-1">Ruang Lab Komputer</p>
+      </div>
+      <!-- Hasil Seleksi -->
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 hover:border-emerald-300 transition">
+        <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center mb-2">
+          <i data-lucide="award" class="w-5 h-5"></i>
+        </div>
+        <p class="text-[11px] text-gray-400 font-medium">Hasil Seleksi</p>
+        <p id="student-selection-status" class="font-bold text-xs text-amber-600 mt-0.5">Menunggu Tes</p>
+        <p class="text-[10px] text-gray-400 mt-1">Pengumuman via Portal</p>
+      </div>
+    </div>
+
+    <!-- ALUR PROSES PENDAFTARAN -->
+    <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-emerald-100">
+      <p class="font-bold text-sm text-[var(--dark-green)] mb-6">Alur Tahapan Pendaftaran Anda</p>
+      <div class="flex items-center justify-between relative max-w-3xl mx-auto px-2">
+        <div class="absolute top-4 left-6 right-6 h-1 bg-gray-100 -z-0"></div>
+        <div class="absolute top-4 left-6 h-1 bg-[var(--green)] transition-all duration-500 -z-0" style="width: 50%;"></div>
+
+        <div class="relative z-10 flex flex-col items-center gap-1.5 text-center">
+          <div class="w-9 h-9 rounded-full bg-[var(--green)] text-white flex items-center justify-center text-xs font-bold shadow-md"><i data-lucide="check" class="w-5 h-5"></i></div>
+          <span class="text-xs font-semibold">Registrasi</span>
+        </div>
+        <div class="relative z-10 flex flex-col items-center gap-1.5 text-center">
+          <div class="w-9 h-9 rounded-full bg-[var(--green)] text-white flex items-center justify-center text-xs font-bold shadow-md"><i data-lucide="check" class="w-5 h-5"></i></div>
+          <span class="text-xs font-semibold">Isi Formulir</span>
+        </div>
+        <div class="relative z-10 flex flex-col items-center gap-1.5 text-center">
+          <div class="w-9 h-9 rounded-full bg-white border-2 border-[var(--green)] text-[var(--green)] flex items-center justify-center text-xs font-bold shadow-md">3</div>
+          <span class="text-xs font-semibold">Verifikasi Berkas</span>
+          <span id="student-form-status" class="bg-blue-100 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-full">Diproses</span>
+        </div>
+        <div class="relative z-10 flex flex-col items-center gap-1.5 text-center">
+          <div class="w-9 h-9 rounded-full bg-gray-100 border border-gray-300 text-gray-400 flex items-center justify-center text-xs font-bold">4</div>
+          <span class="text-xs text-gray-400 font-semibold">Pengumuman Kelulusan</span>
+        </div>
+      </div>
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-3.5 mt-6 text-xs text-amber-800 flex items-center gap-2.5">
+        <i data-lucide="clock" class="w-4 h-4 text-amber-600 shrink-0"></i>
+        <span>Berkas pendaftaran sedang ditinjau oleh panitia SPMB. Harap periksa menu Pengumuman secara berkala.</span>
+      </div>
+    </div>
+
+    <!-- CARDS ROW B -->
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-emerald-100 flex flex-col justify-between">
+        <div>
+          <p class="font-bold text-sm mb-3">Progres Formulir</p>
+          <div class="flex items-center gap-4">
+            <div id="progress-circle" class="w-16 h-16 rounded-full shrink-0 flex items-center justify-center transition-all duration-500" style="background: conic-gradient(var(--green) 0%, #E5E7EB 0)">
+              <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-xs font-bold" id="progress-pct-text">0%</div>
+            </div>
+            <ul class="text-xs text-gray-600 space-y-1">
+              <li class="flex items-center gap-1.5"><i data-lucide="circle-dot" class="w-3 h-3 text-emerald-600"></i> Step 1-7 Pendaftaran</li>
+              <li class="flex items-center gap-1.5"><i data-lucide="circle-dot" class="w-3 h-3 text-emerald-600"></i> Upload Lampiran</li>
+            </ul>
+          </div>
+        </div>
+        <button data-page-link="formulir" class="page-nav-btn w-full mt-4 bg-[var(--green)] hover:bg-emerald-600 text-white font-semibold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
+          Lengkapi Formulir <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-emerald-100 flex flex-col justify-between">
+        <div>
+          <p class="font-bold text-sm mb-3">Jurusan Pilihan</p>
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
+              <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <p id="student-major" class="font-bold text-xs sm:text-sm text-gray-800">Belum Memilih</p>
+              <p class="text-[10px] text-gray-400">Pilihan Utama</p>
+            </div>
+          </div>
+          <p class="text-xs text-gray-600">Pilihan Cadangan: <span id="student-backup-major" class="font-semibold text-[var(--dark-green)]">-</span></p>
+        </div>
+        <button data-page-link="formulir" class="page-nav-btn text-xs font-semibold text-[var(--green)] hover:underline mt-3 inline-flex items-center gap-1">
+          Ubah Pilihan Jurusan <i data-lucide="edit-2" class="w-3 h-3"></i>
+        </button>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-emerald-100">
+        <p class="font-bold text-xs text-gray-400">Nomor Pendaftaran Unik</p>
+        <p id="student-registration-number" class="font-extrabold text-lg text-[var(--dark-green)] mb-3">KST-2026-XXXXX</p>
+        <div class="w-full h-16 bg-emerald-50 border border-dashed border-emerald-200 rounded-xl flex items-center justify-center text-xs font-semibold text-emerald-800 gap-2 mb-3">
+          <i data-lucide="qr-code" class="w-6 h-6 text-emerald-700"></i> QR Code Tergenerasi
+        </div>
+        <button onclick="openKartuModal()" class="w-full border border-gray-300 hover:bg-gray-50 text-xs font-semibold py-2 rounded-xl transition flex items-center justify-center gap-1.5">
+          <i data-lucide="printer" class="w-3.5 h-3.5 text-gray-600"></i> Cetak Kartu Pendaftaran
+        </button>
+      </div>
+    </div>
+
+    <!-- LAMPIRAN BERKAS RINGKASAN -->
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-emerald-100">
+      <div class="flex items-center justify-between mb-4">
+        <p class="font-bold text-sm">Status Lampiran Berkas</p>
+        <span class="text-xs font-semibold text-gray-500">Persyaratan 9 Lampiran</span>
+      </div>
+      <div id="beranda-doc-grid" class="grid sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
+      <button data-page-link="berkas" class="page-nav-btn text-xs font-semibold text-[var(--green)] hover:underline mt-4 inline-flex items-center gap-1">
+        Lihat Semua Lampiran Berkas <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ MENU PENGUMUMAN (DARI ADMIN) ============ -->
+  <section data-page="pengumuman" class="page-section hidden space-y-5">
+    <div class="flex items-center justify-between flex-wrap gap-3 border-b pb-4">
+      <div>
+        <h1 class="font-bold text-xl sm:text-2xl text-[var(--dark-green)] flex items-center gap-2">
+          <i data-lucide="megaphone" class="w-6 h-6 text-emerald-600"></i> Pengumuman Official Admin 📢
+        </h1>
+        <p class="text-xs text-gray-500 mt-1">Informasi penting terkait SPMB, tes seleksi, daftar ulang, dan jadwal akademis dari panitia sekolah.</p>
+      </div>
+      <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">Resmi dari Admin SPMB</span>
+    </div>
+
+    <div id="announcement-list" class="space-y-4">
+      <!-- Item Pengumuman akan di-render secara dinamis atau menggunakan data dummy jika backend siap -->
+    </div>
+  </section>
+
+  <!-- ============ FORMULIR (WIZARD 7 STEP) ============ -->
+  <section data-page="formulir" class="page-section hidden">
+    <div class="grid lg:grid-cols-[280px_1fr] gap-6 items-start">
+      <!-- SIDEBAR STEP WIZARD -->
+      <div class="bg-white rounded-2xl shadow-sm border border-emerald-100 p-5 lg:sticky lg:top-20">
+        <p class="font-bold text-sm mb-1">Wizard Formulir</p>
+        <p class="text-[11px] text-gray-400 mb-3">Lengkapi 7 Tahap Berikut</p>
+
+        <div class="flex items-center justify-between text-xs text-gray-500 mb-1">
+          <span>Progres Pengisian</span>
+          <span id="formulir-progress-label" class="font-bold text-emerald-600">0%</span>
+        </div>
+        <div class="h-2 bg-gray-100 rounded-full overflow-hidden mb-5">
+          <div id="formulir-progress-bar" class="h-full bg-[var(--green)] transition-all duration-300" style="width:0%"></div>
+        </div>
+
+        <div id="step-list" class="space-y-1"></div>
+
+        <button id="btn-simpan-draft" class="w-full mt-5 border border-gray-300 hover:bg-gray-50 text-xs font-semibold py-2.5 rounded-xl transition flex items-center justify-center gap-1.5">
+          <i data-lucide="save" class="w-4 h-4 text-gray-600"></i> Simpan Draft
+        </button>
+      </div>
+
+      <!-- KONTEN FORMULIR STEP -->
+      <div class="bg-white rounded-2xl shadow-sm border border-emerald-100 p-5 sm:p-8">
+        <div id="formulir-step-content"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BERKAS ============ -->
+  <section data-page="berkas" class="page-section hidden space-y-5">
+    <div>
+      <h1 class="font-bold text-xl sm:text-2xl text-[var(--dark-green)]">Upload Lampiran Berkas Pendaftaran 📁</h1>
+      <p class="text-xs text-gray-500 mt-1">Unggah 9 berkas lampiran yang diwajibkan untuk verifikasi data pendaftaran. Format: PDF, JPG, PNG (Maks 2MB).</p>
+    </div>
+
+    <div id="berkas-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </section>
+
+  <!-- ============ NOTIF ============ -->
+  <section data-page="notif" class="page-section hidden space-y-5">
+    <div class="flex items-center justify-between flex-wrap gap-3">
+      <h1 class="font-bold text-xl sm:text-2xl text-[var(--dark-green)]">Notifikasi Sistem 🔔</h1>
+      <div class="flex items-center gap-3">
+        <div class="flex bg-gray-100 p-1 rounded-xl text-xs font-medium">
+          <button id="filter-notif-all" class="px-3 py-1 rounded-lg bg-white shadow-sm text-gray-800">Semua</button>
+          <button id="filter-notif-unread" class="px-3 py-1 rounded-lg text-gray-500 hover:text-gray-800">Belum Dibaca</button>
+        </div>
+        <button id="btn-mark-all-read" class="text-xs font-semibold text-[var(--green)] hover:underline flex items-center gap-1">
+          <i data-lucide="check-check" class="w-3.5 h-3.5"></i> Tandai dibaca
+        </button>
+      </div>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm border border-emerald-100 divide-y divide-gray-100 overflow-hidden" id="notif-full-list"></div>
+  </section>
+
+  <!-- ============ PROFIL (LENGKAP DENGAN EDIT & UPLOAD FOTO) ============ -->
+  <section data-page="profil" class="page-section hidden space-y-6">
+    <div class="flex justify-between items-center flex-wrap gap-3">
+      <h1 class="font-bold text-xl sm:text-2xl text-[var(--dark-green)]">Profil Calon Siswa 👤</h1>
+      <span class="text-xs text-gray-500">Perbarui data profil dan foto Anda jika terdapat perubahan.</span>
+    </div>
+
+    <!-- BANNER PROFIL & FOTO -->
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100 flex flex-col sm:flex-row items-center sm:items-start gap-6 relative">
+      <div class="relative group">
+        <img id="profile-avatar-img" src="https://i.pravatar.cc/128?img=47" class="w-24 h-24 rounded-full object-cover border-4 border-emerald-300 shadow-md" alt="Foto profil siswa">
+        <button onclick="triggerProfilePhotoUpload()" class="absolute bottom-0 right-0 bg-[var(--green)] text-white p-2 rounded-full shadow-lg hover:scale-110 transition border-2 border-white" title="Ubah Foto Profil">
+          <i data-lucide="camera" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="text-center sm:text-left flex-1">
+        <p id="profile-name" class="font-extrabold text-xl text-gray-800">-</p>
+        <p id="profile-school" class="text-xs text-gray-500 mt-1 font-medium">-</p>
+        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-3">
+          <span id="profile-status" class="bg-blue-100 text-blue-700 text-[11px] font-bold px-3 py-1 rounded-full">Status Berkas: Diproses</span>
+          <span class="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-3 py-1 rounded-full">Calon Siswa 2026</span>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        <button onclick="openEditProfileModal()" class="bg-[var(--green)] hover:bg-emerald-600 text-white font-bold px-4 py-2 rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm">
+          <i data-lucide="user-cog" class="w-4 h-4"></i> Edit Data Profil
+        </button>
+        <button onclick="openPasswordModal()" class="border border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold px-4 py-2 rounded-xl text-xs transition flex items-center gap-1.5">
+          <i data-lucide="key-round" class="w-4 h-4"></i> Ubah Password
+        </button>
+      </div>
+    </div>
+
+    <!-- RINCIAN PROFIL DATA SISWA -->
+    <div class="grid md:grid-cols-2 gap-5">
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-emerald-100">
+        <p class="font-bold text-sm mb-4 pb-2 border-b flex items-center gap-2 text-[var(--dark-green)]">
+          <i data-lucide="user" class="w-4 h-4 text-emerald-600"></i> Informasi Kontak & Akun
+        </p>
+        <dl class="text-xs space-y-3">
+          <div class="flex justify-between"><dt class="text-gray-500">Email Utama</dt><dd id="profile-email" class="font-semibold">-</dd></div>
+          <div class="flex justify-between"><dt class="text-gray-500">No. WhatsApp</dt><dd id="profile-wa" class="font-semibold">-</dd></div>
+          <div class="flex justify-between"><dt class="text-gray-500">NISN</dt><dd id="profile-nisn" class="font-semibold">-</dd></div>
+          <div class="flex justify-between"><dt class="text-gray-500">Agama</dt><dd id="profile-agama" class="font-semibold">-</dd></div>
+        </dl>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-emerald-100">
+        <p class="font-bold text-sm mb-4 pb-2 border-b flex items-center gap-2 text-[var(--dark-green)]">
+          <i data-lucide="file-badge" class="w-4 h-4 text-emerald-600"></i> Detail Pendaftaran SPMB
+        </p>
+        <dl class="text-xs space-y-3">
+          <div class="flex justify-between"><dt class="text-gray-500">No. Pendaftaran</dt><dd id="profile-registration-number" class="font-extrabold text-emerald-800">-</dd></div>
+          <div class="flex justify-between"><dt class="text-gray-500">Jurusan Utama</dt><dd id="profile-major" class="font-semibold text-emerald-700">-</dd></div>
+          <div class="flex justify-between"><dt class="text-gray-500">Jurusan Cadangan</dt><dd id="profile-backup-major" class="font-semibold text-purple-700">-</dd></div>
+          <div class="flex justify-between"><dt class="text-gray-500">Asal Sekolah</dt><dd id="profile-sekolah-detail" class="font-semibold">-</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- HELPDESK WHATSAPP -->
+<a href="https://wa.me/6281234567890?text=Halo%20Panitia%20SPMB%20SMK%20Kasatrian%20Solo,%20saya%20butuh%20bantuan" target="_blank" class="fixed bottom-5 right-5 z-40 bg-emerald-600 hover:bg-emerald-700 text-white p-3.5 rounded-full shadow-xl transition-transform hover:scale-105 flex items-center gap-2 text-xs font-bold" title="Hubungi Panitia SPMB">
+  <i data-lucide="message-circle" class="w-5 h-5"></i>
+  <span class="hidden sm:inline">Bantuan SPMB</span>
+</a>
+
+<!-- MODAL EDIT PROFIL SISWA -->
+<div id="modal-edit-profile" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+  <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto space-y-4">
+    <div class="flex justify-between items-center border-b pb-3">
+      <h3 class="font-bold text-sm text-[var(--dark-green)] flex items-center gap-2">
+        <i data-lucide="user-check" class="w-5 h-5 text-emerald-600"></i> Edit Data Profil Siswa
+      </h3>
+      <button onclick="closeEditProfileModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+
+    <form id="form-edit-profile" class="space-y-3 text-xs">
+      <div>
+        <label class="block font-semibold mb-1">Nama Lengkap Siswa</label>
+        <input type="text" id="edit-nama" required class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="block font-semibold mb-1">No. WhatsApp</label>
+          <input type="text" id="edit-wa" required class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">NISN</label>
+          <input type="text" id="edit-nisn" maxlength="10" class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+        </div>
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Asal Sekolah (SMP/MTs)</label>
+        <input type="text" id="edit-sekolah" class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="block font-semibold mb-1">Tempat Lahir</label>
+          <input type="text" id="edit-tempat" class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">Tanggal Lahir</label>
+          <input type="date" id="edit-tgl" class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-3">
+        <button type="submit" class="flex-1 bg-[var(--green)] hover:bg-emerald-600 text-white font-bold py-2.5 rounded-xl transition shadow-md">Simpan Perubahan Profil</button>
+        <button type="button" onclick="closeEditProfileModal()" class="px-4 border border-gray-300 font-semibold py-2.5 rounded-xl hover:bg-gray-50 transition">Batal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL CETAK KARTU BUKTI PENDAFTARAN -->
+<div id="modal-kartu" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+  <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
+    <div class="no-print flex justify-between items-center mb-4 pb-3 border-b">
+      <h3 class="font-bold text-sm text-[var(--dark-green)]">Bukti Pendaftaran SPMB</h3>
+      <button onclick="closeKartuModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+
+    <div id="kartu-content" class="border-2 border-[var(--dark-green)] rounded-2xl p-5 bg-emerald-50/40 text-xs space-y-4">
+      <div class="flex items-center gap-3 border-b pb-3 border-emerald-200">
+        <img src="Logo_SMK.png" class="w-12 h-12 object-contain" onerror="this.src='https://via.placeholder.com/48'">
+        <div>
+          <p class="font-extrabold text-sm text-[var(--dark-green)]">SMK KASATRIAN SOLO</p>
+          <p class="text-[10px] text-gray-600 font-medium">Kartu Tanda Peserta SPMB 2026</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 text-[11px]">
+        <div><p class="text-gray-400">No. Pendaftaran</p><p id="card-no" class="font-extrabold text-emerald-800">KST-2026-XXXXX</p></div>
+        <div><p class="text-gray-400">Tgl. Daftar</p><p id="card-tgl" class="font-bold text-gray-800">-</p></div>
+        <div class="col-span-2"><p class="text-gray-400">Nama Lengkap</p><p id="card-nama" class="font-bold text-gray-800 text-xs">-</p></div>
+        <div><p class="text-gray-400">Jurusan Utama</p><p id="card-jurusan" class="font-bold text-emerald-700">-</p></div>
+        <div><p class="text-gray-400">Asal Sekolah</p><p id="card-sekolah" class="font-bold text-gray-800 truncate">-</p></div>
+      </div>
+
+      <div class="bg-white p-3 rounded-xl border border-emerald-200 flex items-center justify-between">
+        <div>
+          <p class="text-[10px] text-gray-400">Jadwal Seleksi / Tes</p>
+          <p id="card-jadwal" class="font-bold text-[11px] text-gray-800">Telah Terdaftar</p>
+        </div>
+        <i data-lucide="qr-code" class="w-10 h-10 text-gray-800 shrink-0"></i>
+      </div>
+    </div>
+
+    <div class="no-print flex gap-2 mt-5">
+      <button onclick="window.print()" class="flex-1 bg-[var(--green)] hover:bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2">
+        <i data-lucide="printer" class="w-4 h-4"></i> Cetak / Download PDF
+      </button>
+      <button onclick="closeKartuModal()" class="px-4 border border-gray-300 font-semibold py-2.5 rounded-xl text-xs hover:bg-gray-50 transition">
+        Tutup
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL UBAH PASSWORD -->
+<div id="modal-password" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+  <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl relative space-y-4">
+    <div class="flex justify-between items-center border-b pb-3">
+      <h3 class="font-bold text-sm text-[var(--dark-green)] flex items-center gap-2">
+        <i data-lucide="key-round" class="w-4 h-4 text-emerald-600"></i> Ubah Password Akun
+      </h3>
+      <button onclick="closePasswordModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+
+    <form id="form-password" class="space-y-3 text-xs">
+      <div>
+        <label class="block font-semibold mb-1">Password Lama</label>
+        <input type="password" id="pass-lama" required class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Password Baru</label>
+        <input type="password" id="pass-baru" required class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Konfirmasi Password Baru</label>
+        <input type="password" id="pass-konfirm" required class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+      </div>
+
+      <div class="flex gap-2 pt-3">
+        <button type="submit" class="flex-1 bg-[var(--green)] hover:bg-emerald-600 text-white font-bold py-2.5 rounded-xl transition">Simpan Password</button>
+        <button type="button" onclick="closePasswordModal()" class="px-4 border border-gray-300 font-semibold py-2.5 rounded-xl hover:bg-gray-50 transition">Batal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- FILE INPUTS TERSEMBUNYI -->
+<input type="file" id="global-file-input" class="hidden" accept=".pdf,.png,.jpg,.jpeg">
+<input type="file" id="profile-photo-input" class="hidden" accept=".png,.jpg,.jpeg">
+
+<script>
+/* ============ MASTER DATA & DUMMY INITIAL ============ */
+const jurusanData = [
+  { kode:'KLN', nama:'Kuliner / Jasa Boga', icon:'utensils', color:'#F59E0B', deskripsi:'Seni memasak & tata boga' },
+  { kode:'PHT', nama:'Perhotelan', icon:'building-2', color:'#22C55E', deskripsi:'Layanan perhotelan & pariwisata' },
+  { kode:'TKJ', nama:'Teknik Komputer Jaringan', icon:'laptop', color:'#7C3AED', deskripsi:'Jaringan komputer & IT' },
+  { kode:'TSM', nama:'Teknik Sepeda Motor (Otomotif)', icon:'bike', color:'#EF4444', deskripsi:'Perbaikan & pemeliharaan sepeda motor' },
+];
+
+const agamaList = ['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Khonghucu'];
+const penghasilanList = [
+  '< Rp 1.000.000',
+  'Rp 1.000.000 - Rp 3.000.000',
+  'Rp 3.000.000 - Rp 5.000.000',
+  'Rp 5.000.000 - Rp 10.000.000',
+  '> Rp 10.000.000'
+];
+
+const jadwalData = [
+  { id:1, tanggal:'20 Jun 2026', sesi:'Sesi 1 (Pagi)', jam:'08:00 - 10:00 WIB', jenis:'Tes Akademik & Potensi' },
+  { id:2, tanggal:'20 Jun 2026', sesi:'Sesi 2 (Siang)', jam:'13:00 - 15:00 WIB', jenis:'Tes Akademik & Potensi' },
+  { id:3, tanggal:'21 Jun 2026', sesi:'Sesi 3 (Pagi)', jam:'08:00 - 10:00 WIB', jenis:'Wawancara & Minat' },
+];
+
+const documents = [
+  { id:'ijazah', label:'Fotocopy Ijazah / SKL', icon:'file-text', status:'menunggu', fileName:'' },
+  { id:'rapor', label:'Fotocopy Raport Terakhir', icon:'file-bar-chart', status:'menunggu', fileName:'' },
+  { id:'pasfoto', label:'Foto Hitam Putih 3x4 (4 Buah)', icon:'image', status:'menunggu', fileName:'' },
+  { id:'kk', label:'Fotocopy Kartu Keluarga (KK)', icon:'users', status:'menunggu', fileName:'' },
+  { id:'ktp_ortu', label:'Fotocopy KTP Orang Tua', icon:'credit-card', status:'menunggu', fileName:'' },
+  { id:'akte', label:'Fotocopy Akte Kelahiran', icon:'file-badge', status:'menunggu', fileName:'' },
+  { id:'nisn_card', label:'Fotocopy Kartu NISN', icon:'id-card', status:'menunggu', fileName:'' },
+  { id:'kip', label:'Fotocopy KPS/KIP (Jika Ada)', icon:'award', status:'menunggu', fileName:'' },
+  { id:'akte_kematian', label:'Akte Kematian Ortu (Jika Yatim/Piatu)', icon:'file', status:'menunggu', fileName:'' },
+];
+
+// DATA DUMMY PENGUMUMAN DARI ADMIN
+const dummyAnnouncements = [
+  {
+    id: 1,
+    judul: "Jadwal Wawancara & Tes Minat Bakat Gelombang 1",
+    tanggal: "27 September 2026",
+    isi: "Diberitahukan kepada seluruh calon siswa yang telah mengunggah berkas pendaftaran agar bersiap mengikuti Tes Akademik & Wawancara pada tanggal 20-21 Juni 2026. Bawa kartu pendaftaran yang dapat dicetak dari portal ini.",
+    penting: true
+  },
+  {
+    id: 2,
+    judul: "Info Batas Akhir Verifikasi Dokumen & Berkas",
+    tanggal: "25 September 2026",
+    isi: "Pengunggahan kelengkapan berkas fisik / digital paling lambat diterima oleh panitia SPMB sebelum pelaksanaan tes seleksi. Pastikan format file PDF/JPG berukuran tidak lebih dari 2MB.",
+    penting: false
+  }
+];
+
+const notifications = [
+  { icon:'check-circle-2', text:'Pendaftaran Akun SPMB Berhasil dikonfirmasi.', time:'Baru saja', read:false },
+  { icon:'bell', text:'Lengkapi 14 Field Formulir & Upload Berkas Lampiran.', time:'1 jam lalu', read:false },
+];
+
+const activeSession = JSON.parse(localStorage.getItem('smk_active_session') || 'null');
+if (!activeSession || activeSession.role !== 'siswa' || !activeSession.api_token) {
+  // Jika tidak ada session, fallback / redirect ke login
+}
+const siswaId = Number(activeSession?.id || 1);
+
+/* ============ STATE FORMULIR LENGKAP ============ */
+const todayStr = new Date().toISOString().split('T')[0];
+const autoRegNo = `KST-2026-${String(Math.floor(Math.random()*90000) + 10000)}`;
+
+const formData = {
+  noPendaftaran: autoRegNo,
+  tglMendaftar: todayStr,
+  namaSiswa: activeSession?.nama || 'Siswa SPMB',
+  noHpWa: '081234567890',
+  tempatLahir: 'Surakarta',
+  tglLahir: '2008-05-12',
+  nisn: '0081234567',
+  jenisKelamin: 'L',
+  namaBapak: '', hpBapak: '', kerjaBapak: '', hasilBapak: '',
+  namaIbu: '', hpIbu: '', kerjaIbu: '', hasilIbu: '',
+  alamat: '', rtRw: '', kelurahan: '', kecamatan: '', kotaKab: 'Surakarta',
+  modaTransportasi: 'Sepeda Motor',
+  agama: 'Islam',
+  asalSekolah: 'SMP Negeri 1 Surakarta', tahunLulus: '2026',
+  inginBekerja: 'Dalam Negeri',
+  jurusanUtama: 'TKJ', jurusanCadangan: 'KLN',
+  tinggiBadan: '168', beratBadan: '58',
+  jadwalId: 1,
+  setuju: false
+};
+
+const completedSteps = new Set();
+let currentStep = 1;
+let selectedDocIdToUpload = null;
+let currentNotifFilter = 'all';
+const stepLabels = ['Data Pribadi', 'Data Orang Tua', 'Sekolah & Karir', 'Pilih Jurusan', 'Upload Berkas', 'Jadwal Tes', 'Review & Kirim'];
+
+/* ============ TOAST NOTIFICATION ============ */
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  const bgColor = type === 'success' ? 'bg-emerald-800' : 'bg-red-800';
+  const icon = type === 'success' ? 'check-circle-2' : 'alert-circle';
+
+  toast.className = `${bgColor} text-white px-4 py-3 rounded-xl shadow-xl text-xs font-semibold flex items-center gap-2 pointer-events-auto transition-all transform duration-300 translate-y-2 opacity-0`;
+  toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 shrink-0"></i> <span>${message}</span>`;
+
+  container.appendChild(toast);
+  lucide.createIcons();
+
+  setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+  setTimeout(() => {
+    toast.classList.add('opacity-0', 'translate-y-2');
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
+}
+
+/* ============ NAVIGATION & LOGOUT (Arahkan Ke index.html) ============ */
+const sections = document.querySelectorAll('section[data-page]');
+const navItems = document.querySelectorAll('.nav-item');
+
+function showPage(page){
+  sections.forEach(s => s.classList.toggle('hidden', s.dataset.page !== page));
+  navItems.forEach(n => n.classList.toggle('active', n.dataset.page === page));
+  window.scrollTo({top:0, behavior:'smooth'});
+  setTimeout(() => lucide.createIcons(), 50);
+}
+
+navItems.forEach(n => n.addEventListener('click', () => showPage(n.dataset.page)));
+
+function bindPageNavButtons() {
+  document.querySelectorAll('.page-nav-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      const target = b.dataset.pageLink;
+      if(target) showPage(target);
+    });
+  });
+}
+
+// INSTRUKSI MODIFIKASI LOGOUT -> Diarahkan ke landing page (index.html)
+document.getElementById('btn-logout').addEventListener('click', () => {
+  localStorage.removeItem('smk_active_session');
+  showToast('Anda telah keluar. Mengarahkan ke landing page...');
+  setTimeout(() => {
+    window.location.href = 'index.html';
+  }, 800);
+});
+
+/* ============ HELPERS ============ */
+function docStatusBadge(status){
+  const map = {
+    valid:   { text:'Valid', cls:'bg-green-100 text-green-700' },
+    ditolak: { text:'Revisi', cls:'bg-red-100 text-red-600' },
+    menunggu:{ text:'Ditinjau', cls:'bg-amber-100 text-amber-700' },
+  };
+  const m = map[status] || map.menunggu;
+  return `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${m.cls}">${m.text}</span>`;
+}
+
+function updateBellBadge(){
+  const unread = notifications.filter(n => !n.read).length;
+  const el = document.getElementById('bell-badge');
+  el.textContent = unread;
+  el.style.display = unread > 0 ? 'flex' : 'none';
+}
+
+/* ============ EDIT PROFIL & FOTO PROFIL SISWA ============ */
+function triggerProfilePhotoUpload() {
+  document.getElementById('profile-photo-input').click();
+}
+
+document.getElementById('profile-photo-input').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      const photoUrl = evt.target.result;
+      document.getElementById('profile-avatar-img').src = photoUrl;
+      document.getElementById('nav-avatar').src = photoUrl;
+      showToast('Foto profil berhasil diperbarui!');
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+function openEditProfileModal() {
+  document.getElementById('edit-nama').value = formData.namaSiswa;
+  document.getElementById('edit-wa').value = formData.noHpWa;
+  document.getElementById('edit-nisn').value = formData.nisn;
+  document.getElementById('edit-sekolah').value = formData.asalSekolah;
+  document.getElementById('edit-tempat').value = formData.tempatLahir;
+  document.getElementById('edit-tgl').value = formData.tglLahir;
+  
+  document.getElementById('modal-edit-profile').classList.remove('hidden');
+  lucide.createIcons();
+}
+
+function closeEditProfileModal() {
+  document.getElementById('modal-edit-profile').classList.add('hidden');
+}
+
+document.getElementById('form-edit-profile').addEventListener('submit', (e) => {
+  e.preventDefault();
+  formData.namaSiswa = document.getElementById('edit-nama').value;
+  formData.noHpWa = document.getElementById('edit-wa').value;
+  formData.nisn = document.getElementById('edit-nisn').value;
+  formData.asalSekolah = document.getElementById('edit-sekolah').value;
+  formData.tempatLahir = document.getElementById('edit-tempat').value;
+  formData.tglLahir = document.getElementById('edit-tgl').value;
+
+  // Refresh UI Profil
+  document.getElementById('student-greeting').textContent = `Hai, ${formData.namaSiswa}! 👋`;
+  document.getElementById('nav-student-name').textContent = formData.namaSiswa;
+  document.getElementById('profile-name').textContent = formData.namaSiswa;
+  document.getElementById('profile-school').textContent = formData.asalSekolah;
+  document.getElementById('profile-sekolah-detail').textContent = formData.asalSekolah;
+  document.getElementById('profile-wa').textContent = formData.noHpWa;
+  document.getElementById('profile-nisn').textContent = formData.nisn;
+  document.getElementById('profile-agama').textContent = formData.agama;
+
+  closeEditProfileModal();
+  showToast('Data profil siswa berhasil disimpan!');
+});
+
+/* ============ MODALS ============ */
+function openKartuModal(){
+  document.getElementById('card-no').textContent = formData.noPendaftaran;
+  document.getElementById('card-tgl').textContent = formData.tglMendaftar;
+  document.getElementById('card-nama').textContent = formData.namaSiswa || 'Siswa SPMB';
+  document.getElementById('card-jurusan').textContent = formData.jurusanUtama || 'Belum Ditentukan';
+  document.getElementById('card-sekolah').textContent = formData.asalSekolah || '-';
+
+  const selectedSchedule = jadwalData.find(j => j.id === formData.jadwalId);
+  document.getElementById('card-jadwal').textContent = selectedSchedule ? `${selectedSchedule.tanggal} (${selectedSchedule.sesi})` : 'Belum memilih jadwal';
+
+  document.getElementById('modal-kartu').classList.remove('hidden');
+  lucide.createIcons();
+}
+
+function closeKartuModal(){ document.getElementById('modal-kartu').classList.add('hidden'); }
+function openPasswordModal(){ document.getElementById('modal-password').classList.remove('hidden'); lucide.createIcons(); }
+function closePasswordModal(){ document.getElementById('modal-password').classList.add('hidden'); document.getElementById('form-password').reset(); }
+
+document.getElementById('form-password').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const baru = document.getElementById('pass-baru').value;
+  const konfirm = document.getElementById('pass-konfirm').value;
+
+  if (baru !== konfirm) {
+    showToast('Konfirmasi password baru tidak cocok!', 'error');
+    return;
+  }
+  closePasswordModal();
+  showToast('Password berhasil diperbarui');
+});
+
+/* ============ RENDER PENGUMUMAN DARI ADMIN ============ */
+function renderAnnouncements() {
+  const container = document.getElementById('announcement-list');
+  if (!dummyAnnouncements || dummyAnnouncements.length === 0) {
+    container.innerHTML = `<div class="p-8 text-center text-xs text-gray-400 bg-white rounded-2xl border">Belum ada pengumuman terbaru dari Admin.</div>`;
+    return;
+  }
+
+  container.innerHTML = dummyAnnouncements.map(a => `
+    <div class="bg-white rounded-2xl p-5 shadow-sm border ${a.penting ? 'border-amber-300 bg-gradient-to-r from-amber-50/40 via-white to-white' : 'border-emerald-100'} space-y-2">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)] flex items-center gap-2">
+          ${a.penting ? '<span class="bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">PENTING</span>' : ''}
+          ${a.judul}
+        </h3>
+        <span class="text-[11px] text-gray-400 flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${a.tanggal}</span>
+      </div>
+      <p class="text-xs text-gray-600 leading-relaxed">${a.isi}</p>
+    </div>
+  `).join('');
+  lucide.createIcons();
+}
+
+/* ============ UPLOAD FILE DOKUMEN ============ */
+const fileInput = document.getElementById('global-file-input');
+
+function triggerUpload(docId) {
+  selectedDocIdToUpload = docId;
+  fileInput.click();
+}
+
+fileInput.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (file && selectedDocIdToUpload) {
+    const doc = documents.find(d => d.id === selectedDocIdToUpload);
+    if (doc) {
+      doc.fileName = file.name;
+      doc.status = 'menunggu';
+      renderBerkasPage();
+      renderBerandaDocGrid();
+      if(currentStep === 5) renderFormulir();
+    }
+    showToast(`File "${file.name}" berhasil diunggah.`);
+  }
+  fileInput.value = '';
+});
+
+/* ============ RENDER BERANDA ============ */
+function renderBerandaDocGrid(){
+  document.getElementById('beranda-doc-grid').innerHTML = documents.slice(0, 6).map(d => `
+    <div class="border rounded-xl p-3 flex items-center justify-between gap-2 bg-gray-50 text-xs">
+      <div class="flex items-center gap-2 truncate">
+        <i data-lucide="${d.icon}" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+        <span class="font-medium truncate">${d.label}</span>
+      </div>
+      ${docStatusBadge(d.status)}
+    </div>`).join('');
+  lucide.createIcons();
+}
+
+/* ============ WIZARD FORMULIR ENGINE ============ */
+function renderStepList(){
+  document.getElementById('step-list').innerHTML = stepLabels.map((label, i) => {
+    const n = i + 1;
+    const done = completedSteps.has(n);
+    const isCurrent = n === currentStep;
+    return `<div class="step-item ${isCurrent?'current':''} ${done?'done':''} flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs" data-step="${n}">
+      <span class="num w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0">${done?'✓':n}</span>
+      <span class="${isCurrent?'font-bold text-[var(--dark-green)]':'text-gray-600'}">${label}</span>
+    </div>`;
+  }).join('');
+
+  document.querySelectorAll('.step-item').forEach(el => el.addEventListener('click', () => {
+    const targetStep = parseInt(el.dataset.step);
+    if(targetStep < currentStep || completedSteps.has(targetStep-1)) {
+      currentStep = targetStep;
+      renderFormulir();
+    }
+  }));
+
+  const pct = Math.round((completedSteps.size / stepLabels.length) * 100);
+  document.getElementById('formulir-progress-bar').style.width = pct + '%';
+  document.getElementById('formulir-progress-label').textContent = pct + '%';
+
+  const circle = document.getElementById('progress-circle');
+  if(circle) circle.style.background = `conic-gradient(var(--green) ${pct}%, #E5E7EB 0)`;
+  const pctTxt = document.getElementById('progress-pct-text');
+  if(pctTxt) pctTxt.textContent = pct + '%';
+}
+
+function saveInputsToState() {
+  if (currentStep === 1) {
+    formData.namaSiswa = document.getElementById('f-nama')?.value.trim() || formData.namaSiswa;
+    formData.noHpWa = document.getElementById('f-wa')?.value.trim() || formData.noHpWa;
+    formData.tempatLahir = document.getElementById('f-tempat')?.value.trim() || formData.tempatLahir;
+    formData.tglLahir = document.getElementById('f-tgl')?.value || formData.tglLahir;
+    formData.nisn = document.getElementById('f-nisn')?.value.trim() || formData.nisn;
+    formData.jenisKelamin = document.getElementById('f-jk')?.value || formData.jenisKelamin;
+    formData.alamat = document.getElementById('f-alamat')?.value.trim() || formData.alamat;
+    formData.rtRw = document.getElementById('f-rtrw')?.value.trim() || formData.rtRw;
+    formData.kelurahan = document.getElementById('f-kelurahan')?.value.trim() || formData.kelurahan;
+    formData.kecamatan = document.getElementById('f-kecamatan')?.value.trim() || formData.kecamatan;
+    formData.kotaKab = document.getElementById('f-kotakab')?.value.trim() || formData.kotaKab;
+    formData.modaTransportasi = document.getElementById('f-moda')?.value || formData.modaTransportasi;
+    formData.agama = document.getElementById('f-agama')?.value || formData.agama;
+    formData.tinggiBadan = document.getElementById('f-tinggi')?.value || formData.tinggiBadan;
+    formData.beratBadan = document.getElementById('f-berat')?.value || formData.beratBadan;
+  } else if (currentStep === 2) {
+    formData.namaBapak = document.getElementById('f-bapak')?.value.trim() || formData.namaBapak;
+    formData.hpBapak = document.getElementById('f-hp-bapak')?.value.trim() || formData.hpBapak;
+    formData.kerjaBapak = document.getElementById('f-kerja-bapak')?.value.trim() || formData.kerjaBapak;
+    formData.hasilBapak = document.getElementById('f-hasil-bapak')?.value || formData.hasilBapak;
+    formData.namaIbu = document.getElementById('f-ibu')?.value.trim() || formData.namaIbu;
+    formData.hpIbu = document.getElementById('f-hp-ibu')?.value.trim() || formData.hpIbu;
+    formData.kerjaIbu = document.getElementById('f-kerja-ibu')?.value.trim() || formData.kerjaIbu;
+    formData.hasilIbu = document.getElementById('f-hasil-ibu')?.value || formData.hasilIbu;
+  } else if (currentStep === 3) {
+    formData.asalSekolah = document.getElementById('f-sekolah')?.value.trim() || formData.asalSekolah;
+    formData.tahunLulus = document.getElementById('f-tahunlulus')?.value || formData.tahunLulus;
+    const karirEl = document.querySelector('input[name="f-karir"]:checked');
+    if (karirEl) formData.inginBekerja = karirEl.value;
+  }
+}
+
+function validateCurrentStep() {
+  saveInputsToState();
+  let isValid = true;
+
+  if (currentStep === 1) {
+    if (!formData.namaSiswa || !formData.noHpWa || !formData.nisn || !formData.jenisKelamin || !formData.alamat) {
+      showToast('Harap isi seluruh field wajib pada Data Diri Pribadi', 'error');
+      isValid = false;
+    }
+  } else if (currentStep === 2) {
+    if (!formData.namaBapak || !formData.namaIbu) {
+      showToast('Harap isi Nama Bapak & Nama Ibu Kandung', 'error');
+      isValid = false;
+    }
+  } else if (currentStep === 3) {
+    if (!formData.asalSekolah || !formData.tahunLulus) {
+      showToast('Harap lengkapi informasi Asal Sekolah', 'error');
+      isValid = false;
+    }
+  } else if (currentStep === 4) {
+    if (!formData.jurusanUtama || !formData.jurusanCadangan) {
+      showToast('Pilih Jurusan Utama dan Jurusan Cadangan!', 'error');
+      isValid = false;
+    }
+  }
+
+  return isValid;
+}
+
+function stepHeader(title, iconName, idx){
+  return `<div class="flex items-center justify-between border-b pb-4 mb-5">
+    <div>
+      <h2 class="font-bold text-base text-[var(--dark-green)] flex items-center gap-2">
+        <i data-lucide="${iconName}" class="w-5 h-5 text-emerald-600"></i> ${title}
+      </h2>
+      <p class="text-[11px] text-gray-400 mt-0.5">No. Pendaftaran: <span class="font-bold text-emerald-700">${formData.noPendaftaran}</span> | Tgl: ${formData.tglMendaftar}</p>
+    </div>
+    <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded-full">Langkah ${idx} dari 7</span>
+  </div>`;
+}
+
+function navButtons(showBack){
+  return `<div class="flex items-center justify-between mt-8 pt-4 border-t border-gray-100">
+    ${showBack ? `<button id="btn-back" type="button" class="text-xs font-semibold text-gray-600 hover:text-gray-800 flex items-center gap-1.5 px-4 py-2 rounded-xl hover:bg-gray-100 transition"><i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali</button>` : `<span></span>`}
+    <button id="btn-next" type="button" class="bg-[var(--green)] hover:bg-emerald-600 text-white font-bold px-6 py-2.5 rounded-full text-xs shadow-md hover:shadow-lg transition flex items-center gap-1.5 btn-glow">Lanjutkan <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+  </div>`;
+}
+
+/* STEP 1: DATA DIRI PRIBADI */
+function renderStep1(){
+  return `${stepHeader('Data Diri Pribadi Siswa', 'user', 1)}
+    <div class="grid sm:grid-cols-2 gap-4 text-xs">
+      <div class="sm:col-span-2"><label class="block font-semibold mb-1">1. Nama Lengkap Siswa *</label>
+        <input id="f-nama" type="text" value="${formData.namaSiswa}" class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none"></div>
+      <div><label class="block font-semibold mb-1">2. No. HP / WhatsApp Siswa *</label>
+        <input id="f-wa" type="text" value="${formData.noHpWa}" placeholder="08123456789" class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none"></div>
+      <div><label class="block font-semibold mb-1">4. NISN (10 Digit) *</label>
+        <input id="f-nisn" type="text" maxlength="10" value="${formData.nisn}" class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none"></div>
+      <div><label class="block font-semibold mb-1">3. Tempat Lahir *</label>
+        <input id="f-tempat" type="text" value="${formData.tempatLahir}" class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none"></div>
+      <div><label class="block font-semibold mb-1">3. Tanggal Lahir *</label>
+        <input id="f-tgl" type="date" value="${formData.tglLahir}" class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none"></div>
+      <div><label class="block font-semibold mb-1">5. Jenis Kelamin *</label>
+        <select id="f-jk" class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+          <option value="">-- Pilih Jenis Kelamin --</option>
+          <option ${formData.jenisKelamin==='L'?'selected':''} value="L">Laki-Laki</option>
+          <option ${formData.jenisKelamin==='P'?'selected':''} value="P">Perempuan</option>
+        </select></div>
+      <div><label class="block font-semibold mb-1">9. Agama *</label>
+        <select id="f-agama" class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+          ${agamaList.map(a => `<option ${formData.agama===a?'selected':''} value="${a}">${a}</option>`).join('')}
+        </select></div>
+
+      <div class="sm:col-span-2 border-t pt-3 mt-1"><label class="block font-bold mb-1 text-emerald-800">7. Alamat Tempat Tinggal Lengkap *</label>
+        <textarea id="f-alamat" rows="2" placeholder="Nama Jalan, Nomor Rumah, Dusun..." class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none mb-2">${formData.alamat}</textarea>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <input id="f-rtrw" type="text" placeholder="RT / RW" value="${formData.rtRw}" class="p-2 rounded-lg border">
+          <input id="f-kelurahan" type="text" placeholder="Kelurahan" value="${formData.kelurahan}" class="p-2 rounded-lg border">
+          <input id="f-kecamatan" type="text" placeholder="Kecamatan" value="${formData.kecamatan}" class="p-2 rounded-lg border">
+          <input id="f-kotakab" type="text" placeholder="Kota / Kabupaten" value="${formData.kotaKab}" class="p-2 rounded-lg border">
+        </div>
+      </div>
+
+      <div><label class="block font-semibold mb-1">8. Moda Transportasi</label>
+        <select id="f-moda" class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+          <option ${formData.modaTransportasi==='Sepeda Motor'?'selected':''}>Sepeda Motor</option>
+          <option ${formData.modaTransportasi==='Jalan Kaki'?'selected':''}>Jalan Kaki</option>
+          <option ${formData.modaTransportasi==='Angkutan Umum'?'selected':''}>Angkutan Umum</option>
+          <option ${formData.modaTransportasi==='Jemputan Sekolah'?'selected':''}>Jemputan Sekolah</option>
+          <option ${formData.modaTransportasi==='Lainnya'?'selected':''}>Lainnya</option>
+        </select></div>
+
+      <div class="grid grid-cols-2 gap-2">
+        <div><label class="block font-semibold mb-1">13a. Tinggi (cm)</label><input id="f-tinggi" type="number" placeholder="165" value="${formData.tinggiBadan}" class="w-full p-2.5 rounded-xl border"></div>
+        <div><label class="block font-semibold mb-1">13b. Berat (kg)</label><input id="f-berat" type="number" placeholder="55" value="${formData.beratBadan}" class="w-full p-2.5 rounded-xl border"></div>
+      </div>
+    </div>
+    ${navButtons(false)}`;
+}
+
+/* STEP 2: DATA ORANG TUA / WALI */
+function renderStep2(){
+  return `${stepHeader('6. Identitas Orang Tua / Wali', 'users', 2)}
+    <div class="space-y-5 text-xs">
+      <div class="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100 space-y-3">
+        <p class="font-bold text-emerald-900 flex items-center gap-1.5"><i data-lucide="user-check" class="w-4 h-4"></i> Data Ayah / Wali Kandung</p>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div><label class="block font-semibold mb-1">Nama Bapak / Wali *</label><input id="f-bapak" type="text" value="${formData.namaBapak}" class="w-full p-2.5 rounded-xl border"></div>
+          <div><label class="block font-semibold mb-1">No. HP / WA Bapak</label><input id="f-hp-bapak" type="text" value="${formData.hpBapak}" class="w-full p-2.5 rounded-xl border"></div>
+          <div><label class="block font-semibold mb-1">Pekerjaan Bapak</label><input id="f-kerja-bapak" type="text" value="${formData.kerjaBapak}" class="w-full p-2.5 rounded-xl border"></div>
+          <div><label class="block font-semibold mb-1">Penghasilan Bapak / Bulan</label>
+            <select id="f-hasil-bapak" class="w-full p-2.5 rounded-xl border">
+              ${penghasilanList.map(p => `<option ${formData.hasilBapak===p?'selected':''} value="${p}">${p}</option>`).join('')}
+            </select></div>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-purple-50/50 border border-purple-100 space-y-3">
+        <p class="font-bold text-purple-900 flex items-center gap-1.5"><i data-lucide="user-check" class="w-4 h-4"></i> Data Ibu / Wali Kandung</p>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div><label class="block font-semibold mb-1">Nama Ibu / Wali *</label><input id="f-ibu" type="text" value="${formData.namaIbu}" class="w-full p-2.5 rounded-xl border"></div>
+          <div><label class="block font-semibold mb-1">No. HP / WA Ibu</label><input id="f-hp-ibu" type="text" value="${formData.hpIbu}" class="w-full p-2.5 rounded-xl border"></div>
+          <div><label class="block font-semibold mb-1">Pekerjaan Ibu</label><input id="f-kerja-ibu" type="text" value="${formData.kerjaIbu}" class="w-full p-2.5 rounded-xl border"></div>
+          <div><label class="block font-semibold mb-1">Penghasilan Ibu / Bulan</label>
+            <select id="f-hasil-ibu" class="w-full p-2.5 rounded-xl border">
+              ${penghasilanList.map(p => `<option ${formData.hasilIbu===p?'selected':''} value="${p}">${p}</option>`).join('')}
+            </select></div>
+        </div>
+      </div>
+    </div>
+    ${navButtons(true)}`;
+}
+
+/* STEP 3: ASAL SEKOLAH & KARIR */
+function renderStep3(){
+  return `${stepHeader('Asal Sekolah & Orientasi Karir', 'graduation-cap', 3)}
+    <div class="space-y-5 text-xs">
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div><label class="block font-semibold mb-1">10. Nama Asal Sekolah (SMP/MTs) *</label>
+          <input id="f-sekolah" type="text" placeholder="SMP N 1 Surakarta" value="${formData.asalSekolah}" class="w-full p-2.5 rounded-xl border"></div>
+        <div><label class="block font-semibold mb-1">Tahun Lulus *</label>
+          <input id="f-tahunlulus" type="number" value="${formData.tahunLulus}" class="w-full p-2.5 rounded-xl border"></div>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-amber-50/60 border border-amber-200">
+        <label class="block font-bold text-amber-900 mb-2">11. Setelah Lulus SMK, Kamu Ingin Bekerja / Berkarir Dimana? *</label>
+        <div class="grid sm:grid-cols-3 gap-3">
+          <label class="flex items-center gap-2 p-3 bg-white rounded-xl border cursor-pointer hover:border-amber-400">
+            <input type="radio" name="f-karir" value="Dalam Negeri" ${formData.inginBekerja==='Dalam Negeri'?'checked':''} class="text-amber-600 focus:ring-amber-500">
+            <span class="font-semibold">1. Dalam Negeri</span>
+          </label>
+          <label class="flex items-center gap-2 p-3 bg-white rounded-xl border cursor-pointer hover:border-amber-400">
+            <input type="radio" name="f-karir" value="Luar Negeri" ${formData.inginBekerja==='Luar Negeri'?'checked':''} class="text-amber-600 focus:ring-amber-500">
+            <span class="font-semibold">2. Luar Negeri</span>
+          </label>
+          <label class="flex items-center gap-2 p-3 bg-white rounded-xl border cursor-pointer hover:border-amber-400">
+            <input type="radio" name="f-karir" value="Jadi Bos/Juragan" ${formData.inginBekerja==='Jadi Bos/Juragan'?'checked':''} class="text-amber-600 focus:ring-amber-500">
+            <span class="font-semibold">3. Jadi Bos / Juragan</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    ${navButtons(true)}`;
+}
+
+/* STEP 4: PILIH JURUSAN */
+function renderStep4(){
+  return `${stepHeader('12. Program Studi / Jurusan', 'compass', 4)}
+    <p class="text-xs text-gray-500 mb-4">Pilih Jurusan Utama dan Jurusan Cadangan yang Anda minati di SMK Kasatrian Solo.</p>
+
+    <p class="text-xs font-bold text-emerald-800 mb-2 flex items-center gap-1.5"><i data-lucide="star" class="w-4 h-4 fill-emerald-500"></i> Pilihan Utama:</p>
+    <div id="grid-utama" class="grid sm:grid-cols-2 gap-3 mb-6"></div>
+
+    <p class="text-xs font-bold text-purple-800 mb-2 flex items-center gap-1.5"><i data-lucide="shield" class="w-4 h-4 fill-purple-500"></i> Pilihan Cadangan:</p>
+    <div id="grid-cadangan" class="grid sm:grid-cols-2 gap-3"></div>
+    ${navButtons(true)}`;
+}
+
+function bindStep4(){
+  function draw(){
+    document.getElementById('grid-utama').innerHTML = jurusanData.map(j => cardHtml(j, 'jurusanUtama')).join('');
+    document.getElementById('grid-cadangan').innerHTML = jurusanData.filter(j => j.kode !== formData.jurusanUtama).map(j => cardHtml(j, 'jurusanCadangan')).join('');
+
+    document.querySelectorAll('.jurusan-card').forEach(el => el.addEventListener('click', () => {
+      formData[el.dataset.role] = el.dataset.kode;
+      if(el.dataset.role === 'jurusanUtama' && formData.jurusanCadangan === el.dataset.kode) formData.jurusanCadangan = '';
+      draw();
+    }));
+    lucide.createIcons();
+  }
+  function cardHtml(j, role){
+    const selected = formData[role] === j.kode;
+    const cls = role === 'jurusanUtama' ? 'selected-utama' : 'selected-cadangan';
+    return `<div class="jurusan-card ${selected?cls:''} border rounded-2xl p-3.5 text-xs flex items-center gap-3 bg-white" data-role="${role}" data-kode="${j.kode}">
+      <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+        <i data-lucide="${j.icon}" class="w-5 h-5"></i>
+      </div>
+      <div class="flex-1">
+        <p class="font-bold text-gray-800">${j.nama}</p>
+        <p class="text-[10px] text-gray-400 mt-0.5">${j.deskripsi}</p>
+      </div>
+      ${selected ? `<i data-lucide="check-circle-2" class="w-5 h-5 ${role==='jurusanUtama'?'text-emerald-600':'text-purple-600'} shrink-0"></i>` : ''}
+    </div>`;
+  }
+  draw();
+}
+
+/* STEP 5: UPLOAD BERKAS LAMPIRAN */
+function renderStep5(){
+  return `${stepHeader('14. Lampiran Pendaftaran', 'paperclip', 5)}
+    <p class="text-xs text-gray-500 mb-4">Unggah 9 lampiran dokumen pendaftaran secara interaktif di bawah ini.</p>
+    <div id="doc-grid-step5" class="grid sm:grid-cols-2 gap-3"></div>
+    ${navButtons(true)}`;
+}
+
+function bindStep5(){
+  document.getElementById('doc-grid-step5').innerHTML = documents.map(d => `
+    <div class="border rounded-2xl p-3.5 bg-gray-50/60 text-xs space-y-2.5">
+      <div class="flex justify-between items-center">
+        <span class="font-bold text-gray-800 flex items-center gap-1.5"><i data-lucide="${d.icon}" class="w-4 h-4 text-emerald-600"></i>${d.label}</span>
+        ${docStatusBadge(d.status)}
+      </div>
+      <p class="text-[10px] text-gray-400 truncate">📄 ${d.fileName || 'Belum diunggah'}</p>
+      <button onclick="triggerUpload('${d.id}')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-1.5 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
+        <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i> Upload File
+      </button>
+    </div>
+  `).join('');
+  lucide.createIcons();
+}
+
+/* STEP 6: JADWAL TES */
+function renderStep6(){
+  return `${stepHeader('Pilih Sesi Jadwal Tes SPMB', 'calendar-days', 6)}
+    <div id="jadwal-list" class="space-y-3"></div>
+    ${navButtons(true)}`;
+}
+
+function bindStep6(){
+  function draw(){
+    document.getElementById('jadwal-list').innerHTML = jadwalData.map(j => {
+      const selected = formData.jadwalId === j.id;
+      return `<div class="jadwal-radio ${selected?'border-2 border-[var(--green)] bg-emerald-50/60':''} border rounded-2xl p-4 flex justify-between items-center cursor-pointer text-xs transition" data-id="${j.id}">
+        <div>
+          <p class="font-bold text-sm text-gray-800">${j.tanggal} • ${j.sesi}</p>
+          <p class="text-xs text-gray-500 mt-0.5">${j.jenis} (${j.jam})</p>
+        </div>
+        <span class="text-xs font-bold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">Sesi Kuota Tersedia</span>
+      </div>`;
+    }).join('');
+
+    document.querySelectorAll('.jadwal-radio').forEach(el => el.addEventListener('click', () => {
+      formData.jadwalId = parseInt(el.dataset.id);
+      draw();
+    }));
+  }
+  draw();
+}
+
+/* STEP 7: REVIEW & KIRIM */
+function renderStep7(){
+  const jUtama = jurusanData.find(j => j.kode === formData.jurusanUtama)?.nama || formData.jurusanUtama || 'Belum memilih';
+  const jCadangan = jurusanData.find(j => j.kode === formData.jurusanCadangan)?.nama || formData.jurusanCadangan || '-';
+
+  return `${stepHeader('Review Ringkasan & Kirim Formulir', 'check-circle-2', 7)}
+    <div class="space-y-4 text-xs">
+      <div class="p-4 border rounded-2xl bg-gray-50 space-y-1">
+        <p class="font-bold text-gray-800">1-5. Data Pribadi Siswa</p>
+        <p class="text-gray-600">${formData.namaSiswa || '-'} | WA: ${formData.noHpWa || '-'} | NISN: ${formData.nisn || '-'}</p>
+        <p class="text-gray-500">${formData.tempatLahir}, ${formData.tglLahir} (${formData.jenisKelamin==='L'?'Laki-Laki':'Perempuan'})</p>
+      </div>
+
+      <div class="p-4 border rounded-2xl bg-gray-50 space-y-1">
+        <p class="font-bold text-gray-800">6. Orang Tua & 10. Asal Sekolah</p>
+        <p class="text-gray-600">Ayah: ${formData.namaBapak || '-'} | Ibu: ${formData.namaIbu || '-'}</p>
+        <p class="text-gray-500">SMP Asal: ${formData.asalSekolah || '-'} (${formData.tahunLulus}) | Karir: ${formData.inginBekerja}</p>
+      </div>
+
+      <div class="p-4 border rounded-2xl bg-gray-50 space-y-1">
+        <p class="font-bold text-gray-800">12. Program Studi / Jurusan</p>
+        <p class="text-emerald-700 font-semibold">Pilihan Utama: ${jUtama}</p>
+        <p class="text-purple-700 font-semibold">Pilihan Cadangan: ${jCadangan}</p>
+      </div>
+
+      <label class="flex items-start gap-2.5 mt-4 text-xs text-gray-700 cursor-pointer p-3 bg-emerald-50 rounded-xl border border-emerald-200">
+        <input id="f-setuju" type="checkbox" ${formData.setuju?'checked':''} class="mt-0.5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500">
+        <span>Saya menyatakan bahwa seluruh 14 poin data pendaftaran yang diisikan adalah benar dan dapat dipertanggungjawabkan.</span>
+      </label>
+    </div>
+
+    <div class="flex items-center justify-between mt-8 pt-4 border-t border-gray-100">
+      <button id="btn-back" type="button" class="text-xs font-semibold text-gray-600 flex items-center gap-1 px-4 py-2 rounded-xl hover:bg-gray-100"><i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali</button>
+      <button id="btn-kirim-formulir" type="button" class="bg-[var(--yellow)] hover:bg-yellow-400 text-[var(--dark-green)] font-extrabold px-7 py-3 rounded-full text-xs shadow-lg transition flex items-center gap-2 transform hover:scale-105">
+        <i data-lucide="send" class="w-4 h-4"></i> Kirim Formulir Pendaftaran SPMB
+      </button>
+    </div>`;
+}
+
+function renderFormulir(){
+  renderStepList();
+  const container = document.getElementById('formulir-step-content');
+  const renderers = [renderStep1, renderStep2, renderStep3, renderStep4, renderStep5, renderStep6, renderStep7];
+  container.innerHTML = renderers[currentStep-1]();
+  lucide.createIcons();
+
+  if(currentStep === 4) bindStep4();
+  if(currentStep === 5) bindStep5();
+  if(currentStep === 6) bindStep6();
+
+  const backBtn = document.getElementById('btn-back');
+  if(backBtn) backBtn.addEventListener('click', () => {
+    saveInputsToState();
+    currentStep--;
+    renderFormulir();
+  });
+
+  const nextBtn = document.getElementById('btn-next');
+  if(nextBtn) nextBtn.addEventListener('click', () => {
+    if (validateCurrentStep()) {
+      completedSteps.add(currentStep);
+      if(currentStep < 7) {
+        currentStep++;
+        renderFormulir();
+      }
+    }
+  });
+
+  const kirimBtn = document.getElementById('btn-kirim-formulir');
+  if(kirimBtn) kirimBtn.addEventListener('click', () => {
+    const setuju = document.getElementById('f-setuju').checked;
+    formData.setuju = setuju;
+    if(!setuju) {
+      showToast('Harap beri centang pada pernyataan persetujuan data!', 'error');
+      return;
+    }
+    showToast('Selamat! Formulir pendaftaran SPMB berhasil dikirim.');
+    showPage('beranda');
+  });
+}
+
+document.getElementById('btn-simpan-draft').addEventListener('click', () => {
+  saveInputsToState();
+  showToast('Draft pendaftaran berhasil disimpan secara lokal!');
+});
+
+/* ============ RENDER BERKAS & NOTIF ============ */
+function renderBerkasPage(){
+  document.getElementById('berkas-grid').innerHTML = documents.map(d => `
+    <div class="border rounded-2xl p-4 bg-white shadow-sm space-y-3 text-xs border-emerald-100 hover:border-emerald-300 transition">
+      <div class="flex justify-between items-center">
+        <span class="font-bold text-gray-800 flex items-center gap-1.5"><i data-lucide="${d.icon}" class="w-4 h-4 text-emerald-600"></i>${d.label}</span>
+        ${docStatusBadge(d.status)}
+      </div>
+      <p class="text-[11px] text-gray-500 truncate">📄 ${d.fileName || 'Belum diunggah'}</p>
+      <button onclick="triggerUpload('${d.id}')" class="w-full bg-[var(--green)] hover:bg-emerald-600 text-white font-semibold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
+        <i data-lucide="upload" class="w-3.5 h-3.5"></i> Unggah Dokumen
+      </button>
+    </div>
+  `).join('');
+  lucide.createIcons();
+}
+
+function renderNotifPage(){
+  const filtered = currentNotifFilter === 'unread' ? notifications.filter(n => !n.read) : notifications;
+  const listEl = document.getElementById('notif-full-list');
+
+  if (filtered.length === 0) {
+    listEl.innerHTML = `<div class="p-8 text-center text-xs text-gray-400">Tidak ada notifikasi saat ini.</div>`;
+    return;
+  }
+
+  listEl.innerHTML = filtered.map((n, i) => `
+    <div class="p-4 flex items-start gap-3 ${n.read?'bg-white':'bg-emerald-50/70'} text-xs cursor-pointer hover:bg-emerald-50 transition" onclick="notifications[${i}].read=true; renderNotifPage(); updateBellBadge();">
+      <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+        <i data-lucide="${n.icon}" class="w-4 h-4"></i>
+      </div>
+      <div class="flex-1">
+        <p class="${n.read?'text-gray-700':'font-bold text-emerald-950'}">${n.text}</p>
+        <p class="text-[10px] text-gray-400 mt-1">${n.time}</p>
+      </div>
+    </div>
+  `).join('');
+  lucide.createIcons();
+}
+
+document.getElementById('filter-notif-all').addEventListener('click', (e) => {
+  currentNotifFilter = 'all';
+  e.target.className = 'px-3 py-1 rounded-lg bg-white shadow-sm text-gray-800';
+  document.getElementById('filter-notif-unread').className = 'px-3 py-1 rounded-lg text-gray-500 hover:text-gray-800';
+  renderNotifPage();
+});
+
+document.getElementById('filter-notif-unread').addEventListener('click', (e) => {
+  currentNotifFilter = 'unread';
+  e.target.className = 'px-3 py-1 rounded-lg bg-white shadow-sm text-gray-800';
+  document.getElementById('filter-notif-all').className = 'px-3 py-1 rounded-lg text-gray-500 hover:text-gray-800';
+  renderNotifPage();
+});
+
+document.getElementById('btn-mark-all-read').addEventListener('click', () => {
+  notifications.forEach(n => n.read = true);
+  renderNotifPage(); updateBellBadge();
+  showToast('Semua notifikasi ditandai sudah dibaca.');
+});
+
+/* ============ INITIALIZATION ============ */
+window.addEventListener('DOMContentLoaded', () => {
+  bindPageNavButtons();
+  renderBerandaDocGrid();
+  renderAnnouncements();
+  renderFormulir();
+  renderBerkasPage();
+  renderNotifPage();
+  updateBellBadge();
+
+  // Inisialisasi Tampilan Profil Awal
+  document.getElementById('student-greeting').textContent = `Hai, ${formData.namaSiswa}! 👋`;
+  document.getElementById('nav-student-name').textContent = formData.namaSiswa;
+  document.getElementById('profile-name').textContent = formData.namaSiswa;
+  document.getElementById('profile-school').textContent = formData.asalSekolah;
+  document.getElementById('profile-sekolah-detail').textContent = formData.asalSekolah;
+  document.getElementById('profile-email').textContent = activeSession?.email || 'siswa@smkkasatrian.sch.id';
+  document.getElementById('profile-wa').textContent = formData.noHpWa;
+  document.getElementById('profile-nisn').textContent = formData.nisn;
+  document.getElementById('profile-agama').textContent = formData.agama;
+  document.getElementById('profile-major').textContent = formData.jurusanUtama;
+  document.getElementById('profile-backup-major').textContent = formData.jurusanCadangan;
+  document.getElementById('profile-registration-number').textContent = formData.noPendaftaran;
+
+  lucide.createIcons();
+});
+</script>
+</body>
+</html>

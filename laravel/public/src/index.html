@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMK Kasatrian Solo Sukoharjo | SPMB 2027/2028</title>
+  <link rel="icon" type="image/png" href="Logo_SMK.png">
+
+  <!-- Tailwind CSS & Lucide Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    * { font-family: 'Poppins', sans-serif; }
+    .nama-sekolah, .nama-sekolah * { font-family: 'Kavoon', cursive !important; }
+
+    :root {
+      --dark-green: #1B4332;
+      --mint: #D8F5E8;
+      --mint-2: #C8F0DD;
+      --accent-green: #22C55E;
+      --accent-hover: #16A34A;
+      --yellow: #FFD84D;
+    }
+
+    body {
+      color: var(--dark-green);
+      background-color: #FAFCFB;
+      overflow-x: hidden;
+    }
+
+    /* Custom Animation Effects */
+    .card-hover {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .card-hover:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 30px -10px rgba(27, 67, 50, 0.18);
+    }
+
+    /* Floating Keyframe Animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(1deg); }
+    }
+    .animate-float {
+      animation: float 5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+    .animate-glow {
+      animation: pulse-glow 3s infinite;
+    }
+
+    /* Glassmorphism Effect */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-emerald-200 selection:text-emerald-900">
+
+<!-- NAVBAR -->
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100/80 transition-all duration-300">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3 group">
+      <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-11 h-11 object-contain transition-transform duration-300 group-hover:scale-110">
+      <div class="leading-tight nama-sekolah">
+        <p class="text-[16px] text-[var(--dark-green)] font-bold tracking-wide">SMK KASATRIAN</p>
+        <p class="text-[14px] text-[var(--dark-green)] -mt-1 opacity-90">SOLO SUKOHARJO</p>
+      </div>
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <ul class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-700">
+      <li><a href="index.html" class="text-[var(--accent-green)] font-bold transition duration-200 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-[var(--accent-green)]">Beranda</a></li>
+      <li><a href="jurusan.html" class="hover:text-[var(--accent-green)] transition duration-200">Jurusan</a></li>
+      <li><a href="persyaratan.html" class="hover:text-[var(--accent-green)] transition duration-200">Persyaratan</a></li>
+      <li><a href="faq.html" class="hover:text-[var(--accent-green)] transition duration-200">FAQ</a></li>
+    </ul>
+
+    <!-- Action Buttons -->
+    <div class="hidden sm:flex items-center gap-3">
+      <a href="pilih_peran.html?mode=login" class="px-5 py-2 rounded-full border-2 border-[var(--dark-green)] text-[var(--dark-green)] font-semibold text-sm hover:bg-emerald-50 hover:shadow-md transition duration-200">Masuk</a>
+      <a href="pilih_peran.html?mode=signup" class="px-5 py-2 rounded-full bg-[var(--accent-green)] hover:bg-[var(--accent-hover)] text-white font-semibold text-sm shadow-md hover:shadow-lg transition duration-200 transform hover:-translate-y-0.5">Daftar SPMB</a>
+    </div>
+
+    <!-- Mobile Hamburger Button -->
+    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-[var(--dark-green)] hover:bg-emerald-50 transition" aria-label="Toggle Menu">
+      <i data-lucide="menu" class="w-6 h-6"></i>
+    </button>
+  </nav>
+
+  <!-- Mobile Dropdown Menu -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-emerald-100 bg-white/98 px-6 py-4 space-y-3 shadow-lg">
+    <a href="index.html" class="block py-2 font-semibold text-[var(--accent-green)]">Beranda</a>
+    <a href="jurusan.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Jurusan</a>
+    <a href="persyaratan.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Persyaratan</a>
+    <a href="faq.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">FAQ</a>
+    <div class="pt-3 border-t border-gray-100 flex flex-col gap-2">
+      <a href="pilih_peran.html?mode=login" class="w-full text-center py-2.5 rounded-full border-2 border-[var(--dark-green)] text-[var(--dark-green)] font-semibold text-sm">Masuk</a>
+      <a href="pilih_peran.html?mode=signup" class="w-full text-center py-2.5 rounded-full bg-[var(--accent-green)] text-white font-semibold text-sm">Daftar SPMB</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO SECTION -->
+<section class="relative bg-gradient-to-b from-[var(--mint)] via-emerald-50/50 to-white py-16 lg:py-24 overflow-hidden">
+  <div class="absolute top-10 left-10 w-72 h-72 bg-emerald-300/20 rounded-full blur-3xl pointer-events-none animate-glow"></div>
+  <div class="absolute bottom-10 right-10 w-96 h-96 bg-yellow-200/30 rounded-full blur-3xl pointer-events-none animate-glow" style="animation-delay: 1.5s;"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+    <div class="space-y-6 text-center lg:text-left" data-aos="fade-right" data-aos-duration="1000">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100/90 text-[var(--dark-green)] font-bold text-xs sm:text-sm shadow-sm border border-emerald-200">
+        <i data-lucide="sparkles" class="w-4 h-4 text-emerald-600 animate-spin" style="animation-duration: 8s;"></i>
+        SPMB Tahun Ajaran 2027/2028 Resmi Dibuka!
+      </span>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-[var(--dark-green)] tracking-tight">
+        Jembatan Kerja,<br>
+        <span class="text-[var(--accent-green)] bg-gradient-to-r from-emerald-600 to-green-500 bg-clip-text text-transparent">Sukses Berwirausaha!</span>
+      </h1>
+
+      <p class="nama-sekolah text-xl sm:text-2xl text-[var(--dark-green)] font-bold tracking-wide">
+        SMK KASATRIAN SOLO SUKOHARJO
+      </p>
+
+      <p class="text-gray-600 leading-relaxed max-w-lg mx-auto lg:mx-0 text-sm sm:text-base">
+        Siapkan karir masa depanmu dengan pendidikan vokasi berbasis keahlian praktis, fasilitas modern, dan jaringan kerja sama industri luas.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+        <a href="pilih_peran.html?mode=signup" class="px-8 py-4 rounded-full bg-[var(--yellow)] hover:bg-amber-400 text-[var(--dark-green)] font-bold text-sm shadow-lg hover:shadow-xl transition duration-300 flex items-center gap-2 transform hover:-translate-y-1">
+          <span>✏️ Daftar Sekarang</span>
+        </a>
+        <a href="jurusan.html" class="px-8 py-4 rounded-full border-2 border-[var(--accent-green)] text-[var(--dark-green)] font-bold text-sm hover:bg-emerald-50 transition duration-300 flex items-center gap-2 transform hover:-translate-y-1">
+          <span>📚 Lihat Program Keahlian</span>
+        </a>
+      </div>
+
+      <div class="flex items-center justify-center lg:justify-start gap-6 pt-4 text-xs sm:text-sm font-bold text-[var(--dark-green)]">
+        <span class="flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-lg shadow-sm border border-emerald-100"><i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-600"></i> Terakreditasi A</span>
+        <span class="flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-lg shadow-sm border border-emerald-100"><i data-lucide="award" class="w-5 h-5 text-emerald-600"></i> Pengalaman 25+ Tahun</span>
+      </div>
+    </div>
+
+    <div class="relative flex justify-center" data-aos="fade-left" data-aos-duration="1000">
+      <div class="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white max-w-md lg:max-w-none w-full animate-float group">
+        <img src="pict_2.jpeg" alt="Siswa Berprestasi SMK Kasatrian" class="w-full h-80 sm:h-[450px] object-cover object-top group-hover:scale-105 transition duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 pointer-events-none"></div>
+        <div class="absolute top-4 right-4 bg-emerald-600/90 backdrop-blur-md text-white text-xs font-bold px-3.5 py-1.5 rounded-full shadow-lg border border-emerald-400/30 flex items-center gap-1.5">
+          <i data-lucide="trophy" class="w-3.5 h-3.5 text-yellow-300"></i>
+          <span>Siswa Berprestasi</span>
+        </div>
+      </div>
+
+      <div class="absolute -bottom-6 -left-2 sm:-left-6 z-20 glass-card p-4 rounded-2xl shadow-xl border border-emerald-100 flex items-center gap-4 hover:scale-105 transition duration-300">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center font-bold text-2xl shadow-md">
+          🏆
+        </div>
+        <div>
+          <p class="font-extrabold text-sm text-[var(--dark-green)]">95% Lulusan Tersalurkan</p>
+          <p class="text-xs text-gray-600 font-medium">Kerja, Kuliah, & Wirausaha</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAROUSEL SLIDER GALERI KEGIATAN -->
+<section class="py-16 bg-white border-b border-emerald-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center max-w-2xl mx-auto mb-10" data-aos="fade-up">
+      <span class="px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider">
+        Galeri & Kegiatan Siswa
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--dark-green)] mt-3">
+        Kehidupan Kampus & Prestasi
+      </h2>
+      <p class="text-gray-600 text-sm mt-2">
+        Suasana pembelajaran, kegiatan keorganisasian, dan kebanggaan prestasi siswa SMK Kasatrian.
+      </p>
+    </div>
+
+    <div class="relative max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-2xl border-4 border-white group" data-aos="zoom-in" data-aos-delay="100">
+      <div id="main-carousel-track" class="flex transition-transform duration-700 ease-in-out h-[350px] sm:h-[480px]">
+        <div class="w-full shrink-0 relative h-full">
+          <img src="pict_osis.jpeg" alt="Pengurus OSIS SMK Kasatrian" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-[var(--dark-green)]/90 via-[var(--dark-green)]/30 to-transparent p-6 sm:p-10 flex flex-col justify-end text-white">
+            <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/80 backdrop-blur-md text-white text-xs font-bold w-max mb-2">👥 Organisasi Siswa</span>
+            <h3 class="font-bold text-xl sm:text-3xl">Pengurus OSIS & Kepemimpinan Siswa</h3>
+            <p class="text-xs sm:text-sm text-emerald-100/90 mt-1 max-w-2xl">Membangun jiwa kepemimpinan, kolaborasi, dan karakter unggul melalui organisasi kesiswaan yang aktif.</p>
+          </div>
+        </div>
+
+        <div class="w-full shrink-0 relative h-full">
+          <img src="pict_1.jpeg" alt="Kedisiplinan & Karakter" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-[var(--dark-green)]/90 via-[var(--dark-green)]/30 to-transparent p-6 sm:p-10 flex flex-col justify-end text-white">
+            <span class="inline-block px-3 py-1 rounded-full bg-blue-500/80 backdrop-blur-md text-white text-xs font-bold w-max mb-2">⭐ Kedisiplinan & Karakter</span>
+            <h3 class="font-bold text-xl sm:text-3xl">Peringatan Hari Besar & Pembentukan Kedisiplinan</h3>
+            <p class="text-xs sm:text-sm text-emerald-100/90 mt-1 max-w-2xl">Kegiatan rutin untuk menanamkan kedisiplinan, jiwa nasionalisme, serta etika kerja tinggi.</p>
+          </div>
+        </div>
+
+        <div class="w-full shrink-0 relative h-full">
+          <img src="pict_2.jpeg" alt="Prestasi Siswa" class="w-full h-full object-cover object-top">
+          <div class="absolute inset-0 bg-gradient-to-t from-[var(--dark-green)]/90 via-[var(--dark-green)]/30 to-transparent p-6 sm:p-10 flex flex-col justify-end text-white">
+            <span class="inline-block px-3 py-1 rounded-full bg-yellow-500/80 backdrop-blur-md text-white text-xs font-bold w-max mb-2">🏆 Siswa Berprestasi</span>
+            <h3 class="font-bold text-xl sm:text-3xl">Generasi Juara & Kompeten</h3>
+            <p class="text-xs sm:text-sm text-emerald-100/90 mt-1 max-w-2xl">Ajang penyaluran bakat akademik dan non-akademik hingga meraih penghargaan tingkat regional.</p>
+          </div>
+        </div>
+
+        <div class="w-full shrink-0 relative h-full">
+          <img src="pict_3.jpeg" alt="Pelepasan & Kelulusan" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-[var(--dark-green)]/90 via-[var(--dark-green)]/30 to-transparent p-6 sm:p-10 flex flex-col justify-end text-white">
+            <span class="inline-block px-3 py-1 rounded-full bg-purple-500/80 backdrop-blur-md text-white text-xs font-bold w-max mb-2">🎓 Kelulusan & Karir</span>
+            <h3 class="font-bold text-xl sm:text-3xl">Pelepasan Wisudawan Siap Kerja</h3>
+            <p class="text-xs sm:text-sm text-emerald-100/90 mt-1 max-w-2xl">Momen kebanggaan meluluskan calon tenaga kerja profesional dan wirausahawan muda yang mandiri.</p>
+          </div>
+        </div>
+      </div>
+
+      <button id="carousel-prev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/80 text-white hover:text-[var(--dark-green)] p-3 rounded-full backdrop-blur-md border border-white/40 transition duration-300 opacity-80 hover:opacity-100 shadow-lg">
+        <i data-lucide="chevron-left" class="w-6 h-6"></i>
+      </button>
+      <button id="carousel-next" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/80 text-white hover:text-[var(--dark-green)] p-3 rounded-full backdrop-blur-md border border-white/40 transition duration-300 opacity-80 hover:opacity-100 shadow-lg">
+        <i data-lucide="chevron-right" class="w-6 h-6"></i>
+      </button>
+
+      <div id="carousel-dots" class="absolute bottom-4 right-6 flex items-center gap-2 z-20">
+        <button class="w-3 h-3 rounded-full bg-white transition-all duration-300 active-dot" onclick="goToSlide(0)"></button>
+        <button class="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-all duration-300" onclick="goToSlide(1)"></button>
+        <button class="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-all duration-300" onclick="goToSlide(2)"></button>
+        <button class="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-all duration-300" onclick="goToSlide(3)"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<section class="bg-white border-b border-emerald-100 py-10 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+    <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50/30 border border-emerald-100/60 card-hover" data-aos="zoom-in" data-aos-delay="100">
+      <p class="text-3xl sm:text-4xl font-extrabold text-[var(--accent-green)]">25+</p>
+      <p class="text-xs sm:text-sm font-semibold text-gray-600 mt-1">Tahun Pengalaman</p>
+    </div>
+    <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50/30 border border-emerald-100/60 card-hover" data-aos="zoom-in" data-aos-delay="200">
+      <p class="text-3xl sm:text-4xl font-extrabold text-[var(--accent-green)]">4</p>
+      <p class="text-xs sm:text-sm font-semibold text-gray-600 mt-1">Jurusan Unggulan</p>
+    </div>
+    <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50/30 border border-emerald-100/60 card-hover" data-aos="zoom-in" data-aos-delay="300">
+      <p class="text-3xl sm:text-4xl font-extrabold text-[var(--accent-green)]">50+</p>
+      <p class="text-xs sm:text-sm font-semibold text-gray-600 mt-1">Mitra DUDI / Industri</p>
+    </div>
+    <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50/30 border border-emerald-100/60 card-hover" data-aos="zoom-in" data-aos-delay="400">
+      <p id="stat-pendaftar-count" class="text-3xl sm:text-4xl font-extrabold text-[var(--accent-green)]">1</p>
+      <p class="text-xs sm:text-sm font-semibold text-gray-600 mt-1">Pendaftar Terdaftar</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAM KEAHLIAN PREVIEW (PEMBARUAN 4 JURUSAN) -->
+<section class="py-20 bg-gradient-to-b from-[var(--mint)] to-emerald-50/30" id="program-keahlian">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center">
+    <div data-aos="fade-up">
+      <span class="px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider">Program Keahlian</span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--dark-green)] mt-3">Pilih Jurusan Masa Depanmu</h2>
+      <p class="text-gray-600 max-w-xl mx-auto mt-2 text-sm sm:text-base">Kurikulum selaras industri yang membekali siswa dengan keterampilan nyata.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-12 text-left">
+
+      <!-- 1. KULINER / JASA BOGA -->
+      <div class="jurusan-card bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between card-hover" data-aos="fade-up" data-aos-delay="100">
+        <div>
+          <div class="relative h-52 overflow-hidden group">
+            <div id="slider-kuliner" class="w-full h-full flex transition-transform duration-500 ease-in-out">
+              <img src="pict_jasaboga3.jpeg" alt="Kuliner / Jasa Boga" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=Kuliner+1'">
+              <img src="pict_jasaboga2.jpeg" alt="Praktik Kuliner" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=Kuliner+2'">
+            </div>
+            <div class="absolute top-3 left-3 bg-[var(--dark-green)] text-white p-2.5 rounded-xl shadow-md border border-white/20">
+              <i data-lucide="utensils" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="p-5 space-y-3">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-orange-50 border border-orange-200 text-orange-700 font-semibold text-[11px]">
+              <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Kelas Industri Kasoka Cafe & Resto
+            </span>
+            <h3 class="font-bold text-lg text-[var(--dark-green)]">Kuliner / Jasa Boga</h3>
+            <p class="text-xs text-gray-600 leading-relaxed">
+              Seni Memasak Modern & Tradisional, Pastry & Bakery, Tata Hidang (Food Plating), Barista, & Management Restoran.
+            </p>
+          </div>
+        </div>
+        <div class="p-5 pt-0">
+          <a href="jurusan.html" class="w-full text-center py-2.5 rounded-xl bg-[var(--accent-green)] hover:bg-[var(--accent-hover)] text-white font-bold text-xs transition shadow-md block">
+            Lihat Detail Jurusan
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. PERHOTELAN -->
+      <div class="jurusan-card bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between card-hover" data-aos="fade-up" data-aos-delay="200">
+        <div>
+          <div class="relative h-52 overflow-hidden group">
+            <div id="slider-perhotelan" class="w-full h-full flex transition-transform duration-500 ease-in-out">
+              <img src="pict_perhotelan2.jpeg" alt="Perhotelan" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=Perhotelan+1'">
+              <img src="pict_perhotelan.jpeg" alt="Siswa Perhotelan" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=Perhotelan+2'">
+            </div>
+            <div class="absolute top-3 left-3 bg-[var(--dark-green)] text-white p-2.5 rounded-xl shadow-md border border-white/20">
+              <i data-lucide="building-2" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="p-5 space-y-3">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 font-semibold text-[11px]">
+              <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Kelas Industri The Amrani Syariah Hotel
+            </span>
+            <h3 class="font-bold text-lg text-[var(--dark-green)]">Perhotelan</h3>
+            <p class="text-xs text-gray-600 leading-relaxed">
+              Front Office, Housekeeping, Public Relation, Hotel Management, & Service Hospitality Berstandar Hotel Berbintang.
+            </p>
+          </div>
+        </div>
+        <div class="p-5 pt-0">
+          <a href="jurusan.html" class="w-full text-center py-2.5 rounded-xl bg-[var(--accent-green)] hover:bg-[var(--accent-hover)] text-white font-bold text-xs transition shadow-md block">
+            Lihat Detail Jurusan
+          </a>
+        </div>
+      </div>
+
+      <!-- 3. TKJ (TEKNIK KOMPUTER & JARINGAN) -->
+      <div class="jurusan-card bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between card-hover" data-aos="fade-up" data-aos-delay="300">
+        <div>
+          <div class="relative h-52 overflow-hidden group">
+            <div id="slider-tkj" class="w-full h-full flex transition-transform duration-500 ease-in-out">
+              <img src="pict_tkj.jpeg" alt="TKJ" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=TKJ+1'">
+              <img src="pict_tkj2.jpeg" alt="Praktikum TKJ" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=TKJ+2'">
+            </div>
+            <div class="absolute top-3 left-3 bg-[var(--dark-green)] text-white p-2.5 rounded-xl shadow-md border border-white/20">
+              <i data-lucide="laptop-2" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="p-5 space-y-3">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 border border-blue-200 text-blue-700 font-semibold text-[11px]">
+              <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Kelas Industri CV. Relasi Jaya
+            </span>
+            <h3 class="font-bold text-lg text-[var(--dark-green)]">TKJ (Teknik Komputer & Jaringan)</h3>
+            <p class="text-xs text-gray-600 leading-relaxed">
+              Administrator Jaringan, Mikrotik, Cisco, Cybersecurity, Server Management, Cloud Computing, & Maintenance Perangkat IT.
+            </p>
+          </div>
+        </div>
+        <div class="p-5 pt-0">
+          <a href="jurusan.html" class="w-full text-center py-2.5 rounded-xl bg-[var(--accent-green)] hover:bg-[var(--accent-hover)] text-white font-bold text-xs transition shadow-md block">
+            Lihat Detail Jurusan
+          </a>
+        </div>
+      </div>
+
+      <!-- 4. TEKNIK OTOMOTIF / TSM -->
+      <div class="jurusan-card bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between card-hover" data-aos="fade-up" data-aos-delay="400">
+        <div>
+          <div class="relative h-52 overflow-hidden group">
+            <div id="slider-otomotif" class="w-full h-full flex transition-transform duration-500 ease-in-out">
+              <img src="pict_tsm4.jpeg" alt="Teknik Otomotif / TSM" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=Otomotif+1'">
+              <img src="pict_tsm2.jpeg" alt="Praktikum Otomotif" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=Otomotif+2'">
+            </div>
+            <div class="absolute top-3 left-3 bg-[var(--dark-green)] text-white p-2.5 rounded-xl shadow-md border border-white/20">
+              <i data-lucide="wrench" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="p-5 space-y-3">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-red-700 font-semibold text-[11px]">
+              <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Kelas Industri PT AHM Jawa Tengah
+            </span>
+            <h3 class="font-bold text-lg text-[var(--dark-green)]">Teknik Otomotif / TSM</h3>
+            <p class="text-xs text-gray-600 leading-relaxed">
+              Perawatan Mesin Injeksi PGM-FI, Diagnosa Sistem Kelistrikan Modern, Overhaul Engine, & Manajemen Service Standar AHASS.
+            </p>
+          </div>
+        </div>
+        <div class="p-5 pt-0">
+          <a href="jurusan.html" class="w-full text-center py-2.5 rounded-xl bg-[var(--accent-green)] hover:bg-[var(--accent-hover)] text-white font-bold text-xs transition shadow-md block">
+            Lihat Detail Jurusan
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Tombol Lihat Semua Jurusan -->
+    <div class="mt-10 text-center">
+      <a href="jurusan.html" class="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-[var(--dark-green)] hover:bg-emerald-900 text-white font-bold text-sm shadow-md transition duration-300">
+        <span>Selengkapnya di Halaman Jurusan</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SEKSI INFORMASI PENDAFTARAN & BIAYA (PEMBARUAN LENGKAP) -->
+<section class="py-20 bg-gradient-to-b from-emerald-50/50 to-white border-b border-emerald-100" id="informasi-spmb">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+    <!-- Header Seksi -->
+    <div class="text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">
+      <span class="px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider">
+        Portal Informasi SPMB
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--dark-green)] mt-3">
+        Informasi Pendaftaran & Biaya
+      </h2>
+      <p class="text-gray-600 text-sm sm:text-base mt-2">
+        Rincian skema pendaftaran, potongan biaya pengembangan, benefit alumni, dan biaya perlengkapan seragam sekolah secara transparan.
+      </p>
+    </div>
+
+    <!-- BANNER BENEFIT MEMBER GET MEMBER -->
+    <div class="mb-12 bg-gradient-to-r from-[var(--dark-green)] via-emerald-800 to-[var(--dark-green)] rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-emerald-600/30" data-aos="zoom-in">
+      <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-[var(--accent-green)]/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+        <div class="flex items-center gap-5">
+          <div class="w-16 h-16 rounded-2xl bg-[var(--yellow)] text-[var(--dark-green)] flex items-center justify-center font-black text-3xl shadow-lg shrink-0">
+            🎁
+          </div>
+          <div>
+            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-[var(--yellow)] text-[11px] font-extrabold uppercase tracking-widest border border-white/20">
+              Program Spesial Benefit
+            </span>
+            <h3 class="text-2xl font-extrabold text-white mt-1">Member get Member Benefit</h3>
+            <p class="text-xs sm:text-sm text-emerald-100/90 mt-1 max-w-xl">
+              Dapatkan <strong class="text-[var(--yellow)]">Cashback / Fee sebesar Rp 125.000</strong> pada Gelombang Reguler bagi siswa yang berhasil mengajak teman/siswa lain untuk mendaftar di SMK Kasatrian Solo!
+            </p>
+          </div>
+        </div>
+        <a href="pilih_peran.html?mode=signup" class="px-6 py-3.5 rounded-xl bg-[var(--yellow)] hover:bg-amber-400 text-[var(--dark-green)] font-extrabold text-xs sm:text-sm shadow-lg hover:shadow-xl transition shrink-0 transform hover:-translate-y-0.5">
+          Ajak Teman Sekarang
+        </a>
+      </div>
+    </div>
+
+    <!-- KARTU SKEMA PENDAFTARAN (KUOTA KHUSUS VS REGULER) -->
+    <div class="grid md:grid-cols-2 gap-8 mb-16" data-aos="fade-up">
+      
+      <!-- SKEMA A: NO 1 - 33 (KUOTA KHUSUS / UTAMA) -->
+      <div class="relative bg-white rounded-3xl border-2 border-[var(--accent-green)] p-6 sm:p-8 shadow-xl flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1">
+        <div class="absolute -top-4 right-6 bg-[var(--accent-green)] text-white text-xs font-black px-4 py-1.5 rounded-full shadow-md uppercase tracking-wider flex items-center gap-1.5">
+          <i data-lucide="star" class="w-3.5 h-3.5 fill-current text-yellow-300"></i> Kuota Khusus / Utama
+        </div>
+
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center font-bold text-lg">
+              1
+            </div>
+            <div>
+              <h3 class="text-xl font-extrabold text-[var(--dark-green)]">Pendaftar No. 1 – 33</h3>
+              <p class="text-xs text-emerald-700 font-bold">Kuota Terbatas untuk 33 Pendaftar Pertama</p>
+            </div>
+          </div>
+
+          <div class="my-5 p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">Biaya Pengembangan</p>
+            <p class="text-3xl font-black text-[var(--accent-green)] mt-0.5">GRATIS 100%</p>
+            <p class="text-[11px] text-gray-600 mt-1">Bebas seluruh biaya pengembangan sekolah.</p>
+          </div>
+
+          <p class="text-xs font-bold text-[var(--dark-green)] mb-3">Hanya Perlu Membayar Seragam & Perlengkapan:</p>
+          <ul class="space-y-2 text-xs text-gray-700 font-medium">
+            <li class="flex items-center gap-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[var(--accent-green)] shrink-0"></i> 1 Kain Batik Sekolah</li>
+            <li class="flex items-center gap-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[var(--accent-green)] shrink-0"></i> Atribut Sekolah Lengkap</li>
+            <li class="flex items-center gap-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[var(--accent-green)] shrink-0"></i> 1 Setel Seragam Olahraga</li>
+            <li class="flex items-center gap-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[var(--accent-green)] shrink-0"></i> Topi dan Dasi</li>
+            <li class="flex items-center gap-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[var(--accent-green)] shrink-0"></i> Jas Almamater</li>
+            <li class="flex items-center gap-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[var(--accent-green)] shrink-0"></i> Wearpack / Baju Cook Sesuai Jurusan</li>
+          </ul>
+        </div>
+
+        <a href="pilih_peran.html?mode=signup" class="mt-8 w-full py-3.5 rounded-xl bg-[var(--accent-green)] hover:bg-[var(--accent-hover)] text-white text-center font-bold text-xs shadow-md transition">
+          Amankan Kuota Khusus Sekarang
+        </a>
+      </div>
+
+      <!-- SKEMA B: REGULER / BIASA (NO 34 - SETERUSNYA) -->
+      <div class="bg-white rounded-3xl border border-gray-200 p-6 sm:p-8 shadow-sm flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1">
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-gray-100 text-gray-700 flex items-center justify-center font-bold text-lg">
+              2
+            </div>
+            <div>
+              <h3 class="text-xl font-extrabold text-[var(--dark-green)]">Pendaftar Reguler / Biasa</h3>
+              <p class="text-xs text-gray-500 font-semibold">Pendaftar No. 34 – Seterusnya</p>
+            </div>
+          </div>
+
+          <div class="my-5 p-4 rounded-2xl bg-gray-50 border border-gray-200">
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">Skema Pembayaran</p>
+            <p class="text-2xl font-black text-[var(--dark-green)] mt-0.5">Uang Pengembangan + Seragam</p>
+            <p class="text-[11px] text-gray-600 mt-1">Sesuai ketentuan jurusan & perlengkapan yang dipilih.</p>
+          </div>
+
+          <p class="text-xs font-bold text-[var(--dark-green)] mb-3">Rincian Komponen Pembayaran:</p>
+          <ul class="space-y-2 text-xs text-gray-700 font-medium">
+            <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0"></i> Biaya Masuk & Uang Pengembangan (Per Jurusan)</li>
+            <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0"></i> Kain Batik Sekolah</li>
+            <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0"></i> Atribut Sekolah Lengkap</li>
+            <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0"></i> 1 Setel Seragam Olahraga</li>
+            <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0"></i> Topi dan Dasi</li>
+            <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0"></i> Jas Almamater</li>
+            <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0"></i> Wearpack / Baju Cook Sesuai Jurusan</li>
+          </ul>
+        </div>
+
+        <a href="pilih_peran.html?mode=signup" class="mt-8 w-full py-3.5 rounded-xl bg-[var(--dark-green)] hover:bg-emerald-900 text-white text-center font-bold text-xs shadow-md transition">
+          Daftar Jalur Reguler
+        </a>
+      </div>
+
+    </div>
+
+    <!-- TABEL DETIL RINCIAN BIAYA PENDIDIKAN & SERAGAM -->
+    <div class="bg-white rounded-3xl border border-emerald-100 p-6 sm:p-8 shadow-sm space-y-10" data-aos="fade-up">
+      
+      <!-- RINCIAN A: BIAYA MASUK / PENGEMBANGAN -->
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-9 h-9 rounded-xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center font-bold">
+            <i data-lucide="wallet" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-[var(--dark-green)]">A. Biaya Masuk & Pengembangan</h3>
+            <p class="text-xs text-gray-500">Sudah termasuk Biaya Pendaftaran & Pengembangan per Program Keahlian.</p>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-2xl border border-emerald-100">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-emerald-50/80 text-[var(--dark-green)] font-bold uppercase text-[11px] tracking-wider border-b border-emerald-100">
+              <tr>
+                <th class="py-3.5 px-4">Program Keahlian (Jurusan)</th>
+                <th class="py-3.5 px-4 text-right">Biaya Masuk & Pengembangan</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 text-gray-700 font-medium">
+              <tr class="hover:bg-emerald-50/30 transition">
+                <td class="py-3.5 px-4 font-bold text-[var(--dark-green)]">Kuliner / Jasa Boga</td>
+                <td class="py-3.5 px-4 text-right font-bold text-emerald-700">Rp 800.000,00</td>
+              </tr>
+              <tr class="hover:bg-emerald-50/30 transition">
+                <td class="py-3.5 px-4 font-bold text-[var(--dark-green)]">Perhotelan</td>
+                <td class="py-3.5 px-4 text-right font-bold text-emerald-700">Rp 800.000,00</td>
+              </tr>
+              <tr class="hover:bg-emerald-50/30 transition">
+                <td class="py-3.5 px-4 font-bold text-[var(--dark-green)]">TKJ (Teknik Komputer & Jaringan)</td>
+                <td class="py-3.5 px-4 text-right font-bold text-emerald-700">Rp 950.000,00</td>
+              </tr>
+              <tr class="hover:bg-emerald-50/30 transition">
+                <td class="py-3.5 px-4 font-bold text-[var(--dark-green)]">Teknik Otomotif / TSM</td>
+                <td class="py-3.5 px-4 text-right font-bold text-emerald-700">Rp 950.000,00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RINCIAN B & C: KELENGKAPAN SERAGAM & WEARPACK -->
+      <div class="grid lg:grid-cols-2 gap-8 pt-4 border-t border-gray-100">
+        
+        <!-- RINCIAN B -->
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-9 h-9 rounded-xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center font-bold">
+              <i data-lucide="shirt" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-[var(--dark-green)]">B. Kelengkapan Lain / Seragam</h3>
+              <p class="text-xs text-gray-500">Membayar terpisah/diluar biaya pengembangan di atas.</p>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto rounded-2xl border border-emerald-100">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-emerald-50/80 text-[var(--dark-green)] font-bold uppercase text-[11px] tracking-wider border-b border-emerald-100">
+                <tr>
+                  <th class="py-3.5 px-4">Item Kelengkapan</th>
+                  <th class="py-3.5 px-4 text-right">Harga</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100 text-gray-700 font-medium">
+                <tr class="hover:bg-emerald-50/30 transition">
+                  <td class="py-3 px-4">Topi dan Dasi</td>
+                  <td class="py-3 px-4 text-right font-bold text-gray-800">Rp 25.000</td>
+                </tr>
+                <tr class="hover:bg-emerald-50/30 transition">
+                  <td class="py-3 px-4">1 Setel Seragam Olahraga Putra</td>
+                  <td class="py-3 px-4 text-right font-bold text-gray-800">Rp 120.000</td>
+                </tr>
+                <tr class="hover:bg-emerald-50/30 transition">
+                  <td class="py-3 px-4">1 Setel Seragam Olahraga Putri</td>
+                  <td class="py-3 px-4 text-right font-bold text-gray-800">Rp 130.000</td>
+                </tr>
+                <tr class="hover:bg-emerald-50/30 transition">
+                  <td class="py-3 px-4">Jas Almamater</td>
+                  <td class="py-3 px-4 text-right font-bold text-gray-800">Rp 140.000</td>
+                </tr>
+                <tr class="hover:bg-emerald-50/30 transition">
+                  <td class="py-3 px-4">Kain Batik Ukuran 2m</td>
+                  <td class="py-3 px-4 text-right font-bold text-gray-800">Rp 65.000</td>
+                </tr>
+                <tr class="hover:bg-emerald-50/30 transition">
+                  <td class="py-3 px-4">Kain Batik Ukuran 2,5m</td>
+                  <td class="py-3 px-4 text-right font-bold text-gray-800">Rp 80.000</td>
+                </tr>
+                <tr class="hover:bg-emerald-50/30 transition">
+                  <td class="py-3 px-4">Atribut Sekolah</td>
+                  <td class="py-3 px-4 text-right font-bold text-gray-800">Rp 20.000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- RINCIAN C -->
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-9 h-9 rounded-xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center font-bold">
+              <i data-lucide="scissors" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-[var(--dark-green)]">C. Wearpack / Baju Cook</h3>
+              <p class="text-xs text-gray-500">Pakaian praktik resmi (Harga sesuai jurusan).</p>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto rounded-2xl border border-emerald-100">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-emerald-50/80 text-[var(--dark-green)] font-bold uppercase text-[11px] tracking-wider border-b border-emerald-100">
+                <tr>
+                  <th class="py-3.5 px-4">Program Keahlian</th>
+                  <th class="py-3.5 px-4 text-right">Harga Wearpack</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100 text-gray-700 font-medium">
+                <tr class="hover:bg-emerald-50/30 transition">
+                  <td class="py-3.5 px-4 font-semibold text-gray-800">Teknik Otomotif (Standar AHASS)</td>
+                  <td class="py-3.5 px-4 text-right font-bold text-emerald-700">Rp 315.000</td>
+                </tr>
+                <tr class="hover:bg-emerald-50/30 transition">
+                  <td class="py-3.5 px-4 font-semibold text-gray-800">TKJ (Teknik Komputer & Jaringan)</td>
+                  <td class="py-3.5 px-4 text-right font-bold text-emerald-700">Rp 185.000</td>
+                </tr>
+                <tr class="hover:bg-emerald-50/30 transition">
+                  <td class="py-3.5 px-4 font-semibold text-gray-800">Kuliner / Jasa Boga (Baju Cook)</td>
+                  <td class="py-3.5 px-4 text-right font-bold text-emerald-700">Rp 185.000</td>
+                </tr>
+                <tr class="hover:bg-emerald-50/30 transition">
+                  <td class="py-3.5 px-4 font-semibold text-gray-800">Perhotelan</td>
+                  <td class="py-3.5 px-4 text-right font-bold text-emerald-700">Rp 185.000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- NOTASI / CATATAN PENTING -->
+          <div class="mt-4 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-start gap-2.5">
+            <i data-lucide="alert-circle" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
+            <p>
+              <strong>Catatan Penting:</strong> Uang pengembangan di atas belum termasuk pembayaran kelengkapan seragam & wearpack.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- PROGRAM GRATIS & BANTUAN PENDIDIKAN -->
+<section class="py-20 bg-white border-b border-emerald-100" id="info-pendaftaran">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8">
+
+    <div class="bg-gradient-to-br from-emerald-50 to-teal-50/50 rounded-3xl border border-emerald-200/80 p-6 sm:p-8 shadow-sm card-hover" data-aos="fade-right">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md">
+          <i data-lucide="badge-percent" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Program Gratis</p>
+          <h2 class="text-2xl font-extrabold text-[var(--dark-green)]">Bantuan Pendidikan</h2>
+        </div>
+      </div>
+      <ul class="space-y-3.5 text-sm text-gray-700 font-medium">
+        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold text-xs">✓</span> Siswa/i yatim piatu gratis SPP 100%</li>
+        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold text-xs">✓</span> Siswa/i yatim mendapat potongan SPP 50%</li>
+        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold text-xs">✓</span> Siswa/i piatu mendapat potongan SPP 27%</li>
+        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold text-xs">✓</span> Keluarga siswa/i tidak mampu</li>
+        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center font-bold text-xs">✓</span> Beasiswa lainnya berupa PIP, BSM, dan lainnya</li>
+      </ul>
+      <p class="text-xs text-gray-600 mt-6 border-t border-emerald-200/80 pt-4 font-medium">
+        <strong>Syarat:</strong> melampirkan bukti dokumen yang sesuai.
+      </p>
+    </div>
+
+    <div class="bg-gradient-to-br from-[var(--mint)] to-emerald-100/60 rounded-3xl border border-emerald-200/80 p-6 sm:p-8 shadow-sm card-hover" data-aos="fade-left">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-white text-emerald-700 flex items-center justify-center shadow-md">
+          <i data-lucide="building-2" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider text-emerald-800">Keunggulan Sekolah</p>
+          <h2 class="text-2xl font-extrabold text-[var(--dark-green)]">Fasilitas & Program</h2>
+        </div>
+      </div>
+      <ol class="grid sm:grid-cols-2 gap-x-6 gap-y-2.5 text-xs text-gray-700 font-semibold list-decimal list-inside leading-relaxed">
+        <li>Kelas kewirausahaan Kasoka Cafe & Resto</li>
+        <li>Kelas kewirausahaan Bakso Rudi</li>
+        <li>Kelas kewirausahaan Relasi Jaya</li>
+        <li>Kelas industri AHM UMS</li>
+        <li>Kelas industri The Amrani Syariah Hotel</li>
+        <li>Kelas Magang Industri</li>
+        <li>Kelas Aman, Nyaman & Ber-CCTV</li>
+        <li>Beragam ekstrakurikuler</li>
+        <li>Tenaga pengajar profesional</li>
+        <li>Bursa Kerja Khusus (BKK)</li>
+        <li>Uji Kompetensi (LSP-P1)</li>
+        <li>Teaching Factory</li>
+        <li class="sm:col-span-2">Lulusan siap kerja dalam dan luar negeri maupun menjadi pengusaha</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+
+<!-- TAHAPAN PENDAFTARAN -->
+<section class="py-20 bg-white border-b border-emerald-100">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+    <div data-aos="fade-up">
+      <h2 class="text-3xl font-extrabold text-[var(--dark-green)]">Alur Pendaftaran SPMB 📅</h2>
+      <p class="text-gray-500 text-sm mt-2">Proses pendaftaran cepat, transparan, dan dapat diakses secara online.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12 relative">
+      <div class="p-6 rounded-2xl bg-emerald-50/40 border border-emerald-100 text-center relative z-10 card-hover" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-[var(--accent-green)] text-white font-bold text-lg flex items-center justify-center mb-3 shadow-md">1</div>
+        <h4 class="font-bold text-sm text-[var(--dark-green)]">Isi Formulir</h4>
+        <p class="text-xs text-gray-500 mt-1">Daftar akun & lengkapi data diri secara online.</p>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-emerald-50/40 border border-emerald-100 text-center relative z-10 card-hover" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-[var(--accent-green)] text-white font-bold text-lg flex items-center justify-center mb-3 shadow-md">2</div>
+        <h4 class="font-bold text-sm text-[var(--dark-green)]">Upload Berkas</h4>
+        <p class="text-xs text-gray-500 mt-1">Unggah KK, Ijazah/SKL, & pas foto terbaru.</p>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-emerald-50/40 border border-emerald-100 text-center relative z-10 card-hover" data-aos="fade-up" data-aos-delay="300">
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-[var(--accent-green)] text-white font-bold text-lg flex items-center justify-center mb-3 shadow-md">3</div>
+        <h4 class="font-bold text-sm text-[var(--dark-green)]">Tes & Seleksi</h4>
+        <p class="text-xs text-gray-500 mt-1">Ikuti tes pemetaan minat & wawancara.</p>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-emerald-50/40 border border-emerald-100 text-center relative z-10 card-hover" data-aos="fade-up" data-aos-delay="400">
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-[var(--yellow)] text-[var(--dark-green)] font-bold text-lg flex items-center justify-center mb-3 shadow-md">4</div>
+        <h4 class="font-bold text-sm text-[var(--dark-green)]">Pengumuman</h4>
+        <p class="text-xs text-gray-500 mt-1">Cek hasil seleksi & daftar ulang.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOATING WHATSAPP BUTTON -->
+<a href="https://wa.me/6282230660060?text=Halo%20Admin%20SMK%20Kasatrian,%20saya%20ingin%20bertanya%20mengenai%20pendaftaran%20SPMB" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-3.5 sm:p-4 rounded-full shadow-2xl flex items-center gap-3 transition-all duration-300 hover:scale-110 group animate-bounce">
+  <i data-lucide="message-circle" class="w-6 h-6 fill-current"></i>
+  <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-500 ease-in-out text-xs sm:text-sm font-bold">Chat Whatsapp</span>
+</a>
+
+<!-- FOOTER -->
+<footer class="bg-[var(--dark-green)] text-white pt-14 pb-8 border-t border-emerald-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-3 gap-10">
+    <div class="space-y-4">
+      <div class="flex items-center gap-3">
+        <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-11 h-11 object-contain">
+        <div class="nama-sekolah">
+          <p class="text-lg text-white">SMK KASATRIAN</p>
+          <p class="text-xs text-white/80 -mt-1">SOLO SUKOHARJO</p>
+        </div>
+      </div>
+      <p class="text-xs text-emerald-100/70 leading-relaxed">
+        Menciptakan lulusan berkarakter, berkompeten, dan siap bersaing di era industri global.
+      </p>
+    </div>
+
+    <div>
+      <h4 class="font-bold text-sm text-emerald-300 mb-4 uppercase tracking-wider">Navigasi Cepat</h4>
+      <ul class="space-y-2.5 text-xs text-emerald-100/80 font-medium">
+        <li><a href="index.html" class="hover:text-white hover:underline transition">Beranda</a></li>
+        <li><a href="jurusan.html" class="hover:text-white hover:underline transition">Jurusan & Kurikulum</a></li>
+        <li><a href="persyaratan.html" class="hover:text-white hover:underline transition">Syarat Pendaftaran</a></li>
+        <li><a href="faq.html" class="hover:text-white hover:underline transition">Pusat Bantuan (FAQ)</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="font-bold text-sm text-emerald-300 mb-4 uppercase tracking-wider">Kontak Sekolah</h4>
+      <p class="text-xs text-emerald-100/80 leading-relaxed flex items-start gap-2">
+        <i data-lucide="map-pin" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+        Jl. Mendungan No.3, Pabelan, Kartasura, Sukoharjo, Jawa Tengah
+      </p>
+
+      <div class="mt-4 pt-3 border-t border-emerald-800/80">
+        <p class="text-xs text-emerald-100/80 mb-2">Informasi pendaftaran:</p>
+        <a href="https://wa.me/6282230660060?text=Halo%20Admin%20SMK%20Kasatrian,%20saya%20ingin%20bertanya%20mengenai%20pendaftaran%20SPMB" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-emerald-800/80 hover:bg-emerald-700 text-white text-xs font-semibold border border-emerald-700 transition duration-300 shadow-md hover:shadow-lg">
+          <i data-lucide="message-circle" class="w-4 h-4 text-green-400 fill-current"></i>
+          <span>082230660060</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-12 pt-6 border-t border-emerald-900/80 text-center text-xs text-emerald-200/60 font-medium">
+    © 2027 SMK Kasatrian Solo Sukoharjo. All Rights Reserved.
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+  AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
+
+  // Mobile Menu Toggle
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  if (btn && menu) {
+    btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+  }
+
+  // Carousel Slider Galeri Siswa
+  let currentSlide = 0;
+  const totalSlides = 4;
+  const track = document.getElementById('main-carousel-track');
+  const dots = document.querySelectorAll('#carousel-dots button');
+
+  function updateCarousel() {
+    if (!track) return;
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    dots.forEach((dot, index) => {
+      if (index === currentSlide) {
+        dot.classList.add('bg-white', 'w-8');
+        dot.classList.remove('bg-white/50', 'w-3');
+      } else {
+        dot.classList.remove('bg-white', 'w-8');
+        dot.classList.add('bg-white/50', 'w-3');
+      }
+    });
+  }
+
+  function goToSlide(index) {
+    currentSlide = index;
+    updateCarousel();
+  }
+
+  const prevBtn = document.getElementById('carousel-prev');
+  const nextBtn = document.getElementById('carousel-next');
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      updateCarousel();
+    });
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+      updateCarousel();
+    });
+  }
+
+  setInterval(() => {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateCarousel();
+  }, 4000);
+</script>
+</body>
+</html>

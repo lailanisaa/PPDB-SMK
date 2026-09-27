@@ -42,7 +42,7 @@
     transition: transform 0.5s ease;
   }
   .jurusan-card:hover .jurusan-img {
-    transform: scale(1.08);
+    transform: scale(1.05);
   }
 </style>
 </head>
@@ -97,7 +97,7 @@
   <div class="max-w-4xl mx-auto px-4 text-center space-y-3" data-aos="fade-down">
     <span class="px-4 py-1.5 rounded-full bg-emerald-100/80 border border-emerald-200 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider inline-block">Program Keahlian</span>
     <h1 class="text-3xl sm:text-5xl font-extrabold text-[var(--dark-green)]">Pilihan Jurusan Unggulan</h1>
-    <p class="text-xs sm:text-sm text-gray-600 max-w-xl mx-auto">Diselaraskan dengan kebutuhan industri terdepan untuk menjamin keterampilan praktis dan masa depan lulusan.</p>
+    <p class="text-xs sm:text-sm text-gray-600 max-w-xl mx-auto">Diselaraskan dengan kebutuhan industri terdepan melalui Kelas Industri terakreditasi untuk menjamin kesiapan kerja lulusan.</p>
   </div>
 </section>
 
@@ -108,16 +108,27 @@
     <!-- TKJ -->
     <div class="jurusan-card bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between" data-aos="fade-up" data-aos-delay="100">
       <div>
-        <div class="relative h-48 overflow-hidden">
-          <img src="pct_tkj.jpg" alt="Teknik Komputer & Jaringan" class="jurusan-img w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x300?text=TKJ'">
-          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-lg shadow-md border border-white/50">
-            💻
+        <div class="relative h-52 overflow-hidden group">
+          <!-- Slider Gambar TKJ -->
+          <div id="slider-tkj" class="w-full h-full flex transition-transform duration-500 ease-in-out">
+            <img src="pict_tkj.jpeg" alt="Teknik Komputer & Jaringan" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=TKJ+1'">
+            <img src="pict_tkj2.jpeg" alt="Praktikum TKJ" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=TKJ+2'">
           </div>
+          <!-- Icon Modern -->
+          <div class="absolute top-3 left-3 bg-emerald-600 text-white p-2.5 rounded-xl shadow-md border border-white/20">
+            <i data-lucide="laptop-2" class="w-5 h-5"></i>
+          </div>
+          <!-- Tombol Navigasi Slider Foto -->
+          <button onclick="moveSlider('slider-tkj', -1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+          <button onclick="moveSlider('slider-tkj', 1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
         </div>
-        <div class="p-5 space-y-2">
-          <h3 class="font-bold text-lg text-[var(--dark-green)]">TKJ (Teknik Komputer)</h3>
+        <div class="p-5 space-y-3">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 border border-blue-200 text-blue-700 font-semibold text-[11px]">
+            <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Kelas Industri CV. Relasi Jaya
+          </span>
+          <h3 class="font-bold text-lg text-[var(--dark-green)]">Teknik Komputer & Jaringan</h3>
           <p class="text-xs text-gray-600 leading-relaxed">
-            Administrator jaringan, Mikrotik, Cisco, Cybersecurity, Server Management & Cloud Computing.
+            Administrator jaringan, Mikrotik, Cisco, Cybersecurity, Server Management, Cloud Computing, & Maintenance Perangkat IT.
           </p>
         </div>
       </div>
@@ -131,16 +142,28 @@
     <!-- Perhotelan -->
     <div class="jurusan-card bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between" data-aos="fade-up" data-aos-delay="200">
       <div>
-        <div class="relative h-48 overflow-hidden">
-          <img src="pct_perhotelan.png" alt="Perhotelan" class="jurusan-img w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x300?text=Perhotelan'">
-          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-lg shadow-md border border-white/50">
-            🏨
+        <div class="relative h-52 overflow-hidden group">
+          <!-- Slider Gambar Perhotelan -->
+          <div id="slider-perhotelan" class="w-full h-full flex transition-transform duration-500 ease-in-out">
+            <img src="pict_perhotelan2.jpeg" alt="Front Office Perhotelan" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=Perhotelan+1'">
+            <img src="pict_perhotelan.jpeg" alt="Siswa Perhotelan" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=Perhotelan+2'">
+            <img src="perhotelan.jpeg" alt="Gedung Perhotelan" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=Perhotelan+3'">
           </div>
+          <!-- Icon Modern -->
+          <div class="absolute top-3 left-3 bg-emerald-600 text-white p-2.5 rounded-xl shadow-md border border-white/20">
+            <i data-lucide="building-2" class="w-5 h-5"></i>
+          </div>
+          <!-- Tombol Navigasi Slider Foto -->
+          <button onclick="moveSlider('slider-perhotelan', -1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+          <button onclick="moveSlider('slider-perhotelan', 1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
         </div>
-        <div class="p-5 space-y-2">
+        <div class="p-5 space-y-3">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 font-semibold text-[11px]">
+            <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Kelas Industri the Amrani Syariah Hotel
+          </span>
           <h3 class="font-bold text-lg text-[var(--dark-green)]">Perhotelan</h3>
           <p class="text-xs text-gray-600 leading-relaxed">
-            Front Office, Housekeeping, Hotel Management, & Service Hospitality Standar Internasional.
+            Front Office, Housekeeping, Public Relation, Hotel Management, & Service Hospitality Berstandar Hotel Berbintang.
           </p>
         </div>
       </div>
@@ -151,19 +174,31 @@
       </div>
     </div>
 
-    <!-- Kuliner / Jasa Boga -->
+    <!-- Jasa Boga -->
     <div class="jurusan-card bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between" data-aos="fade-up" data-aos-delay="300">
       <div>
-        <div class="relative h-48 overflow-hidden">
-          <img src="pct_jasaboga.jpg" alt="Kuliner / Jasa Boga" class="jurusan-img w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x300?text=Kuliner'">
-          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-lg shadow-md border border-white/50">
-            🍳
+        <div class="relative h-52 overflow-hidden group">
+          <!-- Slider Gambar Jasa Boga -->
+          <div id="slider-jasaboga" class="w-full h-full flex transition-transform duration-500 ease-in-out">
+            <img src="pict_jasaboga3.jpeg" alt="Praktikum Jasa Boga" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=Jasa+Boga+1'">
+            <img src="pict_jasaboga2.jpeg" alt="Olahan Kuliner Jasa Boga" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=Jasa+Boga+2'">
+            <img src="pict_jasaboga.jpeg" alt="Kemasan Produk Jasa Boga" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=Jasa+Boga+3'">
           </div>
+          <!-- Icon Modern -->
+          <div class="absolute top-3 left-3 bg-emerald-600 text-white p-2.5 rounded-xl shadow-md border border-white/20">
+            <i data-lucide="utensils" class="w-5 h-5"></i>
+          </div>
+          <!-- Tombol Navigasi Slider Foto -->
+          <button onclick="moveSlider('slider-jasaboga', -1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+          <button onclick="moveSlider('slider-jasaboga', 1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
         </div>
-        <div class="p-5 space-y-2">
-          <h3 class="font-bold text-lg text-[var(--dark-green)]">Kuliner / Jasa Boga</h3>
+        <div class="p-5 space-y-3">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-orange-50 border border-orange-200 text-orange-700 font-semibold text-[11px]">
+            <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Kelas Industri Kasoka Cafe & Resto
+          </span>
+          <h3 class="font-bold text-lg text-[var(--dark-green)]">Jasa Boga (Kuliner)</h3>
           <p class="text-xs text-gray-600 leading-relaxed">
-            Seni Memasak Profesional, Pastry & Bakery, Tata Hidang, & Manajemen Usaha Restoran.
+            Seni Memasak Modern & Tradisional, Pastry & Bakery, Tata Hidang (Food Plating), Barista, & Management Restoran.
           </p>
         </div>
       </div>
@@ -177,16 +212,28 @@
     <!-- TSM -->
     <div class="jurusan-card bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between" data-aos="fade-up" data-aos-delay="400">
       <div>
-        <div class="relative h-48 overflow-hidden">
-          <img src="pct_tsm.jpg" alt="Teknik Sepeda Motor" class="jurusan-img w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x300?text=TSM'">
-          <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-lg shadow-md border border-white/50">
-            🏍️
+        <div class="relative h-52 overflow-hidden group">
+          <!-- Slider Gambar TSM -->
+          <div id="slider-tsm" class="w-full h-full flex transition-transform duration-500 ease-in-out">
+            <img src="pict_tsm4.jpeg" alt="Bengkel TSM" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=TSM+1'">
+            <img src="pict_tsm2.jpeg" alt="Praktikum Otomotif TSM" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=TSM+2'">
+            <img src="pict_tsm3.jpeg" alt="Siswa Honda TSM" class="jurusan-img w-full h-full object-cover shrink-0" onerror="this.src='https://via.placeholder.com/400x300?text=TSM+3'">
           </div>
+          <!-- Icon Modern -->
+          <div class="absolute top-3 left-3 bg-emerald-600 text-white p-2.5 rounded-xl shadow-md border border-white/20">
+            <i data-lucide="wrench" class="w-5 h-5"></i>
+          </div>
+          <!-- Tombol Navigasi Slider Foto -->
+          <button onclick="moveSlider('slider-tsm', -1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+          <button onclick="moveSlider('slider-tsm', 1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
         </div>
-        <div class="p-5 space-y-2">
-          <h3 class="font-bold text-lg text-[var(--dark-green)]">Teknik Sepeda Motor</h3>
+        <div class="p-5 space-y-3">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-red-700 font-semibold text-[11px]">
+            <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Kelas Industri PT AHM Jawa Tengah
+          </span>
+          <h3 class="font-bold text-lg text-[var(--dark-green)]">Teknik Sepeda Motor (Otomotif)</h3>
           <p class="text-xs text-gray-600 leading-relaxed">
-            Perawatan Mesin Injeksi EFI, Diagnosa Sistem Kelistrikan, & Kewirausahaan Bengkel Modern.
+            Perawatan Mesin Injeksi PGM-FI, Diagnosa Sistem Kelistrikan Modern, Overhaul, & Manajemen Otomotif Standar AHASS.
           </p>
         </div>
       </div>
@@ -251,6 +298,21 @@
 <script>
   lucide.createIcons();
   AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
+
+  // Fungsi Slider Gambar
+  const sliderIndices = {};
+  function moveSlider(sliderId, direction) {
+    const slider = document.getElementById(sliderId);
+    if (!slider) return;
+    
+    const totalSlides = slider.children.length;
+    if (!(sliderId in sliderIndices)) {
+      sliderIndices[sliderId] = 0;
+    }
+    
+    sliderIndices[sliderId] = (sliderIndices[sliderId] + direction + totalSlides) % totalSlides;
+    slider.style.transform = `translateX(-${sliderIndices[sliderId] * 100}%)`;
+  }
 
   window.addEventListener('DOMContentLoaded', () => {
     const activeSession = JSON.parse(localStorage.getItem('smk_active_session'));

@@ -55,6 +55,18 @@ statistik pendaftaran — semuanya dalam satu platform terpadu.
 | Desain UI | Figma |
 | Deployment | (menyesuaikan server sekolah) |
 
+## Menjalankan di Laragon
+
+1. Start **MySQL** dari Laragon.
+2. Pastikan database `spmb_kasatrian` sudah tersedia. Untuk instalasi baru, impor `database.sql` melalui HeidiSQL/phpMyAdmin.
+3. Buka terminal pada folder `laravel`, lalu jalankan `composer install` jika folder `vendor` belum ada.
+4. Salin `.env.example` menjadi `.env`, atur koneksi database dan `ADMIN_ACCESS_CODE`, kemudian jalankan `php artisan key:generate`.
+5. Jalankan `php artisan migrate` dan `php artisan storage:link`.
+6. Jalankan `php artisan serve --host=127.0.0.1 --port=8002`.
+7. Buka `http://localhost:8002`.
+
+Frontend HTML tetap berada di `laravel/public/src`; API Laravel mempertahankan URL lama di `/api/*.php`.
+
 ---
 
 ## 📁 Struktur Folder

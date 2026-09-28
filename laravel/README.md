@@ -64,3 +64,11 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Email Reset Password
+
+Endpoint `POST /api/request_reset.php` mencari email pada akun siswa atau admin, membuat token reset yang berlaku 15 menit, lalu mengirim link ke alamat email akun tersebut. Endpoint `POST /api/reset_password.php` memvalidasi token dan menyimpan password baru.
+
+Untuk mengirim email sungguhan melalui Gmail, isi variabel `MAIL_USERNAME` dengan alamat Gmail dan `MAIL_PASSWORD` dengan App Password Gmail (bukan password login Gmail). Aktifkan verifikasi 2 langkah di akun Google, lalu buat App Password. Samakan `MAIL_FROM_ADDRESS` dengan alamat Gmail pengirim. Konfigurasi SMTP menggunakan `smtp.gmail.com`, port `587`, dan enkripsi `tls`.
+
+Setelah mengubah `.env`, jalankan `php artisan config:clear` dari folder `laravel`, lalu kirim permintaan dari halaman lupa password. Jika pengiriman gagal, periksa `laravel/storage/logs/laravel.log` dan pastikan kredensial SMTP benar. Jangan commit atau membagikan App Password.

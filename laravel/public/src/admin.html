@@ -1,697 +1,4 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel | SPMB SMK Kasatrian Solo</title>
-  <link rel="icon" type="image/png" href="Logo_SMK.png">
-
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'dark-green': '#1B4332',
-            'accent-green': '#22C55E',
-            'soft-gray': '#F4F7F5',
-          }
-        }
-      }
-    }
-  </script>
-
-  <style>
-    * { font-family: 'Poppins', sans-serif; }
-    .nama-sekolah { font-family: 'Kavoon', cursive !important; }
-    body { background-color: #F4F7F5; color: #1B4332; }
-
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f1f1; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-    .menu-item { color: #D1FAE5; transition: all 0.2s ease; }
-    .menu-item:hover { background: rgba(255, 255, 255, 0.1); }
-    .menu-item.active { background: #22C55E; color: #FFFFFF; font-weight: 600; }
-    .page-section { animation: fadeIn 0.25s ease-out; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media print {
-      aside, header, #toast-container, .no-print, button { display: none !important; }
-      main { padding: 0 !important; overflow: visible !important; }
-      body { background: white !important; color: black !important; }
-      .page-section:not([data-page="laporan"]) { display: none !important; }
-      [data-page="laporan"] { display: block !important; }
-    }
-  </style>
-</head>
-<body class="h-screen overflow-hidden flex flex-col md:flex-row bg-[#F4F7F5]">
-
-  <!-- TOAST NOTIFICATION CONTAINER -->
-  <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
-
-  <!-- OVERLAY MOBILE -->
-  <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/50 z-30 md:hidden transition-opacity"></div>
-
-  <!-- SIDEBAR NAVIGATION -->
-  <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-[#1B4332] flex flex-col -translate-x-full md:translate-x-0 transition-transform duration-200 shrink-0">
-    <div class="p-5 border-b border-white/10 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <img src="Logo_SMK.png" alt="Logo SMK" class="w-8 h-8 object-contain" onerror="this.src='https://via.placeholder.com/32'">
-        <span class="nama-sekolah text-white text-lg tracking-wide">SPMB Admin</span>
-      </div>
-      <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30 uppercase">v2.0</span>
-    </div>
-
-    <!-- Menu Navigasi -->
-    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-      <p class="text-[10px] font-bold text-emerald-300/60 uppercase tracking-wider px-3 mb-2">Utama</p>
-      <button class="menu-item active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="dashboard">
-        <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
-      </button>
-      <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="pendaftar">
-        <i data-lucide="users" class="w-4 h-4"></i> Data Pendaftar
-      </button>
-      <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="verifikasi">
-        <i data-lucide="file-check-2" class="w-4 h-4"></i> Verifikasi Berkas
-      </button>
-      <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="jurusan">
-        <i data-lucide="book-open" class="w-4 h-4"></i> Manajemen Jurusan
-      </button>
-      <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="pengumuman">
-        <i data-lucide="megaphone" class="w-4 h-4"></i> Pengumuman
-      </button>
-      <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="laporan">
-        <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Laporan & Statistik
-      </button>
-
-      <p class="text-[10px] font-bold text-emerald-300/60 uppercase tracking-wider px-3 mt-6 mb-2">Sistem & Pengaturan</p>
-      <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="pengaturan">
-        <i data-lucide="settings" class="w-4 h-4"></i> Pengaturan SPMB
-      </button>
-      <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="manajemen-admin">
-        <i data-lucide="shield" class="w-4 h-4"></i> Kelola Staf Admin
-      </button>
-    </nav>
-
-    <!-- Admin Profile Quick Bar -->
-    <div class="p-3 border-t border-white/10 space-y-2">
-      <button onclick="openProfileModal()" class="w-full flex items-center gap-3 p-2 rounded-xl bg-white/5 hover:bg-white/10 transition text-left group">
-        <div id="sidebar-avatar-wrapper" class="w-9 h-9 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center justify-center shrink-0 overflow-hidden">
-          <img id="sidebar-avatar-img" src="" class="w-full h-full object-cover hidden" alt="Avatar">
-          <i id="sidebar-avatar-icon" data-lucide="user-check" class="w-5 h-5"></i>
-        </div>
-        <div class="flex-1 min-w-0">
-          <p id="sidebar-user-name" class="text-white text-xs font-semibold truncate">Admin SPMB</p>
-          <p id="sidebar-user-role" class="text-emerald-300/70 text-[10px] truncate">Panitia SPMB</p>
-        </div>
-        <i data-lucide="settings-2" class="w-4 h-4 text-emerald-300 group-hover:rotate-45 transition-transform"></i>
-      </button>
-      <button onclick="confirmLogout()" class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 text-xs font-medium transition border border-red-500/30">
-        <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Logout
-      </button>
-    </div>
-  </aside>
-
-  <!-- MAIN WRAPPER -->
-  <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
-
-    <!-- TOPBAR / HEADER -->
-    <header class="bg-white border-b border-gray-200 px-4 sm:px-6 py-3 flex items-center justify-between gap-4 shrink-0 z-20">
-      <div class="flex items-center gap-3 flex-1 max-w-md">
-        <button id="hamburger" class="md:hidden text-gray-700 hover:text-[#1B4332] p-1">
-          <i data-lucide="menu" class="w-6 h-6"></i>
-        </button>
-        <div class="relative w-full">
-          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-          <input id="global-search" type="text" placeholder="Pencarian Global (Nama, NISN, Asal Sekolah, Jurusan)..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#22C55E] transition">
-        </div>
-      </div>
-
-      <div class="flex items-center gap-3 sm:gap-4">
-        <button onclick="openProfileModal()" class="flex items-center gap-2 border-l border-gray-200 pl-3 group" title="Edit Profil Admin">
-          <div id="header-avatar-wrapper" class="w-8 h-8 rounded-full bg-emerald-100 text-[#1B4332] flex items-center justify-center font-bold ring-2 ring-emerald-500/30 overflow-hidden">
-            <img id="header-avatar-img" src="" class="w-full h-full object-cover hidden" alt="Avatar">
-            <i id="header-avatar-icon" data-lucide="user" class="w-4 h-4"></i>
-          </div>
-        </button>
-      </div>
-    </header>
-
-    <!-- CONTENT MAIN AREA -->
-    <main id="main-content" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
-
-      <!-- DASHBOARD -->
-      <section data-page="dashboard" class="page-section space-y-6">
-        <div class="bg-gradient-to-r from-[#1B4332] to-emerald-800 rounded-2xl p-6 text-white shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h1 class="text-xl sm:text-2xl font-bold">Selamat Datang, <span id="dash-admin-name">Admin</span> 👋</h1>
-            <p class="text-xs sm:text-sm text-emerald-100/80 mt-1">Panel Kendali Sistem Penerimaan Murid Baru SMK Kasatrian Solo.</p>
-          </div>
-          <button onclick="switchPage('pendaftar')" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition shadow-sm">
-            Tinjau Pendaftar
-          </button>
-        </div>
-
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-            <p class="text-xs font-semibold text-gray-500">Total Pendaftar</p>
-            <p id="stat-total" class="text-2xl font-bold text-[#1B4332] mt-1">0</p>
-            <p class="text-[10px] text-emerald-600 font-medium mt-1">Siswa Terdaftar</p>
-          </div>
-          <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-            <p class="text-xs font-semibold text-gray-500">Menunggu Verifikasi</p>
-            <p id="stat-waiting" class="text-2xl font-bold text-amber-500 mt-1">0</p>
-            <p class="text-[10px] text-amber-600 font-medium mt-1">Perlu Peninjauan</p>
-          </div>
-          <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-            <p class="text-xs font-semibold text-gray-500">Berkas Diterima</p>
-            <p id="stat-accepted" class="text-2xl font-bold text-emerald-600 mt-1">0</p>
-            <p class="text-[10px] text-emerald-600 font-medium mt-1">Memenuhi Syarat</p>
-          </div>
-          <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-            <p class="text-xs font-semibold text-gray-500">Ditolak / Revisi</p>
-            <p id="stat-rejected" class="text-2xl font-bold text-red-500 mt-1">0</p>
-            <p class="text-[10px] text-red-500 font-medium mt-1">Perlu Perbaikan</p>
-          </div>
-        </div>
-
-        <div class="grid lg:grid-cols-2 gap-6">
-          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
-            <h3 class="font-bold text-xs uppercase tracking-wider text-gray-500 mb-4">Tren Pendaftaran Harian</h3>
-            <div class="h-64 relative">
-              <canvas id="chart-tren"></canvas>
-            </div>
-          </div>
-          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
-            <h3 class="font-bold text-xs uppercase tracking-wider text-gray-500 mb-4">Distribusi Per Jurusan</h3>
-            <div class="h-64 relative">
-              <canvas id="chart-distribusi"></canvas>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- DATA PENDAFTAR -->
-      <section data-page="pendaftar" class="page-section hidden space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-          <div>
-            <h1 class="text-lg font-bold text-[#1B4332]">Data Pendaftar SPMB</h1>
-            <p class="text-xs text-gray-500">Kelola profil calon siswa, perbarui jurusan, dan hapus pendaftar.</p>
-          </div>
-          <div class="flex items-center gap-3">
-            <select id="filter-status" onchange="renderPendaftarTable()" class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#22C55E]">
-              <option value="semua">Semua Status</option>
-              <option value="Diterima">Diterima</option>
-              <option value="Menunggu">Menunggu</option>
-              <option value="Ditolak">Ditolak / Minta Revisi</option>
-            </select>
-            <button onclick="loadPendaftarData()" class="p-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition" title="Muat Ulang Data">
-              <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr class="bg-gray-50 border-b border-gray-200 text-[11px] font-bold text-gray-500 uppercase tracking-wider">
-                  <th class="p-3.5">No</th>
-                  <th class="p-3.5">Nama & NISN</th>
-                  <th class="p-3.5">Asal Sekolah</th>
-                  <th class="p-3.5">Jurusan Pilihan</th>
-                  <th class="p-3.5">Tanggal Daftar</th>
-                  <th class="p-3.5">Nilai Rata-rata</th>
-                  <th class="p-3.5">Status</th>
-                  <th class="p-3.5 text-center">Aksi Pengelolaan</th>
-                </tr>
-              </thead>
-              <tbody id="pendaftar-table-body" class="divide-y divide-gray-100 text-xs">
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- VERIFIKASI BERKAS SECTION -->
-      <section data-page="verifikasi" class="page-section hidden space-y-4">
-        <h1 class="text-lg font-bold text-[#1B4332]">Verifikasi Berkas Calon Siswa</h1>
-
-        <div class="grid lg:grid-cols-3 gap-6">
-          <div class="bg-white rounded-2xl border border-gray-200 p-4 space-y-3 shadow-sm h-fit">
-            <h3 class="font-bold text-xs text-gray-500 uppercase tracking-wider">Antrian Verifikasi</h3>
-            <div id="queue-list" class="space-y-2 max-h-[500px] overflow-y-auto pr-1"></div>
-          </div>
-
-          <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-200 p-6 space-y-6 shadow-sm">
-            <div class="flex items-center gap-4 pb-4 border-b border-gray-100">
-              <div id="verif-avatar-container" class="w-14 h-14 rounded-full overflow-hidden border-2 border-[#22C55E] shrink-0 bg-emerald-50 flex items-center justify-center">
-                <img id="verif-avatar-img" src="" class="w-full h-full object-cover hidden">
-                <i id="verif-avatar-icon" data-lucide="user" class="w-7 h-7 text-emerald-700"></i>
-              </div>
-              <div>
-                <h2 id="verif-nama" class="font-bold text-base text-[#1B4332]">Memuat Data...</h2>
-                <p id="verif-sekolah" class="text-xs text-gray-500">-</p>
-                <span id="verif-status-badge" class="inline-block mt-1 px-2.5 py-0.5 text-[10px] font-bold rounded-full bg-gray-100 text-gray-600">Status: -</span>
-              </div>
-            </div>
-
-            <div class="space-y-3">
-              <h4 class="font-bold text-xs text-gray-700 uppercase tracking-wider">Dokumen Unggahan Siswa</h4>
-              <div id="verif-docs-grid" class="grid sm:grid-cols-2 gap-4"></div>
-            </div>
-
-            <div class="pt-4 border-t border-gray-100 space-y-3">
-              <label class="block text-xs font-bold text-gray-700">Catatan Evaluasi / Alasan Revisi:</label>
-              <textarea id="catatan-verif" rows="2" placeholder="Tuliskan alasan jika meminta revisi atau menolak berkas..." class="w-full p-3 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none"></textarea>
-
-              <div class="flex gap-3">
-                <button id="btn-tolak-verif" onclick="prosesVerifikasiStatus('Ditolak')" class="flex-1 py-2.5 bg-red-50 text-red-600 font-semibold rounded-xl hover:bg-red-100 text-xs transition border border-red-200">
-                  ❌ Minta Revisi / Tolak
-                </button>
-                <button id="btn-terima-verif" onclick="prosesVerifikasiStatus('Diterima')" class="flex-1 py-2.5 bg-[#22C55E] text-white font-semibold rounded-xl hover:bg-emerald-600 text-xs transition shadow-sm">
-                  ✅ Setujui Berkas
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- MANAJEMEN JURUSAN -->
-      <section data-page="jurusan" class="page-section hidden space-y-4">
-        <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-          <div>
-            <h1 class="text-lg font-bold text-[#1B4332]">Manajemen Kuota Jurusan</h1>
-            <p class="text-xs text-gray-500">Atur batasan kuota, keterisian, dan status pendaftaran program keahlian.</p>
-          </div>
-          <button onclick="openTambahJurusanModal()" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition flex items-center gap-1.5 shadow-sm">
-            <i data-lucide="plus" class="w-4 h-4"></i> Tambah Jurusan
-          </button>
-        </div>
-
-        <div id="jurusan-cards-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-      </section>
-
-      <!-- PENGUMUMAN SECTION -->
-      <section data-page="pengumuman" class="page-section hidden space-y-6">
-        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-          <h1 class="text-lg font-bold text-[#1B4332]">Buat & Terbitkan Pengumuman</h1>
-
-          <form id="form-pengumuman" class="space-y-4">
-            <div class="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-semibold text-gray-700 mb-1">Judul Pengumuman</label>
-                <input type="text" id="pengumuman-judul" required placeholder="Contoh: Jadwal Tes Wawancara Gelombang 1" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
-              </div>
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="block text-xs font-semibold text-gray-700 mb-1">Kategori</label>
-                  <select id="pengumuman-kategori" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
-                    <option value="Umum">Umum</option>
-                    <option value="Kelulusan">Kelulusan</option>
-                    <option value="Jadwal">Jadwal</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="block text-xs font-semibold text-gray-700 mb-1">Target Siswa</label>
-                  <select id="pengumuman-target" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
-                    <option value="Semua">Semua Siswa</option>
-                    <option value="Diterima">Siswa Diterima</option>
-                    <option value="Menunggu">Siswa Menunggu</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Isi Pengumuman</label>
-              <textarea id="pengumuman-isi" rows="4" required placeholder="Tuliskan detail pengumuman secara rinci..." class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none"></textarea>
-            </div>
-
-            <button type="submit" class="px-5 py-2.5 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition shadow-sm">
-              📢 Terbitkan Pengumuman
-            </button>
-          </form>
-        </div>
-
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 space-y-3">
-          <h3 class="font-bold text-sm text-[#1B4332]">Riwayat Pengumuman Terbit</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr class="bg-gray-50 border-b border-gray-200 text-[11px] font-bold text-gray-500 uppercase">
-                  <th class="p-3">Judul</th>
-                  <th class="p-3">Kategori</th>
-                  <th class="p-3">Target</th>
-                  <th class="p-3">Tanggal Dibuat</th>
-                  <th class="p-3 text-right">Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="pengumuman-table-body" class="divide-y divide-gray-100 text-xs">
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- LAPORAN & STATISTIK SECTION -->
-      <section data-page="laporan" class="page-section hidden space-y-4">
-        <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-wrap items-center justify-between gap-4 no-print">
-          <div>
-            <h1 class="text-lg font-bold text-[#1B4332]">Laporan Rekapitulasi Data</h1>
-            <p class="text-xs text-gray-500">Unduh data pendaftar dalam format dokumen CSV/Excel atau cetak PDF langsung.</p>
-          </div>
-          <div class="flex gap-3">
-            <button onclick="exportExcel()" class="px-4 py-2 bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold rounded-xl hover:bg-emerald-100 transition flex items-center gap-1.5">
-              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Export Excel / CSV
-            </button>
-            <button onclick="cetakLaporanPDF()" class="px-4 py-2 bg-red-50 text-red-700 border border-red-200 text-xs font-bold rounded-xl hover:bg-red-100 transition flex items-center gap-1.5">
-              <i data-lucide="printer" class="w-4 h-4"></i> Cetak Laporan PDF
-            </button>
-          </div>
-        </div>
-
-        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-          <div class="flex justify-between items-center border-b pb-4">
-            <div>
-              <h2 class="text-base font-bold text-gray-800">REKAPITULASI PENDAFTARAN SPMB</h2>
-              <p class="text-xs text-gray-500">SMK Kasatrian Solo - Tahun Ajaran 2026/2027</p>
-            </div>
-            <span class="text-xs text-gray-400">Status Sistem: Terintegrasi Realtime</span>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr class="bg-gray-100 border-b border-gray-300 font-bold uppercase text-[10px] text-gray-600">
-                  <th class="p-2.5">No</th>
-                  <th class="p-2.5">Nama Siswa</th>
-                  <th class="p-2.5">NISN</th>
-                  <th class="p-2.5">Asal Sekolah</th>
-                  <th class="p-2.5">Pilihan Jurusan</th>
-                  <th class="p-2.5">Nilai Rerata</th>
-                  <th class="p-2.5">Status Akhir</th>
-                </tr>
-              </thead>
-              <tbody id="laporan-table-body" class="divide-y divide-gray-200">
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- PENGATURAN SPMB SECTION -->
-      <section data-page="pengaturan" class="page-section hidden space-y-4">
-        <h1 class="text-lg font-bold text-[#1B4332]">Pengaturan Sistem SPMB</h1>
-
-        <form id="form-pengaturan-spmb" class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-6">
-          <div class="space-y-3">
-            <h3 class="text-xs font-bold uppercase text-gray-500 tracking-wider">Kontrol Gelombang Pendaftaran</h3>
-            <div class="space-y-2">
-              <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 cursor-pointer">
-                <input type="checkbox" id="gelombang-1" checked class="w-4 h-4 accent-[#22C55E]">
-                <div>
-                  <p class="text-xs font-semibold text-gray-800">Gelombang 1 (Jalur Prestasi & Reguler Awal)</p>
-                  <p class="text-[10px] text-gray-500">Periode Aktif</p>
-                </div>
-              </label>
-              <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 cursor-pointer">
-                <input type="checkbox" id="gelombang-2" class="w-4 h-4 accent-[#22C55E]">
-                <div>
-                  <p class="text-xs font-semibold text-gray-800">Gelombang 2 (Jalur Reguler Utama)</p>
-                  <p class="text-[10px] text-gray-500">Periode Lanjutan</p>
-                </div>
-              </label>
-            </div>
-          </div>
-
-          <div class="grid sm:grid-cols-2 gap-4 pt-4 border-t border-gray-100">
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Tanggal Buka Pendaftaran</label>
-              <input type="date" id="tgl-buka" value="2025-10-01" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Tanggal Tutup Pendaftaran</label>
-              <input type="date" id="tgl-tutup" value="2026-07-15" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-            </div>
-          </div>
-
-          <button type="submit" class="px-5 py-2.5 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition shadow-sm">
-            💾 Simpan Konfigurasi
-          </button>
-        </form>
-      </section>
-
-      <!-- MANAJEMEN STAF ADMIN SECTION -->
-      <section data-page="manajemen-admin" class="page-section hidden space-y-4">
-        <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-          <div>
-            <h1 class="text-lg font-bold text-[#1B4332]">Kelola Staf Admin</h1>
-            <p class="text-xs text-gray-500">Daftar akun petugas verifikator dan panitia pendaftaran.</p>
-          </div>
-          <button onclick="openTambahAdminModal()" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition flex items-center gap-1.5 shadow-sm">
-            <i data-lucide="user-plus" class="w-4 h-4"></i> Tambah Staf Baru
-          </button>
-        </div>
-
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr class="bg-gray-50 border-b border-gray-200 text-[11px] font-bold text-gray-500 uppercase">
-                  <th class="p-3.5">Nama Petugas</th>
-                  <th class="p-3.5">Username / Email</th>
-                  <th class="p-3.5">Hak Akses (Role)</th>
-                  <th class="p-3.5">Status</th>
-                  <th class="p-3.5 text-right">Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="admin-staff-table-body" class="divide-y divide-gray-100 text-xs">
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-    </main>
-  </div>
-
-  <!-- MODAL JURUSAN -->
-  <div id="modal-jurusan" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-    <div class="bg-white max-w-md w-full rounded-2xl p-6 space-y-4 shadow-2xl">
-      <div class="flex justify-between items-center border-b pb-3">
-        <h3 id="modal-jurusan-title" class="font-bold text-base text-[#1B4332]">Tambah Jurusan Baru</h3>
-        <button type="button" onclick="closeJurusanModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
-      </div>
-
-      <form id="form-jurusan" class="space-y-3">
-        <input type="hidden" id="jurusan-id">
-        <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Kode Jurusan</label>
-          <input type="text" id="jurusan-kode" required placeholder="Contoh: TKJ" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Jurusan</label>
-          <input type="text" id="jurusan-nama" required placeholder="Contoh: Teknik Komputer & Jaringan" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Total Kuota</label>
-            <input type="number" id="jurusan-kuota" required min="1" placeholder="100" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Status Gelombang</label>
-            <select id="jurusan-status" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-              <option value="true">BUKA</option>
-              <option value="false">TUTUP</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="flex justify-end gap-2 pt-3">
-          <button type="button" onclick="closeJurusanModal()" class="px-4 py-2 bg-gray-100 text-gray-700 text-xs font-semibold rounded-xl">Batal</button>
-          <button type="submit" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition">Simpan Data</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL TAMBAH STAF ADMIN -->
-  <div id="modal-tambah-admin" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-    <div class="bg-white max-w-md w-full rounded-2xl p-6 space-y-4 shadow-2xl">
-      <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-bold text-base text-[#1B4332]">Tambah Staf Admin Baru</h3>
-        <button type="button" onclick="closeTambahAdminModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
-      </div>
-
-      <form id="form-tambah-admin" class="space-y-3">
-        <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Petugas</label>
-          <input type="text" id="staff-nama" required placeholder="Nama Lengkap dengan Gelar" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Username / Email Login</label>
-          <input type="email" id="staff-email" required placeholder="petugas@kasatrian.sch.id" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Hak Akses (Role)</label>
-            <select id="staff-role" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-              <option value="Verifikator Berkas">Verifikator Berkas</option>
-              <option value="Staf Administrasi">Staf Administrasi</option>
-              <option value="Ketua Panitia SPMB">Ketua Panitia SPMB</option>
-              <option value="Super Admin">Super Admin</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Password Initial</label>
-            <input type="password" id="staff-password" required placeholder="••••••••" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-          </div>
-        </div>
-
-        <div class="flex justify-end gap-2 pt-3">
-          <button type="button" onclick="closeTambahAdminModal()" class="px-4 py-2 bg-gray-100 text-gray-700 text-xs font-semibold rounded-xl">Batal</button>
-          <button type="submit" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition">Simpan Staf</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL EDIT PROFIL ADMIN -->
-  <div id="modal-edit-profil-admin" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-    <div class="bg-white max-w-lg w-full rounded-2xl p-6 space-y-5 shadow-2xl max-h-[90vh] overflow-y-auto">
-      <div class="flex justify-between items-center border-b pb-3">
-        <div class="flex items-center gap-2">
-          <i data-lucide="user-cog" class="w-5 h-5 text-[#1B4332]"></i>
-          <h3 class="font-bold text-base text-[#1B4332]">Edit Profil Admin</h3>
-        </div>
-        <button type="button" onclick="closeProfileModal()" class="text-gray-400 hover:text-gray-600 transition">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <form id="form-edit-profil-admin" class="space-y-4">
-        <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-xl border border-gray-200">
-          <div class="relative w-16 h-16 rounded-full overflow-hidden bg-emerald-100 border-2 border-[#22C55E] flex items-center justify-center shrink-0">
-            <img id="modal-preview-avatar" src="" class="w-full h-full object-cover hidden" alt="Preview Foto Profil">
-            <i id="modal-preview-icon" data-lucide="user" class="w-8 h-8 text-[#1B4332]"></i>
-          </div>
-          <div class="flex-1 min-w-0">
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Upload Foto Profil / Avatar</label>
-            <input type="file" id="admin-foto-input" accept="image/*" class="block w-full text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-[#1B4332] hover:file:bg-emerald-100 cursor-pointer">
-            <p class="text-[10px] text-gray-400 mt-1">Format: JPG, PNG, atau WEBP (Maks 2MB).</p>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Lengkap Admin <span class="text-red-500">*</span></label>
-          <input type="text" id="admin-nama-input" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
-        </div>
-
-        <div class="grid sm:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Jabatan / Role</label>
-            <select id="admin-role-input" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
-              <option value="Super Admin">Super Admin</option>
-              <option value="Ketua Panitia SPMB">Ketua Panitia SPMB</option>
-              <option value="Verifikator Berkas">Verifikator Berkas</option>
-              <option value="Staf Administrasi">Staf Administrasi</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Nomor WhatsApp / Telp</label>
-            <input type="tel" id="admin-telepon-input" placeholder="081234567890" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Email / Username Login <span class="text-red-500">*</span></label>
-          <input type="email" id="admin-email-input" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
-        </div>
-
-        <div class="flex justify-end gap-2 pt-3">
-          <button type="button" onclick="closeProfileModal()" class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-xl transition">Batal</button>
-          <button type="submit" class="px-5 py-2.5 bg-[#22C55E] hover:bg-emerald-600 text-white text-xs font-semibold rounded-xl transition shadow-sm">Simpan Perubahan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL EDIT SISWA -->
-  <div id="modal-edit-siswa" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-    <div class="bg-white max-w-md w-full rounded-2xl p-6 space-y-4 shadow-2xl">
-      <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-bold text-base text-[#1B4332]">Edit Profil Pendaftar</h3>
-        <button type="button" onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
-      </div>
-
-      <form id="form-edit-siswa" class="space-y-3">
-        <input type="hidden" id="edit-siswa-id">
-        <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Lengkap Siswa</label>
-          <input type="text" id="edit-nama" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">NISN</label>
-            <input type="text" id="edit-nisn" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Nilai Rata-rata</label>
-            <input type="number" step="0.1" id="edit-nilai" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-          </div>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Asal Sekolah</label>
-          <input type="text" id="edit-sekolah" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Jurusan Pilihan</label>
-            <select id="edit-jurusan" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-              <option value="TKJ">TKJ</option>
-              <option value="Kuliner / Tata Boga">Kuliner / Tata Boga</option>
-              <option value="Perhotelan">Perhotelan</option>
-              <option value="Teknik Otomotif / TSM">Teknik Otomotif / TSM</option>
-              <option value="TKR">TKR</option>
-              <option value="HTL">HTL</option>
-              <option value="KLN">KLN</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Status Verifikasi</label>
-            <select id="edit-status" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-              <option value="Menunggu">Menunggu</option>
-              <option value="Diterima">Diterima</option>
-              <option value="Ditolak">Ditolak</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="flex justify-end gap-2 pt-3">
-          <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-gray-100 text-gray-700 text-xs font-semibold rounded-xl">Batal</button>
-          <button type="submit" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition">Simpan Perubahan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- SCRIPT INTEGRASI REALTIME DINAMIS SINKRON -->
+<!-- SCRIPT INTEGRASI REALTIME DINAMIS SINKRON -->
   <script>
     // ==========================================
     // GLOBAL STATE & REALTIME VARIABLES
@@ -713,7 +20,7 @@
     let chartDistribusiInstance = null;
 
     // ==========================================
-    // 0. AUTH GUARD & SYSTEM USER LOGGED IN (REALTIME SINKRON)
+    // 0. AUTH GUARD & SYSTEM USER LOGGED IN
     // ==========================================
     function getActiveSession() {
       const sessionData = localStorage.getItem('smk_active_session') || 
@@ -910,7 +217,11 @@
       const bgColor = type === 'success' ? 'bg-[#1B4332] text-white border border-emerald-500/30' : 'bg-red-700 text-white';
 
       toast.className = `pointer-events-auto flex items-center gap-3 p-3.5 rounded-xl shadow-xl text-xs font-medium ${bgColor} transition-all duration-300 transform translate-y-2 opacity-0`;
-      toast.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i> <span>${message}</span>`;
+      
+      const icon = type === 'success' ? 'check-circle' : 'alert-circle';
+      const iconColor = type === 'success' ? 'text-emerald-400' : 'text-red-300';
+      
+      toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 ${iconColor}"></i> <span>${message}</span>`;
 
       container.appendChild(toast);
       if (window.lucide) lucide.createIcons();
@@ -922,33 +233,31 @@
       }, 3500);
     }
 
+    // ==========================================
+    // 2. FETCH DATA REALTIME KE DATABASE (POLLING)
+    // ==========================================
     async function loadPendaftarData() {
-      let localData = localStorage.getItem('pendaftarList') || localStorage.getItem('siswaData');
-      
       try {
         const response = await fetch('../api/list_siswa.php');
         const result = await response.json();
-        if (result.success && Array.isArray(result.pendaftar) && result.pendaftar.length > 0) {
-          pendaftarData = result.pendaftar;
-        } else if (localData) {
-          pendaftarData = JSON.parse(localData);
-        } else {
-          fallbackLocalData();
+        
+        if (result.success && Array.isArray(result.pendaftar)) {
+          const newDataString = JSON.stringify(result.pendaftar);
+          const oldDataString = JSON.stringify(pendaftarData);
+          
+          if (newDataString !== oldDataString) {
+            pendaftarData = result.pendaftar;
+            refreshAllRealtimeComponents(); 
+          }
         }
       } catch (e) {
-        if (localData) {
-          try { pendaftarData = JSON.parse(localData); } catch (err) { fallbackLocalData(); }
-        } else {
-          fallbackLocalData();
+        console.error("Gagal load data dari database:", e);
+        // Fallback hanya dipakai jika koneksi mati total
+        if (pendaftarData.length === 0) {
+            fallbackLocalData(); 
+            refreshAllRealtimeComponents();
         }
       }
-
-      refreshAllRealtimeComponents();
-    }
-
-    function savePendaftarState() {
-      localStorage.setItem('pendaftarList', JSON.stringify(pendaftarData));
-      refreshAllRealtimeComponents();
     }
 
     function refreshAllRealtimeComponents() {
@@ -966,7 +275,6 @@
         { id: 2, nama: "Bagas Pratama", nisn: "0058823102", sekolah: "SMP N 4 Surakarta", jurusan: "TKR", tanggal: "2026-02-11", nilai: 84.0, status: "Menunggu" },
         { id: 3, nama: "Siti Rahma", nisn: "0059918231", sekolah: "SMP N 2 Surakarta", jurusan: "TKJ", tanggal: "2026-02-12", nilai: 90.0, status: "Diterima" }
       ];
-      localStorage.setItem('pendaftarList', JSON.stringify(pendaftarData));
     }
 
     function updateDashboardCounts() {
@@ -1037,7 +345,7 @@
     }
 
     // ==========================================
-    // 2. VERIFIKASI BERKAS REALTIME
+    // 3. VERIFIKASI BERKAS REALTIME
     // ==========================================
     function renderVerifikasiQueue() {
       const queueList = document.getElementById('queue-list');
@@ -1121,18 +429,35 @@
       document.getElementById('verif-docs-grid').innerHTML = '<p class="text-xs text-gray-400 col-span-2">Belum ada dokumen pendaftar.</p>';
     }
 
-    function prosesVerifikasiStatus(status) {
+    // >>> REALTIME KE DB : UPDATE STATUS VERIFIKASI <<<
+    async function prosesVerifikasiStatus(status) {
       if (!selectedVerifId) return;
       const index = pendaftarData.findIndex(x => x.id === selectedVerifId);
       if (index !== -1) {
-        pendaftarData[index].status = status;
-        savePendaftarState();
-        showToast(`Berkas ${pendaftarData[index].nama} berhasil diperbarui menjadi ${status}`);
+        try {
+          const response = await fetch('../api/update_status_siswa.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: selectedVerifId, status: status })
+          });
+          const res = await response.json();
+
+          if(res.success) {
+            pendaftarData[index].status = status;
+            refreshAllRealtimeComponents();
+            showToast(`Berkas ${pendaftarData[index].nama} berhasil diperbarui menjadi ${status}`);
+          } else {
+            showToast('Gagal mengubah status di database!', 'error');
+          }
+        } catch (e) {
+          console.error(e);
+          showToast('Koneksi ke server gagal!', 'error');
+        }
       }
     }
 
     // ==========================================
-    // 3. REKALKULASI KUOTA JURUSAN REALTIME
+    // 4. REKALKULASI KUOTA JURUSAN
     // ==========================================
     function updateJurusanFromPendaftar() {
       jurusanData.forEach(j => {
@@ -1237,7 +562,7 @@
     });
 
     // ==========================================
-    // 4. CHART REALTIME
+    // 5. CHART REALTIME
     // ==========================================
     function initCharts() {
       const ctxTren = document.getElementById('chart-tren');
@@ -1289,7 +614,7 @@
     }
 
     // ==========================================
-    // 5. LAPORAN & STAF ADMIN (MEMBACA LOCALSTORAGE + SUPPORT BACKEND API)
+    // 6. LAPORAN
     // ==========================================
     function exportExcel() {
       if (pendaftarData.length === 0) {
@@ -1338,7 +663,10 @@
       });
     }
 
-    // PEMINDAI OTOMATIS SELURUH AKUN ADMIN LOKAL
+    // ==========================================
+    // 7. MANAJEMEN SISWA & STAFF
+    // ==========================================
+
     function getStoredStaffList() {
       let combinedAdmins = [];
       let uniqueKeys = new Set();
@@ -1359,52 +687,12 @@
         }
       }
 
-      // 1. Ambil dari 'adminList'
       const explicitList = JSON.parse(localStorage.getItem('adminList') || '[]');
       explicitList.forEach(item => addAdmin(item.nama, item.email, item.role, item.status || 'Aktif'));
-
-      // 2. Scan otomatis seluruh localStorage
-      for (let i = 0; i < localStorage.length; i++) {
-        const storageKey = localStorage.key(i);
-        try {
-          const itemData = JSON.parse(localStorage.getItem(storageKey));
-
-          if (Array.isArray(itemData)) {
-            itemData.forEach(user => {
-              if (user && typeof user === 'object') {
-                const roleStr = String(user.role || '').toLowerCase();
-                if (roleStr.includes('admin') || roleStr.includes('panitia') || roleStr.includes('verifikator') || storageKey.toLowerCase().includes('admin')) {
-                  addAdmin(user.nama || user.name || user.username, user.email || user.username, user.role || 'Staf Admin', user.status || 'Aktif');
-                }
-              }
-            });
-          } else if (itemData && typeof itemData === 'object') {
-            const roleStr = String(itemData.role || '').toLowerCase();
-            if (roleStr.includes('admin') || roleStr.includes('panitia') || roleStr.includes('verifikator') || storageKey.toLowerCase().includes('admin')) {
-              addAdmin(itemData.nama || itemData.name || itemData.username, itemData.email || itemData.username, itemData.role || 'Super Admin', itemData.status || 'Aktif');
-            }
-          }
-        } catch (e) {}
-      }
-
-      // 3. Scan sessionStorage
-      for (let i = 0; i < sessionStorage.length; i++) {
-        const storageKey = sessionStorage.key(i);
-        try {
-          const itemData = JSON.parse(sessionStorage.getItem(storageKey));
-          if (itemData && typeof itemData === 'object' && !Array.isArray(itemData)) {
-            const roleStr = String(itemData.role || '').toLowerCase();
-            if (roleStr.includes('admin') || roleStr.includes('panitia') || storageKey.toLowerCase().includes('admin')) {
-              addAdmin(itemData.nama || itemData.name || itemData.username, itemData.email || itemData.username, itemData.role || 'Super Admin');
-            }
-          }
-        } catch (e) {}
-      }
 
       return combinedAdmins;
     }
 
-    // RENDER TABEL STAF ADMIN HYBRID (LOCAL STORAGE + BACKEND API)
     async function renderStaffTable() {
       const tbody = document.getElementById('admin-staff-table-body');
       if (!tbody) return;
@@ -1420,7 +708,6 @@
           }
         }
       } catch (e) {
-        // Jika API tidak terjangkau, otomatis gunakan localStaff
       }
 
       staffData = localStaff;
@@ -1466,11 +753,6 @@
       const role = document.getElementById('staff-role').value;
       const password = document.getElementById('staff-password').value;
 
-      let list = JSON.parse(localStorage.getItem('adminList') || '[]');
-      const newId = list.length ? Math.max(...list.map(x => x.id || 0)) + 1 : 1;
-      list.push({ id: newId, nama, email, role, status: "Aktif" });
-      localStorage.setItem('adminList', JSON.stringify(list));
-
       try {
         await fetch('../api/tambah_admin.php', {
           method: 'POST',
@@ -1486,25 +768,6 @@
 
     async function hapusStaf(email, nama) {
       if (!confirm(`Apakah Anda yakin ingin menghapus akun admin "${nama}"?`)) return;
-
-      let list = JSON.parse(localStorage.getItem('adminList') || '[]');
-      list = list.filter(x => (x.email || x.nama) !== email && x.nama !== nama);
-      localStorage.setItem('adminList', JSON.stringify(list));
-
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        try {
-          let item = JSON.parse(localStorage.getItem(key));
-          if (Array.isArray(item)) {
-            let updated = item.filter(x => (x.email || x.nama || x.username) !== email && x.nama !== nama);
-            localStorage.setItem(key, JSON.stringify(updated));
-          } else if (item && typeof item === 'object') {
-            if ((item.email || item.nama || item.username) === email || item.nama === nama) {
-              localStorage.removeItem(key);
-            }
-          }
-        } catch (e) {}
-      }
 
       try {
         await fetch('../api/hapus_admin.php', {
@@ -1560,6 +823,7 @@
       document.getElementById('modal-edit-siswa').classList.add('hidden');
     }
 
+    // >>> REALTIME KE DB : EDIT DATA SISWA <<<
     document.getElementById('form-edit-siswa').addEventListener('submit', async (e) => {
       e.preventDefault();
       const payload = {
@@ -1572,45 +836,59 @@
         status: document.getElementById('edit-status').value
       };
 
-      const index = pendaftarData.findIndex(x => x.id === payload.id);
-      if (index !== -1) {
-        pendaftarData[index] = { ...pendaftarData[index], ...payload };
-      }
+      try {
+        const response = await fetch('../api/edit_siswa.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const res = await response.json();
 
-      savePendaftarState();
-      closeEditModal();
-      showToast('Profil siswa berhasil diperbarui!');
+        if(res.success) {
+          const index = pendaftarData.findIndex(x => x.id === payload.id);
+          if (index !== -1) {
+            pendaftarData[index] = { ...pendaftarData[index], ...payload };
+          }
+          refreshAllRealtimeComponents();
+          closeEditModal();
+          showToast('Profil siswa berhasil diperbarui di database!');
+        } else {
+          showToast('Gagal menyimpan data ke database!', 'error');
+        }
+      } catch (e) {
+        console.error(e);
+        showToast('Koneksi ke server gagal!', 'error');
+      }
     });
 
-    function hapusSiswa(id) {
+    // >>> REALTIME KE DB : HAPUS DATA SISWA <<<
+    async function hapusSiswa(id) {
       if (!confirm('Apakah Anda yakin ingin menghapus data pendaftar ini secara permanen?')) return;
 
-      pendaftarData = pendaftarData.filter(x => x.id !== id);
-      savePendaftarState();
-      showToast('Data pendaftar berhasil dihapus.');
+      try {
+        const response = await fetch('../api/hapus_siswa.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: id })
+        });
+        const res = await response.json();
+
+        if(res.success) {
+          pendaftarData = pendaftarData.filter(x => x.id !== id);
+          refreshAllRealtimeComponents();
+          showToast('Data pendaftar berhasil dihapus dari database.');
+        } else {
+          showToast('Gagal menghapus data di database!', 'error');
+        }
+      } catch (e) {
+        console.error(e);
+        showToast('Koneksi ke server gagal!', 'error');
+      }
     }
 
     // ==========================================
-    // REALTIME MONITORING SYSTEM (STORAGE EVENT & POLLING)
+    // INITIALIZATION & POLLING TIMERS
     // ==========================================
-    window.addEventListener('storage', function () {
-      renderStaffTable();
-      initAuthGuardAndAdminData();
-      loadPendaftarData();
-    });
-
-    setInterval(() => {
-      const currentStaffList = getStoredStaffList();
-      const currentHash = JSON.stringify(currentStaffList);
-      
-      if (currentHash !== lastStaffHash) {
-        lastStaffHash = currentHash;
-        renderStaffTable();
-        initAuthGuardAndAdminData();
-      }
-    }, 1000);
-
-    // INISIALISASI
     window.addEventListener('DOMContentLoaded', () => {
       if (window.lucide) lucide.createIcons();
       initAuthGuardAndAdminData();
@@ -1618,7 +896,21 @@
       loadPendaftarData();
       renderPengumumanTable();
       renderStaffTable();
+
+      // AUTO POLLING: Tarik data terbaru dari DB setiap 5 detik
+      setInterval(() => {
+        loadPendaftarData();
+      }, 5000);
+
+      // AUTO POLLING: Refresh data Staff tiap detik untuk responsivitas login (optional)
+      setInterval(() => {
+        const currentStaffList = getStoredStaffList();
+        const currentHash = JSON.stringify(currentStaffList);
+        if (currentHash !== lastStaffHash) {
+          lastStaffHash = currentHash;
+          renderStaffTable();
+        }
+      }, 2000);
     });
   </script>
-</body>
-</html>
+```<FollowUp><ElicitationsGroup message="Pilih untuk melanjutkan pengembangan:"><Elicitation label="Buatkan kode PHP untuk API" query="Tolong buatkan kode PHP untuk list_siswa.php, edit_siswa.php, hapus_siswa.php, dan update_status_siswa.php untuk dihubungkan dengan database."/><Elicitation label="Jelaskan cara membuat API PHP" query="Jelaskan bagaimana cara membuat API sederhana menggunakan PHP dan MySQL untuk mendukung fitur realtime ini."/></ElicitationsGroup></FollowUp>

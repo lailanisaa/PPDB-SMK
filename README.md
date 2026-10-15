@@ -57,8 +57,10 @@ statistik pendaftaran — semuanya dalam satu platform terpadu.
 
 ## Menjalankan di Laragon
 
+Backend PHP modular dan petunjuk migrasi integrasi frontend tersedia di [`docs/backend-api.md`](docs/backend-api.md). Endpoint legacy yang sebelumnya dipakai halaman HTML kini nonaktif (HTTP 410); alihkan request frontend ke endpoint modular sebelum deployment.
+
 1. Start **MySQL** dari Laragon.
-2. Pastikan database `spmb_kasatrian` sudah tersedia. Untuk instalasi baru, impor `database.sql` melalui HeidiSQL/phpMyAdmin.
+2. Untuk struktur lama Laravel, impor `database.sql`; untuk API PHP modular, impor juga `schema.sql` melalui HeidiSQL/phpMyAdmin.
 3. Buka terminal pada folder `laravel`, lalu jalankan `composer install` jika folder `vendor` belum ada.
 4. Salin `.env.example` menjadi `.env`, atur koneksi database dan `ADMIN_ACCESS_CODE`, kemudian jalankan `php artisan key:generate`.
 5. Jalankan `php artisan migrate` dan `php artisan storage:link`.

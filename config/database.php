@@ -1,10 +1,19 @@
 <?php
 declare(strict_types=1);
 
-$host = '127.0.0.1';
-$dbname = 'spmb_kasatrian';
-$username = 'root';
-$password = '';
+$host = getenv('DB_HOST') ?: '127.0.0.1';
+$dbname = getenv('DB_DATABASE') ?: 'spmb_kasatrian';
+$username = getenv('DB_USERNAME') ?: 'root';
+$password = getenv('DB_PASSWORD') ?: '';
+$environment = getenv('APP_ENV') ?: 'development';
+
+if ($environment === 'production' && ($username === 'root' || $password === '')) {
+    http_response_code(500);
+    header('Content-Type: application/json; charset=utf-8');
+    error_log('Production database configuration requires a non-root user and password.');
+    echo json_encode(['success' => false, 'message' => 'Konfigurasi layanan tidak lengkap.']);
+    exit;
+}
 
 $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
 $options = [
@@ -18,6 +27,7 @@ try {
 } catch (PDOException $exception) {
     http_response_code(500);
     header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(['success' => false, 'message' => 'Koneksi database gagal. Pastikan MySQL dan database sudah aktif.']);
+    error_log('Database connection failed: ' . $exception->getMessage());
+    echo json_encode(['success' => false, 'message' => 'Layanan database tidak tersedia.']);
     exit;
 }

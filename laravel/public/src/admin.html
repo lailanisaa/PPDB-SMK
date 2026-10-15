@@ -334,4 +334,1063 @@
       <section data-page="laporan" class="page-section hidden space-y-4">
         <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-wrap items-center justify-between gap-4 no-print">
           <div>
-            <h1 class="text-lg font-bold text-[#1B4332]">Laporan Rekapitul
+            <h1 class="text-lg font-bold text-[#1B4332]">Laporan Rekapitulasi Data</h1>
+            <p class="text-xs text-gray-500">Unduh data pendaftar dalam format dokumen CSV/Excel atau cetak PDF langsung.</p>
+          </div>
+          <div class="flex gap-3">
+            <button onclick="exportExcel()" class="px-4 py-2 bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold rounded-xl hover:bg-emerald-100 transition flex items-center gap-1.5">
+              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Export Excel / CSV
+            </button>
+            <button onclick="cetakLaporanPDF()" class="px-4 py-2 bg-red-50 text-red-700 border border-red-200 text-xs font-bold rounded-xl hover:bg-red-100 transition flex items-center gap-1.5">
+              <i data-lucide="printer" class="w-4 h-4"></i> Cetak Laporan PDF
+            </button>
+          </div>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+          <div class="flex justify-between items-center border-b pb-4">
+            <div>
+              <h2 class="text-base font-bold text-gray-800">REKAPITULASI PENDAFTARAN SPMB</h2>
+              <p class="text-xs text-gray-500">SMK Kasatrian Solo - Tahun Ajaran 2026/2027</p>
+            </div>
+            <span class="text-xs text-gray-400">Status Sistem: Terintegrasi Realtime</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-gray-100 border-b border-gray-300 font-bold uppercase text-[10px] text-gray-600">
+                  <th class="p-2.5">No</th>
+                  <th class="p-2.5">Nama Siswa</th>
+                  <th class="p-2.5">NISN</th>
+                  <th class="p-2.5">Asal Sekolah</th>
+                  <th class="p-2.5">Pilihan Jurusan</th>
+                  <th class="p-2.5">Nilai Rerata</th>
+                  <th class="p-2.5">Status Akhir</th>
+                </tr>
+              </thead>
+              <tbody id="laporan-table-body" class="divide-y divide-gray-200">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section data-page="pengaturan" class="page-section hidden space-y-4">
+        <h1 class="text-lg font-bold text-[#1B4332]">Pengaturan Sistem SPMB</h1>
+        <form id="form-pengaturan-spmb" class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-6">
+          <div class="space-y-3">
+            <h3 class="text-xs font-bold uppercase text-gray-500 tracking-wider">Kontrol Gelombang Pendaftaran</h3>
+            <div class="space-y-2">
+              <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 cursor-pointer">
+                <input type="checkbox" id="gelombang-1" class="w-4 h-4 accent-[#22C55E]">
+                <div>
+                  <p class="text-xs font-semibold text-gray-800">Gelombang 1 (Jalur Prestasi & Reguler Awal)</p>
+                  <p class="text-[10px] text-gray-500">Periode Aktif</p>
+                </div>
+              </label>
+              <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 cursor-pointer">
+                <input type="checkbox" id="gelombang-2" class="w-4 h-4 accent-[#22C55E]">
+                <div>
+                  <p class="text-xs font-semibold text-gray-800">Gelombang 2 (Jalur Reguler Utama)</p>
+                  <p class="text-[10px] text-gray-500">Periode Lanjutan</p>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4 pt-4 border-t border-gray-100">
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Tanggal Buka Pendaftaran</label>
+              <input type="date" id="tgl-buka" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Tanggal Tutup Pendaftaran</label>
+              <input type="date" id="tgl-tutup" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+            </div>
+          </div>
+          <button type="submit" class="px-5 py-2.5 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition shadow-sm">
+            💾 Simpan Konfigurasi
+          </button>
+        </form>
+      </section>
+
+      <section data-page="manajemen-admin" class="page-section hidden space-y-4">
+        <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
+          <div>
+            <h1 class="text-lg font-bold text-[#1B4332]">Kelola Staf Admin</h1>
+            <p class="text-xs text-gray-500">Daftar akun petugas verifikator dan panitia pendaftaran.</p>
+          </div>
+          <button onclick="openTambahAdminModal()" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="user-plus" class="w-4 h-4"></i> Tambah Staf Baru
+          </button>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-gray-50 border-b border-gray-200 text-[11px] font-bold text-gray-500 uppercase">
+                  <th class="p-3.5">Nama Petugas</th>
+                  <th class="p-3.5">Username / Email</th>
+                  <th class="p-3.5">Hak Akses (Role)</th>
+                  <th class="p-3.5">Status</th>
+                  <th class="p-3.5 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="admin-staff-table-body" class="divide-y divide-gray-100 text-xs">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="modal-jurusan" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-2xl p-6 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 id="modal-jurusan-title" class="font-bold text-base text-[#1B4332]">Tambah Jurusan Baru</h3>
+        <button type="button" onclick="closeJurusanModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form id="form-jurusan" class="space-y-3">
+        <input type="hidden" id="jurusan-id">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Kode Jurusan</label>
+          <input type="text" id="jurusan-kode" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Jurusan</label>
+          <input type="text" id="jurusan-nama" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Total Kuota</label>
+            <input type="number" id="jurusan-kuota" required min="1" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Status Gelombang</label>
+            <select id="jurusan-status" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+              <option value="true">BUKA</option>
+              <option value="false">TUTUP</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-3">
+          <button type="button" onclick="closeJurusanModal()" class="px-4 py-2 bg-gray-100 text-gray-700 text-xs font-semibold rounded-xl">Batal</button>
+          <button type="submit" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition">Simpan Data</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modal-tambah-admin" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-2xl p-6 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-bold text-base text-[#1B4332]">Tambah Staf Admin Baru</h3>
+        <button type="button" onclick="closeTambahAdminModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form id="form-tambah-admin" class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Petugas</label>
+          <input type="text" id="staff-nama" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Username / Email Login</label>
+          <input type="email" id="staff-email" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Hak Akses (Role)</label>
+            <select id="staff-role" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+              <option value="Verifikator Berkas">Verifikator Berkas</option>
+              <option value="Staf Administrasi">Staf Administrasi</option>
+              <option value="Ketua Panitia SPMB">Ketua Panitia SPMB</option>
+              <option value="Super Admin">Super Admin</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Password Initial</label>
+            <input type="password" id="staff-password" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-3">
+          <button type="button" onclick="closeTambahAdminModal()" class="px-4 py-2 bg-gray-100 text-gray-700 text-xs font-semibold rounded-xl">Batal</button>
+          <button type="submit" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition">Simpan Staf</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modal-edit-profil-admin" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+    <div class="bg-white max-w-lg w-full rounded-2xl p-6 space-y-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b pb-3">
+        <div class="flex items-center gap-2">
+          <i data-lucide="user-cog" class="w-5 h-5 text-[#1B4332]"></i>
+          <h3 class="font-bold text-base text-[#1B4332]">Edit Profil Admin</h3>
+        </div>
+        <button type="button" onclick="closeProfileModal()" class="text-gray-400 hover:text-gray-600 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form id="form-edit-profil-admin" class="space-y-4">
+        <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-xl border border-gray-200">
+          <div class="relative w-16 h-16 rounded-full overflow-hidden bg-emerald-100 border-2 border-[#22C55E] flex items-center justify-center shrink-0">
+            <img id="modal-preview-avatar" src="" class="w-full h-full object-cover hidden">
+            <i id="modal-preview-icon" data-lucide="user" class="w-8 h-8 text-[#1B4332]"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Upload Foto Profil / Avatar</label>
+            <input type="file" id="admin-foto-input" accept="image/*" class="block w-full text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-[#1B4332] hover:file:bg-emerald-100 cursor-pointer">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Lengkap Admin <span class="text-red-500">*</span></label>
+          <input type="text" id="admin-nama-input" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
+        </div>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Jabatan / Role</label>
+            <select id="admin-role-input" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
+              <option value="Super Admin">Super Admin</option>
+              <option value="Ketua Panitia SPMB">Ketua Panitia SPMB</option>
+              <option value="Verifikator Berkas">Verifikator Berkas</option>
+              <option value="Staf Administrasi">Staf Administrasi</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Nomor WhatsApp / Telp</label>
+            <input type="tel" id="admin-telepon-input" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Email / Username Login <span class="text-red-500">*</span></label>
+          <input type="email" id="admin-email-input" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
+        </div>
+        <div class="flex justify-end gap-2 pt-3">
+          <button type="button" onclick="closeProfileModal()" class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-xl transition">Batal</button>
+          <button type="submit" class="px-5 py-2.5 bg-[#22C55E] hover:bg-emerald-600 text-white text-xs font-semibold rounded-xl transition shadow-sm">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modal-edit-siswa" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-2xl p-6 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-bold text-base text-[#1B4332]">Edit Profil Pendaftar</h3>
+        <button type="button" onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <form id="form-edit-siswa" class="space-y-3">
+        <input type="hidden" id="edit-siswa-id">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Lengkap Siswa</label>
+          <input type="text" id="edit-nama" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">NISN</label>
+            <input type="text" id="edit-nisn" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Nilai Rata-rata</label>
+            <input type="number" step="0.1" id="edit-nilai" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Asal Sekolah</label>
+          <input type="text" id="edit-sekolah" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Jurusan Pilihan</label>
+            <select id="edit-jurusan" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+              <option value="TKJ">TKJ</option>
+              <option value="Kuliner / Tata Boga">Kuliner / Tata Boga</option>
+              <option value="Perhotelan">Perhotelan</option>
+              <option value="Teknik Otomotif / TSM">Teknik Otomotif / TSM</option>
+              <option value="TKR">TKR</option>
+              <option value="HTL">HTL</option>
+              <option value="KLN">KLN</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Status Verifikasi</label>
+            <select id="edit-status" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+              <option value="Menunggu">Menunggu</option>
+              <option value="Diterima">Diterima</option>
+              <option value="Ditolak">Ditolak</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-3">
+          <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-gray-100 text-gray-700 text-xs font-semibold rounded-xl">Batal</button>
+          <button type="submit" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let activeAdmin = null;
+    let pendaftarData = [];
+    let jurusanData = [];
+    let pengumumanList = [];
+    let staffData = [];
+    let selectedVerifId = null;
+    let chartTrenInstance = null;
+    let chartDistribusiInstance = null;
+
+    const API_BASE = '../api/';
+
+    async function initAuthGuardAndAdminData() {
+      try {
+        const res = await fetch(`${API_BASE}get_session.php`);
+        const data = await res.json();
+        if (data.success) {
+          activeAdmin = data.admin;
+          applyAdminProfileToUI();
+        } else {
+          window.location.href = 'index.html';
+        }
+      } catch (e) {
+        activeAdmin = { nama: "Admin SPMB", role: "Panitia SPMB", email: "admin@kasatrian.sch.id", telepon: "", foto: "" };
+        applyAdminProfileToUI();
+      }
+    }
+
+    function applyAdminProfileToUI() {
+      if (!activeAdmin) return;
+      document.getElementById('sidebar-user-name').textContent = activeAdmin.nama;
+      document.getElementById('sidebar-user-role').textContent = activeAdmin.role;
+      document.getElementById('dash-admin-name').textContent = activeAdmin.nama;
+      if (activeAdmin.foto) {
+        document.getElementById('sidebar-avatar-img').src = activeAdmin.foto;
+        document.getElementById('sidebar-avatar-img').classList.remove('hidden');
+        document.getElementById('sidebar-avatar-icon').classList.add('hidden');
+        document.getElementById('header-avatar-img').src = activeAdmin.foto;
+        document.getElementById('header-avatar-img').classList.remove('hidden');
+        document.getElementById('header-avatar-icon').classList.add('hidden');
+      }
+    }
+
+    function openProfileModal() {
+      if (!activeAdmin) return;
+      document.getElementById('admin-nama-input').value = activeAdmin.nama;
+      document.getElementById('admin-role-input').value = activeAdmin.role;
+      document.getElementById('admin-email-input').value = activeAdmin.email;
+      document.getElementById('admin-telepon-input').value = activeAdmin.telepon;
+      document.getElementById('modal-edit-profil-admin').classList.remove('hidden');
+    }
+
+    function closeProfileModal() {
+      document.getElementById('modal-edit-profil-admin').classList.add('hidden');
+    }
+
+    document.getElementById('form-edit-profil-admin').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const payload = {
+        nama: document.getElementById('admin-nama-input').value.trim(),
+        role: document.getElementById('admin-role-input').value,
+        email: document.getElementById('admin-email-input').value.trim(),
+        telepon: document.getElementById('admin-telepon-input').value.trim()
+      };
+      try {
+        const res = await fetch(`${API_BASE}update_profil.php`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (result.success) {
+          activeAdmin = { ...activeAdmin, ...payload };
+          applyAdminProfileToUI();
+          closeProfileModal();
+          showToast('Profil Admin berhasil diperbarui!');
+        }
+      } catch (e) {
+        showToast('Gagal memperbarui profil', 'error');
+      }
+    });
+
+    async function confirmLogout() {
+      if (confirm('Apakah Anda yakin ingin keluar dari sistem admin?')) {
+        try {
+          await fetch(`${API_BASE}logout.php`);
+          window.location.href = 'index.html';
+        } catch (e) {
+          window.location.href = 'index.html';
+        }
+      }
+    }
+
+    const menuButtons = document.querySelectorAll('.menu-item');
+    const sections = document.querySelectorAll('.page-section');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function switchPage(pageName) {
+      menuButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.page === pageName));
+      sections.forEach(sec => sec.classList.toggle('hidden', sec.dataset.page !== pageName));
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+    }
+
+    menuButtons.forEach(btn => btn.addEventListener('click', () => switchPage(btn.dataset.page)));
+
+    document.getElementById('hamburger').addEventListener('click', () => {
+      sidebar.classList.remove('-translate-x-full');
+      overlay.classList.remove('hidden');
+    });
+
+    overlay.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+    });
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bgColor = type === 'success' ? 'bg-[#1B4332] text-white border border-emerald-500/30' : 'bg-red-700 text-white';
+      toast.className = `pointer-events-auto flex items-center gap-3 p-3.5 rounded-xl shadow-xl text-xs font-medium ${bgColor} transition-all duration-300 transform translate-y-2 opacity-0`;
+      toast.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i> <span>${message}</span>`;
+      container.appendChild(toast);
+      if (window.lucide) lucide.createIcons();
+      setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    async function loadPendaftarData() {
+      try {
+        const response = await fetch(`${API_BASE}get_pendaftar.php`);
+        const result = await response.json();
+        if (result.success) {
+          pendaftarData = result.data;
+          refreshAllRealtimeComponents();
+        }
+      } catch (e) {
+        console.error("Gagal memuat data pendaftar.");
+      }
+    }
+
+    function refreshAllRealtimeComponents() {
+      renderPendaftarTable();
+      renderVerifikasiQueue();
+      renderLaporanTable();
+      updateDashboardCounts();
+      updateJurusanFromPendaftar();
+      updateChartsRealtime();
+    }
+
+    function updateDashboardCounts() {
+      document.getElementById('stat-total').textContent = pendaftarData.length;
+      document.getElementById('stat-waiting').textContent = pendaftarData.filter(x => x.status === 'Menunggu' || !x.status).length;
+      document.getElementById('stat-accepted').textContent = pendaftarData.filter(x => x.status === 'Diterima').length;
+      document.getElementById('stat-rejected').textContent = pendaftarData.filter(x => x.status === 'Ditolak').length;
+    }
+
+    document.getElementById('global-search').addEventListener('input', function (e) {
+      renderPendaftarTable(e.target.value.toLowerCase());
+    });
+
+    function renderPendaftarTable(keyword = "") {
+      const tbody = document.getElementById('pendaftar-table-body');
+      const filter = document.getElementById('filter-status').value;
+      tbody.innerHTML = '';
+      let filtered = pendaftarData.filter(item => filter === 'semua' || (item.status || 'Menunggu') === filter);
+      if (keyword) {
+        filtered = filtered.filter(item => 
+          (item.nama && item.nama.toLowerCase().includes(keyword)) ||
+          (item.nisn && item.nisn.toLowerCase().includes(keyword)) ||
+          (item.sekolah && item.sekolah.toLowerCase().includes(keyword)) ||
+          (item.jurusan && item.jurusan.toLowerCase().includes(keyword))
+        );
+      }
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-gray-400">Data pendaftar tidak ditemukan.</td></tr>`;
+        return;
+      }
+      filtered.forEach((item, index) => {
+        const st = item.status || 'Menunggu';
+        const badgeColor = st === 'Diterima' ? 'bg-emerald-100 text-emerald-800 border-emerald-200' :
+          st === 'Ditolak' ? 'bg-red-100 text-red-800 border-red-200' : 'bg-amber-100 text-amber-800 border-amber-200';
+        tbody.innerHTML += `
+          <tr class="hover:bg-gray-50/80 transition">
+            <td class="p-3.5 font-semibold text-gray-400">${index + 1}</td>
+            <td class="p-3.5"><p class="font-bold text-[#1B4332]">${item.nama}</p><p class="text-[10px] text-gray-400">NISN: ${item.nisn || '-'}</p></td>
+            <td class="p-3.5 text-gray-600">${item.sekolah || '-'}</td>
+            <td class="p-3.5"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold text-[10px] rounded-lg">${item.jurusan || '-'}</span></td>
+            <td class="p-3.5 text-gray-500">${item.tanggal || new Date().toISOString().split('T')[0]}</td>
+            <td class="p-3.5 font-bold text-[#1B4332]">${item.nilai || 0}</td>
+            <td class="p-3.5"><span class="px-2.5 py-1 font-bold text-[10px] rounded-full border ${badgeColor}">${st}</span></td>
+            <td class="p-3.5 text-center">
+              <div class="flex items-center justify-center gap-1.5">
+                <button onclick="editSiswa(${item.id})" class="px-2.5 py-1 bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 font-bold rounded-lg text-[10px] flex items-center gap-1 transition"><i data-lucide="edit" class="w-3 h-3"></i> Edit</button>
+                <button onclick="hapusSiswa(${item.id})" class="px-2.5 py-1 bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 font-bold rounded-lg text-[10px] flex items-center gap-1 transition"><i data-lucide="trash-2" class="w-3 h-3"></i> Hapus</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function renderVerifikasiQueue() {
+      const queueList = document.getElementById('queue-list');
+      queueList.innerHTML = '';
+      if (pendaftarData.length === 0) {
+        queueList.innerHTML = '<p class="text-xs text-gray-400 p-2">Tidak ada pendaftar dalam antrian.</p>';
+        resetVerifikasiDetail();
+        return;
+      }
+      pendaftarData.forEach(item => {
+        const isSelected = item.id === selectedVerifId;
+        const st = item.status || 'Menunggu';
+        queueList.innerHTML += `
+          <div onclick="selectPendaftarForVerif(${item.id})" class="p-3 rounded-xl border ${isSelected ? 'border-[#22C55E] bg-emerald-50/50' : 'border-gray-200 hover:bg-gray-50'} cursor-pointer transition flex items-center justify-between">
+            <div>
+              <p class="font-bold text-xs text-[#1B4332]">${item.nama}</p>
+              <p class="text-[10px] text-gray-500">${item.sekolah || '-'} • ${item.jurusan || '-'}</p>
+            </div>
+            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${st==='Diterima'?'bg-emerald-100 text-emerald-800':st==='Ditolak'?'bg-red-100 text-red-800':'bg-amber-100 text-amber-800'}">${st}</span>
+          </div>
+        `;
+      });
+      if (!selectedVerifId || !pendaftarData.some(x => x.id === selectedVerifId)) selectPendaftarForVerif(pendaftarData[0].id);
+    }
+
+    function selectPendaftarForVerif(id) {
+      const target = pendaftarData.find(x => x.id === id);
+      if (!target) return;
+      selectedVerifId = id;
+      const st = target.status || 'Menunggu';
+      document.getElementById('verif-nama').textContent = target.nama;
+      document.getElementById('verif-sekolah').textContent = `${target.sekolah || 'SMP N/S'} • Jurusan Pilihan: ${target.jurusan || '-'}`;
+      const badge = document.getElementById('verif-status-badge');
+      badge.textContent = `Status: ${st}`;
+      badge.className = `inline-block mt-1 px-2.5 py-0.5 text-[10px] font-bold rounded-full ${st === 'Diterima' ? 'bg-emerald-100 text-emerald-800' : st === 'Ditolak' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'}`;
+      document.getElementById('verif-docs-grid').innerHTML = `
+        <div class="border border-gray-200 rounded-xl p-3 bg-gray-50 space-y-2">
+          <p class="font-bold text-xs text-gray-700">Ijazah / Surat Keterangan Lulus</p>
+          <img src="https://via.placeholder.com/300x180?text=Ijazah+${encodeURIComponent(target.nama)}" class="w-full h-28 object-cover rounded-lg border">
+        </div>
+        <div class="border border-gray-200 rounded-xl p-3 bg-gray-50 space-y-2">
+          <p class="font-bold text-xs text-gray-700">Kartu Keluarga (KK)</p>
+          <img src="https://via.placeholder.com/300x180?text=KK+${encodeURIComponent(target.nama)}" class="w-full h-28 object-cover rounded-lg border">
+        </div>
+      `;
+      renderVerifikasiQueueHighlight();
+    }
+
+    function renderVerifikasiQueueHighlight() {
+      const items = document.getElementById('queue-list').querySelectorAll('div[onclick]');
+      pendaftarData.forEach((item, index) => {
+        if (items[index]) {
+          items[index].className = item.id === selectedVerifId ? 'p-3 rounded-xl border border-[#22C55E] bg-emerald-50/50 cursor-pointer transition flex items-center justify-between' : 'p-3 rounded-xl border border-gray-200 hover:bg-gray-50 cursor-pointer transition flex items-center justify-between';
+        }
+      });
+    }
+
+    function resetVerifikasiDetail() {
+      document.getElementById('verif-nama').textContent = "Tidak Ada Data";
+      document.getElementById('verif-sekolah').textContent = "-";
+      document.getElementById('verif-status-badge').textContent = "Status: -";
+      document.getElementById('verif-docs-grid').innerHTML = '<p class="text-xs text-gray-400 col-span-2">Belum ada dokumen pendaftar.</p>';
+    }
+
+    async function prosesVerifikasiStatus(status) {
+      if (!selectedVerifId) return;
+      try {
+        const res = await fetch(`${API_BASE}update_status_siswa.php`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: selectedVerifId, status: status })
+        });
+        const result = await res.json();
+        if (result.success) {
+          const index = pendaftarData.findIndex(x => x.id === selectedVerifId);
+          if (index !== -1) pendaftarData[index].status = status;
+          refreshAllRealtimeComponents();
+          showToast(`Berkas berhasil diperbarui menjadi ${status}`);
+        }
+      } catch (e) {
+        showToast('Gagal memproses verifikasi', 'error');
+      }
+    }
+
+    async function loadJurusanData() {
+      try {
+        const res = await fetch(`${API_BASE}get_jurusan.php`);
+        const result = await res.json();
+        if (result.success) {
+          jurusanData = result.data;
+          updateJurusanFromPendaftar();
+        }
+      } catch (e) {
+        console.error("Gagal memuat data jurusan");
+      }
+    }
+
+    function updateJurusanFromPendaftar() {
+      jurusanData.forEach(j => {
+        j.terisi = pendaftarData.filter(p => {
+          const jur = (p.jurusan || '').toUpperCase();
+          const kode = (j.kode || '').toUpperCase();
+          return jur.includes(kode) || (j.nama && jur.includes(j.nama.toUpperCase()));
+        }).length;
+      });
+      renderJurusanCards();
+    }
+
+    function renderJurusanCards() {
+      const grid = document.getElementById('jurusan-cards-grid');
+      grid.innerHTML = '';
+      jurusanData.forEach(item => {
+        const sisa = Math.max(0, item.kuota - item.terisi);
+        const persen = Math.min(100, Math.round((item.terisi / item.kuota) * 100));
+        grid.innerHTML += `
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3 relative">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded-md">${item.kode}</span>
+                <h3 class="font-bold text-sm text-[#1B4332] mt-1">${item.nama}</h3>
+              </div>
+              <button onclick="openEditJurusanModal(${item.id})" class="p-1.5 text-gray-400 hover:text-[#1B4332] bg-gray-50 hover:bg-gray-100 rounded-lg transition" title="Edit Jurusan"><i data-lucide="edit" class="w-4 h-4"></i></button>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
+                <span>Terisi: ${item.terisi} / ${item.kuota}</span>
+                <span>Sisa: ${sisa}</span>
+              </div>
+              <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                <div class="bg-[#22C55E] h-full rounded-full transition-all duration-300" style="width: ${persen}%"></div>
+              </div>
+            </div>
+            <div class="pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
+              <span class="text-gray-500 font-medium">Status Gelombang</span>
+              <span class="px-3 py-1 rounded-full font-bold text-[10px] ${item.buka?'bg-emerald-100 text-emerald-800':'bg-red-100 text-red-800'}">${item.buka ? 'BUKA' : 'TUTUP'}</span>
+            </div>
+          </div>
+        `;
+      });
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function openTambahJurusanModal() {
+      document.getElementById('modal-jurusan-title').textContent = "Tambah Jurusan Baru";
+      document.getElementById('form-jurusan').reset();
+      document.getElementById('jurusan-id').value = "";
+      document.getElementById('modal-jurusan').classList.remove('hidden');
+    }
+
+    function openEditJurusanModal(id) {
+      const item = jurusanData.find(x => x.id === id);
+      if (!item) return;
+      document.getElementById('modal-jurusan-title').textContent = "Edit Data Jurusan";
+      document.getElementById('jurusan-id').value = item.id;
+      document.getElementById('jurusan-kode').value = item.kode;
+      document.getElementById('jurusan-nama').value = item.nama;
+      document.getElementById('jurusan-kuota').value = item.kuota;
+      document.getElementById('jurusan-status').value = item.buka ? "true" : "false";
+      document.getElementById('modal-jurusan').classList.remove('hidden');
+    }
+
+    function closeJurusanModal() {
+      document.getElementById('modal-jurusan').classList.add('hidden');
+    }
+
+    document.getElementById('form-jurusan').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const payload = {
+        id: document.getElementById('jurusan-id').value,
+        kode: document.getElementById('jurusan-kode').value.trim(),
+        nama: document.getElementById('jurusan-nama').value.trim(),
+        kuota: parseInt(document.getElementById('jurusan-kuota').value) || 0,
+        buka: document.getElementById('jurusan-status').value === "true"
+      };
+      try {
+        const res = await fetch(`${API_BASE}${payload.id ? 'update_jurusan.php' : 'tambah_jurusan.php'}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (result.success) {
+          loadJurusanData();
+          closeJurusanModal();
+          showToast('Data jurusan berhasil disimpan!');
+        }
+      } catch (e) {
+        showToast('Gagal menyimpan data jurusan', 'error');
+      }
+    });
+
+    function initCharts() {
+      const ctxTren = document.getElementById('chart-tren');
+      if (ctxTren) {
+        chartTrenInstance = new Chart(ctxTren.getContext('2d'), {
+          type: 'line',
+          data: {
+            labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+            datasets: [{
+              label: 'Pendaftar Baru',
+              data: [0, 0, 0, 0, 0, 0, 0],
+              borderColor: '#22C55E',
+              backgroundColor: 'rgba(34, 197, 94, 0.1)',
+              fill: true,
+              tension: 0.35
+            }]
+          },
+          options: { responsive: true, maintainAspectRatio: false }
+        });
+      }
+      const ctxDistribusi = document.getElementById('chart-distribusi');
+      if (ctxDistribusi) {
+        chartDistribusiInstance = new Chart(ctxDistribusi.getContext('2d'), {
+          type: 'doughnut',
+          data: {
+            labels: [],
+            datasets: [{
+              data: [],
+              backgroundColor: ['#22C55E', '#3B82F6', '#F59E0B', '#EF4444', '#8B5CF6']
+            }]
+          },
+          options: { responsive: true, maintainAspectRatio: false }
+        });
+      }
+    }
+
+    function updateChartsRealtime() {
+      if (chartDistribusiInstance) {
+        chartDistribusiInstance.data.labels = jurusanData.map(j => j.kode);
+        chartDistribusiInstance.data.datasets[0].data = jurusanData.map(j => j.terisi);
+        chartDistribusiInstance.update();
+      }
+      if (chartTrenInstance) {
+        chartTrenInstance.data.datasets[0].data[6] = pendaftarData.length;
+        chartTrenInstance.update();
+      }
+    }
+
+    function exportExcel() {
+      if (pendaftarData.length === 0) return alert('Tidak ada data pendaftar.');
+      let csvContent = "data:text/csv;charset=utf-8,No,Nama Siswa,NISN,Asal Sekolah,Pilihan Jurusan,Nilai Rerata,Status Akhir\n";
+      pendaftarData.forEach((item, index) => {
+        csvContent += `${index + 1},"${item.nama}","${item.nisn || ''}","${item.sekolah || ''}","${item.jurusan || ''}",${item.nilai || 0},"${item.status || 'Menunggu'}"\n`;
+      });
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "Rekapitulasi_SPMB.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('Laporan berhasil diunduh.');
+    }
+
+    function cetakLaporanPDF() {
+      window.print();
+    }
+
+    function renderLaporanTable() {
+      const tbody = document.getElementById('laporan-table-body');
+      tbody.innerHTML = '';
+      pendaftarData.forEach((item, i) => {
+        const st = item.status || 'Menunggu';
+        tbody.innerHTML += `
+          <tr>
+            <td class="p-2.5 text-gray-500">${i + 1}</td>
+            <td class="p-2.5 font-semibold text-[#1B4332]">${item.nama}</td>
+            <td class="p-2.5 text-gray-600">${item.nisn || '-'}</td>
+            <td class="p-2.5 text-gray-600">${item.sekolah || '-'}</td>
+            <td class="p-2.5 font-bold">${item.jurusan || '-'}</td>
+            <td class="p-2.5 font-bold">${item.nilai || 0}</td>
+            <td class="p-2.5 font-bold ${st==='Diterima'?'text-emerald-600':st==='Ditolak'?'text-red-600':'text-amber-600'}">${st}</td>
+          </tr>
+        `;
+      });
+    }
+
+    async function loadStaffData() {
+      try {
+        const response = await fetch(`${API_BASE}get_admin.php`);
+        const result = await response.json();
+        if (result.success) {
+          staffData = result.data;
+          renderStaffTable();
+        }
+      } catch (e) {
+        console.error("Gagal memuat staf");
+      }
+    }
+
+    function renderStaffTable() {
+      const tbody = document.getElementById('admin-staff-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      if (staffData.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">Belum ada akun admin terdaftar.</td></tr>`;
+        return;
+      }
+      staffData.forEach((s) => {
+        const roleBadgeColor = String(s.role).toLowerCase().includes('super') ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800';
+        tbody.innerHTML += `
+          <tr class="hover:bg-gray-50 transition">
+            <td class="p-3.5 font-bold text-[#1B4332]">${s.nama}</td>
+            <td class="p-3.5 text-gray-600">${s.email}</td>
+            <td class="p-3.5"><span class="px-2.5 py-0.5 ${roleBadgeColor} font-bold rounded-md text-[10px]">${s.role}</span></td>
+            <td class="p-3.5"><span class="text-emerald-600 font-bold flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>${s.status || 'Aktif'}</span></td>
+            <td class="p-3.5 text-right">
+              <button onclick="hapusStaf('${s.id}', '${s.nama}')" class="text-red-600 font-semibold hover:underline text-xs">Hapus</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function openTambahAdminModal() {
+      document.getElementById('form-tambah-admin').reset();
+      document.getElementById('modal-tambah-admin').classList.remove('hidden');
+    }
+
+    function closeTambahAdminModal() {
+      document.getElementById('modal-tambah-admin').classList.add('hidden');
+    }
+
+    document.getElementById('form-tambah-admin').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const payload = {
+        nama: document.getElementById('staff-nama').value.trim(),
+        email: document.getElementById('staff-email').value.trim(),
+        role: document.getElementById('staff-role').value,
+        password: document.getElementById('staff-password').value
+      };
+      try {
+        const res = await fetch(`${API_BASE}tambah_admin.php`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (result.success) {
+          loadStaffData();
+          closeTambahAdminModal();
+          showToast('Staf admin baru berhasil ditambahkan!');
+        }
+      } catch (e) {
+        showToast('Gagal menambah staf admin', 'error');
+      }
+    });
+
+    async function hapusStaf(id, nama) {
+      if (!confirm(`Apakah Anda yakin ingin menghapus akun admin "${nama}"?`)) return;
+      try {
+        const res = await fetch(`${API_BASE}hapus_admin.php`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+        const result = await res.json();
+        if (result.success) {
+          loadStaffData();
+          showToast('Staf admin berhasil dihapus.');
+        }
+      } catch (e) {
+        showToast('Gagal menghapus staf admin', 'error');
+      }
+    }
+
+    async function loadPengumumanData() {
+      try {
+        const response = await fetch(`${API_BASE}get_pengumuman.php`);
+        const result = await response.json();
+        if (result.success) {
+          pengumumanList = result.data;
+          renderPengumumanTable();
+        }
+      } catch (e) {
+        console.error("Gagal memuat pengumuman");
+      }
+    }
+
+    function renderPengumumanTable() {
+      const tbody = document.getElementById('pengumuman-table-body');
+      tbody.innerHTML = '';
+      pengumumanList.forEach(p => {
+        tbody.innerHTML += `
+          <tr class="hover:bg-gray-50">
+            <td class="p-3 font-bold text-[#1B4332]">${p.judul}</td>
+            <td class="p-3"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 rounded font-semibold text-[10px]">${p.kategori}</span></td>
+            <td class="p-3 text-gray-600">${p.target}</td>
+            <td class="p-3 text-gray-500">${p.tanggal}</td>
+            <td class="p-3 text-right">
+              <button onclick="hapusPengumuman(${p.id})" class="text-red-600 font-semibold text-[11px]">Hapus</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    document.getElementById('form-pengumuman').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const payload = {
+        judul: document.getElementById('pengumuman-judul').value,
+        kategori: document.getElementById('pengumuman-kategori').value,
+        target: document.getElementById('pengumuman-target').value,
+        isi: document.getElementById('pengumuman-isi').value
+      };
+      try {
+        const res = await fetch(`${API_BASE}tambah_pengumuman.php`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (result.success) {
+          loadPengumumanData();
+          document.getElementById('form-pengumuman').reset();
+          showToast('Pengumuman berhasil diterbitkan!');
+        }
+      } catch (e) {
+        showToast('Gagal menerbitkan pengumuman', 'error');
+      }
+    });
+
+    async function hapusPengumuman(id) {
+      if (!confirm('Hapus pengumuman ini?')) return;
+      try {
+        const res = await fetch(`${API_BASE}hapus_pengumuman.php`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+        const result = await res.json();
+        if (result.success) {
+          loadPengumumanData();
+          showToast('Pengumuman dihapus.');
+        }
+      } catch (e) {
+        showToast('Gagal menghapus', 'error');
+      }
+    }
+
+    function editSiswa(id) {
+      const siswa = pendaftarData.find(x => x.id === id);
+      if (!siswa) return;
+      document.getElementById('edit-siswa-id').value = siswa.id;
+      document.getElementById('edit-nama').value = siswa.nama;
+      document.getElementById('edit-nisn').value = siswa.nisn || '';
+      document.getElementById('edit-sekolah').value = siswa.sekolah || '';
+      document.getElementById('edit-jurusan').value = siswa.jurusan || 'TKJ';
+      document.getElementById('edit-nilai').value = siswa.nilai || 0;
+      document.getElementById('edit-status').value = siswa.status || 'Menunggu';
+      document.getElementById('modal-edit-siswa').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+      document.getElementById('modal-edit-siswa').classList.add('hidden');
+    }
+
+    document.getElementById('form-edit-siswa').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        id: parseInt(document.getElementById('edit-siswa-id').value),
+        nama: document.getElementById('edit-nama').value,
+        nisn: document.getElementById('edit-nisn').value,
+        sekolah: document.getElementById('edit-sekolah').value,
+        jurusan: document.getElementById('edit-jurusan').value,
+        nilai: parseFloat(document.getElementById('edit-nilai').value),
+        status: document.getElementById('edit-status').value
+      };
+      try {
+        const res = await fetch(`${API_BASE}update_siswa.php`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (result.success) {
+          loadPendaftarData();
+          closeEditModal();
+          showToast('Profil siswa berhasil diperbarui!');
+        }
+      } catch (e) {
+        showToast('Gagal memperbarui siswa', 'error');
+      }
+    });
+
+    async function hapusSiswa(id) {
+      if (!confirm('Apakah Anda yakin ingin menghapus data pendaftar ini secara permanen?')) return;
+      try {
+        const res = await fetch(`${API_BASE}hapus_siswa.php`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+        const result = await res.json();
+        if (result.success) {
+          loadPendaftarData();
+          showToast('Data pendaftar berhasil dihapus.');
+        }
+      } catch (e) {
+        showToast('Gagal menghapus data', 'error');
+      }
+    }
+
+    async function loadPengaturanData() {
+      try {
+        const res = await fetch(`${API_BASE}get_pengaturan.php`);
+        const result = await res.json();
+        if (result.success) {
+          document.getElementById('gelombang-1').checked = result.data.gelombang1;
+          document.getElementById('gelombang-2').checked = result.data.gelombang2;
+          document.getElementById('tgl-buka').value = result.data.tgl_buka;
+          document.getElementById('tgl-tutup').value = result.data.tgl_tutup;
+        }
+      } catch (e) {
+        console.error('Gagal memuat pengaturan');
+      }
+    }
+
+    document.getElementById('form-pengaturan-spmb').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const payload = {
+        gelombang1: document.getElementById('gelombang-1').checked,
+        gelombang2: document.getElementById('gelombang-2').checked,
+        tgl_buka: document.getElementById('tgl-buka').value,
+        tgl_tutup: document.getElementById('tgl-tutup').value
+      };
+      try {
+        const res = await fetch(`${API_BASE}update_pengaturan.php`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (result.success) {
+          showToast('Pengaturan berhasil disimpan!');
+        }
+      } catch (e) {
+        showToast('Gagal menyimpan pengaturan', 'error');
+      }
+    });
+
+    setInterval(() => {
+      loadPendaftarData();
+      loadJurusanData();
+      loadStaffData();
+      loadPengumumanData();
+    }, 5000);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) lucide.createIcons();
+      initAuthGuardAndAdminData();
+      initCharts();
+      loadPendaftarData();
+      loadJurusanData();
+      loadStaffData();
+      loadPengumumanData();
+      loadPengaturanData();
+    });
+  </script>
+</body>
+</html>

@@ -7,6 +7,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Library QR Code JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <link rel="icon" type="image/png" href="Logo_SMK.png">
   <link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
@@ -123,7 +125,10 @@
         <span id="bell-badge" class="absolute top-1 right-1 bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center"></span>
       </button>
       <button data-page-link="profil" class="page-nav-btn flex items-center gap-2 p-1 hover:bg-white/10 rounded-xl transition text-left">
-        <img id="nav-avatar" src="https://i.pravatar.cc/64?img=47" class="w-8 h-8 rounded-full object-cover border-2 border-emerald-400" alt="Foto profil">
+        <div id="nav-avatar-wrapper" class="w-8 h-8 rounded-full bg-emerald-100 text-[#1B4332] border-2 border-emerald-400 flex items-center justify-center overflow-hidden shrink-0">
+          <img id="nav-avatar" src="" class="w-full h-full object-cover hidden" alt="Foto profil">
+          <i id="nav-avatar-icon" data-lucide="user" class="w-4 h-4"></i>
+        </div>
         <span id="nav-student-name" class="hidden sm:block text-white text-xs font-semibold pr-1">Siswa</span>
       </button>
       <button id="btn-logout" class="text-white hover:bg-red-500/20 hover:text-red-300 transition p-2 rounded-full" title="Keluar Ke Landing Page">
@@ -178,9 +183,6 @@
       <div class="hidden lg:block absolute right-6 top-1/2 -translate-y-1/2 w-80 h-52 rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20 transform rotate-1 transition hover:rotate-0 duration-300">
         <img src="pict_2.jpeg" class="w-full h-full object-cover object-top" alt="Siswa Berprestasi SMK Kasatrian">
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-        <span class="absolute bottom-3 left-3 bg-emerald-600/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-full border border-white/30">
-          🏆 Siswa Berprestasi
-        </span>
       </div>
     </div>
 
@@ -424,8 +426,8 @@
       <div class="bg-white rounded-2xl p-5 shadow-sm border border-emerald-100">
         <p class="font-bold text-xs text-gray-400">Nomor Pendaftaran Unik</p>
         <p id="student-registration-number" class="font-extrabold text-lg text-[var(--dark-green)] mb-3">KST-2026-XXXXX</p>
-        <div class="w-full h-16 bg-emerald-50 border border-dashed border-emerald-200 rounded-xl flex items-center justify-center text-xs font-semibold text-emerald-800 gap-2 mb-3">
-          <i data-lucide="qr-code" class="w-6 h-6 text-emerald-700"></i> QR Code Tergenerasi
+        <div class="w-full bg-emerald-50 border border-dashed border-emerald-200 rounded-xl flex items-center justify-center p-2 mb-3 min-h-[130px]">
+          <div id="qr-beranda" class="p-1 bg-white rounded-lg"></div>
         </div>
         <button onclick="openKartuModal()" class="w-full border border-gray-300 hover:bg-gray-50 text-xs font-semibold py-2 rounded-xl transition flex items-center justify-center gap-1.5">
           <i data-lucide="printer" class="w-3.5 h-3.5 text-gray-600"></i> Cetak Kartu Pendaftaran
@@ -530,7 +532,10 @@
     <!-- BANNER PROFIL & FOTO -->
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-100 flex flex-col sm:flex-row items-center sm:items-start gap-6 relative">
       <div class="relative group">
-        <img id="profile-avatar-img" src="https://i.pravatar.cc/128?img=47" class="w-24 h-24 rounded-full object-cover border-4 border-emerald-300 shadow-md" alt="Foto profil siswa">
+        <div id="profile-avatar-wrapper" class="w-24 h-24 rounded-full bg-emerald-100 text-[#1B4332] border-4 border-emerald-300 shadow-md flex items-center justify-center overflow-hidden shrink-0">
+          <img id="profile-avatar-img" src="" class="w-full h-full object-cover hidden" alt="Foto profil siswa">
+          <i id="profile-avatar-icon" data-lucide="user" class="w-12 h-12"></i>
+        </div>
         <button onclick="triggerProfilePhotoUpload()" class="absolute bottom-0 right-0 bg-[var(--green)] text-white p-2 rounded-full shadow-lg hover:scale-110 transition border-2 border-white" title="Ubah Foto Profil">
           <i data-lucide="camera" class="w-4 h-4"></i>
         </button>
@@ -669,7 +674,7 @@
           <p class="text-[10px] text-gray-400">Jadwal Seleksi / Tes</p>
           <p id="card-jadwal" class="font-bold text-[11px] text-gray-800">Telah Terdaftar</p>
         </div>
-        <i data-lucide="qr-code" class="w-10 h-10 text-gray-800 shrink-0"></i>
+        <div id="qr-modal-kartu" class="shrink-0 bg-white p-1 rounded-lg"></div>
       </div>
     </div>
 
@@ -868,6 +873,49 @@ document.getElementById('btn-logout').addEventListener('click', () => {
   }, 800);
 });
 
+/* ============ FUNGSI GENERATE QR CODE (FORMAT KARTU TEKS RAPI) ============ */
+function generateQRCodes() {
+  const qrKartuText = 
+`==============================
+ KARTU PENDAFTARAN SPMB 2026
+   SMK KASATRIAN SOLO
+==============================
+No. Daftar  : ${formData.noPendaftaran}
+Nama Siswa  : ${formData.namaSiswa}
+Jurusan     : ${formData.jurusanUtama}
+Asal Sekolah: ${formData.asalSekolah}
+Tgl Daftar  : ${formData.tglMendaftar}
+Status      : TERDAFTAR (VERIFIKASI)
+==============================`;
+
+  const qrBerandaEl = document.getElementById("qr-beranda");
+  const qrModalEl = document.getElementById("qr-modal-kartu");
+
+  if (qrBerandaEl) {
+    qrBerandaEl.innerHTML = "";
+    new QRCode(qrBerandaEl, {
+      text: qrKartuText,
+      width: 120,
+      height: 120,
+      colorDark: "#1B4332",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.L
+    });
+  }
+
+  if (qrModalEl) {
+    qrModalEl.innerHTML = "";
+    new QRCode(qrModalEl, {
+      text: qrKartuText,
+      width: 110,
+      height: 110,
+      colorDark: "#000000",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.L
+    });
+  }
+}
+
 /* ============ HELPERS ============ */
 function docStatusBadge(status){
   const map = {
@@ -897,8 +945,21 @@ document.getElementById('profile-photo-input').addEventListener('change', (e) =>
     const reader = new FileReader();
     reader.onload = function(evt) {
       const photoUrl = evt.target.result;
-      document.getElementById('profile-avatar-img').src = photoUrl;
-      document.getElementById('nav-avatar').src = photoUrl;
+      
+      // Update Foto Profil di Banner
+      const profileImg = document.getElementById('profile-avatar-img');
+      const profileIcon = document.getElementById('profile-avatar-icon');
+      profileImg.src = photoUrl;
+      profileImg.classList.remove('hidden');
+      if (profileIcon) profileIcon.classList.add('hidden');
+
+      // Update Foto Profil di Navbar
+      const navImg = document.getElementById('nav-avatar');
+      const navIcon = document.getElementById('nav-avatar-icon');
+      navImg.src = photoUrl;
+      navImg.classList.remove('hidden');
+      if (navIcon) navIcon.classList.add('hidden');
+
       showToast('Foto profil berhasil diperbarui!');
     };
     reader.readAsDataURL(file);
@@ -940,6 +1001,8 @@ document.getElementById('form-edit-profile').addEventListener('submit', (e) => {
   document.getElementById('profile-nisn').textContent = formData.nisn;
   document.getElementById('profile-agama').textContent = formData.agama;
 
+  generateQRCodes();
+
   closeEditProfileModal();
   showToast('Data profil siswa berhasil disimpan!');
 });
@@ -954,6 +1017,8 @@ function openKartuModal(){
 
   const selectedSchedule = jadwalData.find(j => j.id === formData.jadwalId);
   document.getElementById('card-jadwal').textContent = selectedSchedule ? `${selectedSchedule.tanggal} (${selectedSchedule.sesi})` : 'Belum memilih jadwal';
+
+  generateQRCodes();
 
   document.getElementById('modal-kartu').classList.remove('hidden');
   lucide.createIcons();
@@ -1287,6 +1352,7 @@ function bindStep4(){
       formData[el.dataset.role] = el.dataset.kode;
       if(el.dataset.role === 'jurusanUtama' && formData.jurusanCadangan === el.dataset.kode) formData.jurusanCadangan = '';
       draw();
+      generateQRCodes();
     }));
     lucide.createIcons();
   }
@@ -1322,7 +1388,7 @@ function bindStep5(){
         <span class="font-bold text-gray-800 flex items-center gap-1.5"><i data-lucide="${d.icon}" class="w-4 h-4 text-emerald-600"></i>${d.label}</span>
         ${docStatusBadge(d.status)}
       </div>
-      <p class="text-[10px] text-gray-400 truncate">📄 ${d.fileName || 'Belum diunggah'}</p>
+      <p class="text-[11px] text-gray-400 truncate">📄 ${d.fileName || 'Belum diunggah'}</p>
       <button onclick="triggerUpload('${d.id}')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-1.5 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
         <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i> Upload File
       </button>
@@ -1528,6 +1594,9 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('profile-major').textContent = formData.jurusanUtama;
   document.getElementById('profile-backup-major').textContent = formData.jurusanCadangan;
   document.getElementById('profile-registration-number').textContent = formData.noPendaftaran;
+
+  // Render QR Code Teks Ringkasan saat pertama kali dimuat
+  generateQRCodes();
 
   lucide.createIcons();
 });

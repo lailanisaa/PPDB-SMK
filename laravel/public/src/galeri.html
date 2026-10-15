@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galeri Kegiatan | SMK Kasatrian Solo Sukoharjo</title>
+  <link rel="icon" type="image/png" href="Logo_SMK.png">
+
+  <!-- Tailwind CSS & Lucide Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    * { font-family: 'Poppins', sans-serif; }
+    .nama-sekolah, .nama-sekolah * { font-family: 'Poppins', sans-serif !important; }
+
+    :root {
+      --dark-green: #1B4332;
+      --mint: #D8F5E8;
+      --accent-green: #22C55E;
+      --yellow: #FFD84D;
+    }
+
+    body {
+      color: var(--dark-green);
+      background-color: #FAFCFB;
+      overflow-x: hidden;
+    }
+
+    .gallery-card {
+      transition: all 0.3s ease;
+    }
+    .gallery-card:hover {
+      transform: translateY(-4px);
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen justify-between selection:bg-emerald-200 selection:text-emerald-900">
+
+<div>
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100/80 transition-all duration-300">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3 group">
+        <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-11 h-11 object-contain transition-transform duration-300 group-hover:scale-110">
+        <div class="leading-tight nama-sekolah">
+          <p class="text-[16px] text-[var(--dark-green)] font-extrabold tracking-wide">SMK KASATRIAN</p>
+          <p class="text-[14px] text-[var(--dark-green)] -mt-1 font-semibold opacity-90">SOLO SUKOHARJO</p>
+        </div>
+      </a>
+
+      <ul class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-700">
+        <li><a href="index.html" class="hover:text-[var(--accent-green)] transition duration-200">Beranda</a></li>
+        <li><a href="jurusan.html" class="hover:text-[var(--accent-green)] transition duration-200">Jurusan</a></li>
+        <li><a href="persyaratan.html" class="hover:text-[var(--accent-green)] transition duration-200">Persyaratan</a></li>
+        <li><a href="galeri.html" class="text-[var(--accent-green)] font-bold transition duration-200 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-[var(--accent-green)]">Galeri</a></li>
+        <li><a href="faq.html" class="hover:text-[var(--accent-green)] transition duration-200">FAQ</a></li>
+      </ul>
+
+      <div id="nav-actions-desktop" class="hidden sm:flex items-center gap-3">
+        <a href="pilih_peran.html?mode=login" class="px-5 py-2 rounded-full border-2 border-[var(--dark-green)] text-[var(--dark-green)] font-semibold text-sm hover:bg-emerald-50">Masuk</a>
+        <a href="pilih_peran.html?mode=signup" class="px-5 py-2 rounded-full bg-[var(--accent-green)] text-white font-semibold text-sm shadow-md">Daftar SPMB</a>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-[var(--dark-green)] hover:bg-emerald-50 transition" aria-label="Toggle Menu">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+    </nav>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-emerald-100 bg-white/98 px-6 py-4 space-y-3 shadow-lg">
+      <a href="index.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Beranda</a>
+      <a href="jurusan.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Jurusan</a>
+      <a href="persyaratan.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Persyaratan</a>
+      <a href="galeri.html" class="block py-2 font-semibold text-[var(--accent-green)]">Galeri</a>
+      <a href="faq.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">FAQ</a>
+      <div class="pt-3 border-t border-gray-100 flex flex-col gap-2">
+        <a href="pilih_peran.html?mode=login" class="w-full text-center py-2.5 rounded-full border-2 border-[var(--dark-green)] text-[var(--dark-green)] font-semibold text-sm">Masuk</a>
+        <a href="pilih_peran.html?mode=signup" class="w-full text-center py-2.5 rounded-full bg-[var(--accent-green)] text-white font-semibold text-sm">Daftar SPMB</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO HEADER -->
+  <section class="relative bg-gradient-to-b from-[var(--mint)] via-emerald-50/50 to-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center" data-aos="fade-up">
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider">
+        <i data-lucide="camera" class="w-4 h-4 text-emerald-600"></i> Dokumentasi Kegiatan
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold text-[var(--dark-green)] mt-3">
+        Galeri & Momen Spesial Sekolah
+      </h1>
+      <p class="text-gray-600 max-w-2xl mx-auto mt-2 text-xs sm:text-sm">
+        Geser / Slide kepingan foto per kategori untuk melihat ragam aktivitas, prestasi LKS, dan kebanggaan siswa SMK Kasatrian.
+      </p>
+    </div>
+  </section>
+
+  <!-- MAIN GALLERY SLIDERS SECTION -->
+  <section class="py-10 bg-white space-y-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
+
+      <!-- 1. KATEGORI PRESTASI & LOMBA SISWA SLIDER -->
+      <div class="space-y-4" data-aos="fade-up">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl sm:text-2xl font-bold text-[var(--dark-green)] flex items-center gap-2">
+            🏆 Prestasi & Kejuaraan Siswa
+          </h2>
+          <div class="flex gap-2">
+            <button onclick="scrollSlider('slider-prestasi', -300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button onclick="scrollSlider('slider-prestasi', 300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="slider-prestasi" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth py-2">
+          <!-- FOTO PRESTASI LKS COOKERY -->
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('prestasi_jasaboga.jpeg', 'Juara 1 & 2 LKS Cookery Sukoharjo', 'Prestasi Tata Boga')">
+            <img src="prestasi_jasaboga.jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Juara 1 & 2 LKS Cookery</h3>
+              <p class="text-[11px] text-gray-500">LKS SMK Kab. Sukoharjo Tata Boga.</p>
+            </div>
+          </div>
+          <!-- FOTO PRESTASI LKS TBSM -->
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('prestasi_tsm.jpeg', 'Juara 1 LKS TBSM Sukoharjo', 'Prestasi Otomotif')">
+            <img src="prestasi_tsm.jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Juara 1 LKS TBSM Otomotif</h3>
+              <p class="text-[11px] text-gray-500">Kompetisi Teknik Sepeda Motor.</p>
+            </div>
+          </div>
+          <!-- FOTO PRESTASI LKS PERHOTELAN -->
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('prestasi_perhotelan.jpeg', 'Juara LKS Hotel Reception', 'Prestasi Perhotelan')">
+            <img src="prestasi_perhotelan.jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Juara LKS Hotel Reception</h3>
+              <p class="text-[11px] text-gray-500">Penghargaan Solia Hotel Yosodipuro.</p>
+            </div>
+          </div>
+          <!-- FOTO PRESTASI LKS PAI 1 -->
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_siswa (2).jpg', 'Tim Kontingen LKS PAI SMK', 'Prestasi PAI')">
+            <img src="index_siswa (2).jpg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Pentas LKS PAI SMK</h3>
+              <p class="text-[11px] text-gray-500">Tim Prestasi LKS PAI Sukoharjo.</p>
+            </div>
+          </div>
+          <!-- FOTO PRESTASI LKS PAI 2 -->
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_siswa (3).jpeg', 'Juara Lomba Mata Pelajaran PAI', 'Prestasi PAI')">
+            <img src="index_siswa (3).jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Juara MAPSI / LKS PAI</h3>
+              <p class="text-[11px] text-gray-500">Piala Penyerahan Seni Islamic.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. KATEGORI OSIS & EKSKUL SLIDER -->
+      <div class="space-y-4" data-aos="fade-up">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl sm:text-2xl font-bold text-[var(--dark-green)] flex items-center gap-2">
+            👥 OSIS & Kegiatan Ekskul
+          </h2>
+          <div class="flex gap-2">
+            <button onclick="scrollSlider('slider-ekskul', -300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button onclick="scrollSlider('slider-ekskul', 300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="slider-ekskul" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth py-2">
+          <!-- ITEM 1 -->
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_osis.jpeg', 'Pengurus OSIS', 'OSIS & Ekskul')">
+            <img src="pict_osis.jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Pengurus OSIS</h3>
+              <p class="text-[11px] text-gray-500">Sinergi kepemimpinan siswa.</p>
+            </div>
+          </div>
+          <!-- ITEM 2 -->
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_osis.jpg', 'Kebersamaan Pengurus OSIS', 'OSIS & Ekskul')">
+            <img src="pict_osis.jpg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Kebersamaan Pengurus OSIS</h3>
+              <p class="text-[11px] text-gray-500">Potret bersama anggota OSIS.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. KATEGORI PRAKTIK PER JURUSAN & TABLE MANNER SLIDER -->
+      <div class="space-y-4" data-aos="fade-up">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl sm:text-2xl font-bold text-[var(--dark-green)] flex items-center gap-2">
+            🛠 Praktik Per Jurusan & Table Manner
+          </h2>
+          <div class="flex gap-2">
+            <button onclick="scrollSlider('slider-jurusan', -300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button onclick="scrollSlider('slider-jurusan', 300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="slider-jurusan" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth py-2">
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_perhotelan_tablemanner.jpeg', 'Table Manner Course Guru & Siswa', 'Perhotelan')">
+            <img src="index_perhotelan_tablemanner.jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Table Manner Guru & Siswa</h3>
+              <p class="text-[11px] text-gray-500">Pelatihan etika jamuan makan.</p>
+            </div>
+          </div>
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_perhotelan_tablemanner (2).jpeg', 'Table Manner Siswi Perhotelan', 'Perhotelan')">
+            <img src="index_perhotelan_tablemanner (2).jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Table Manner Perhotelan</h3>
+              <p class="text-[11px] text-gray-500">Praktik dining etika Solia Zigna.</p>
+            </div>
+          </div>
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_jasaboga3.jpeg', 'Praktik Kuliner', 'Kuliner')">
+            <img src="pict_jasaboga3.jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Praktik Kuliner</h3>
+              <p class="text-[11px] text-gray-500">Seni Tata Boga & Pastry.</p>
+            </div>
+          </div>
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_tsm4.jpeg', 'Praktik Otomotif TSM', 'Otomotif')">
+            <img src="pict_tsm4.jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Praktik Otomotif TSM</h3>
+              <p class="text-[11px] text-gray-500">Perawatan PGM-FI AHASS.</p>
+            </div>
+          </div>
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_perhotelan2.jpeg', 'Simulasi Perhotelan', 'Perhotelan')">
+            <img src="pict_perhotelan2.jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Simulasi Perhotelan</h3>
+              <p class="text-[11px] text-gray-500">Pelayanan Front Office.</p>
+            </div>
+          </div>
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_tkj.jpeg', 'Praktik Jaringan TKJ', 'TKJ')">
+            <img src="pict_tkj.jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Praktik Jaringan TKJ</h3>
+              <p class="text-[11px] text-gray-500">Konfigurasi Mikrotik & Server.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. KATEGORI KEGIATAN & WISUDA SLIDER -->
+      <div class="space-y-4" data-aos="fade-up">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl sm:text-2xl font-bold text-[var(--dark-green)] flex items-center gap-2">
+            🎉 Kegiatan & Pelepasan Wisuda
+          </h2>
+          <div class="flex gap-2">
+            <button onclick="scrollSlider('slider-kegiatan', -300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button onclick="scrollSlider('slider-kegiatan', 300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="slider-kegiatan" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth py-2">
+          <!-- DOKUMENTASI PELEPASAN ANGKATAN XXII -->
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_guru.jpeg', 'Pelepasan Murid Kelas XII Angkatan XXII - Bapak Ibu Guru', 'Wisuda')">
+            <img src="index_guru.jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Pelepasan Angkatan XXII Guru</h3>
+              <p class="text-[11px] text-gray-500">Dewan guru di Hotel Solia Zigna.</p>
+            </div>
+          </div>
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_guru (2).jpeg', 'Pelepasan Angkatan XXII Dewan Guru', 'Wisuda')">
+            <img src="index_guru (2).jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Pelepasan Angkatan XXII</h3>
+              <p class="text-[11px] text-gray-500">Momen guru & pimpinan sekolah.</p>
+            </div>
+          </div>
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('teknik sepeda motor1.jpeg', 'Pelepasan Murid Kelas XII TSM Angkatan XXII', 'Wisuda')">
+            <img src="teknik sepeda motor1.jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Pelepasan Wisuda TSM</h3>
+              <p class="text-[11px] text-gray-500">Wisudawan Teknik Sepeda Motor.</p>
+            </div>
+          </div>
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('ph2.jpeg', 'Pelepasan Wisuda Perhotelan', 'Wisuda')">
+            <img src="ph2.jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Pelepasan Wisuda Perhotelan</h3>
+              <p class="text-[11px] text-gray-500">Pelepasan Jurusan Perhotelan.</p>
+            </div>
+          </div>
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_kuliner2.jpeg', 'Pelepasan Wisuda Kuliner', 'Wisuda')">
+            <img src="index_kuliner2.jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Pelepasan Wisuda Kuliner</h3>
+              <p class="text-[11px] text-gray-500">Pelepasan Jurusan Tata Boga.</p>
+            </div>
+          </div>
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('tsm.jpeg', 'Prosesi Pengalungan Samir Wisuda TSM', 'Wisuda')">
+            <img src="tsm.jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Prosesi Pengalungan Samir</h3>
+              <p class="text-[11px] text-gray-[cite: 15]">Penyematan samir wisudawan.</p>
+            </div>
+          </div>
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_kuliner.jpeg', 'Prosesi Pengalungan Samir Kuliner', 'Wisuda')">
+            <img src="index_kuliner.jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Prosesi Samir Tata Boga</h3>
+              <p class="text-[11px] text-gray-500">Pengalungan samir siswi Kuliner.</p>
+            </div>
+          </div>
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_siswa.jpg', 'Foto Angkatan Wisudawan di Hotel Solia Zigna', 'Wisuda')">
+            <img src="index_siswa.jpg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Wisudawan & Guru Solia Zigna</h3>
+              <p class="text-[11px] text-gray-500">Foto bersama Ballroom Hotel.</p>
+            </div>
+          </div>
+          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('kuliner (2).jpeg', 'Wisuda Solia Zigna', 'Wisuda')">
+            <img src="kuliner (2).jpeg" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h3 class="font-bold text-sm text-[var(--dark-green)]">Foto Wisudawan & Guru</h3>
+              <p class="text-[11px] text-gray-500">Hotel Solia Zigna.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- LIGHTBOX MODAL -->
+<div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/90 hidden flex items-center justify-center p-4">
+  <button onclick="closeLightbox()" class="absolute top-5 right-5 text-white p-2">
+    <i data-lucide="x" class="w-8 h-8"></i>
+  </button>
+  <div class="max-w-3xl w-full text-center">
+    <img id="lightbox-img" src="" class="max-h-[75vh] mx-auto rounded-xl">
+    <h3 id="lightbox-title" class="text-lg font-bold text-white mt-3"></h3>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-[var(--dark-green)] text-white pt-14 pb-8 border-t border-emerald-900 mt-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-3 gap-10">
+    <div class="space-y-4">
+      <div class="flex items-center gap-3">
+        <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-11 h-11 object-contain">
+        <div class="nama-sekolah">
+          <p class="text-lg text-white font-extrabold">SMK KASATRIAN</p>
+          <p class="text-xs text-white/80 -mt-1 font-semibold">SOLO SUKOHARJO</p>
+        </div>
+      </div>
+      <p class="text-xs text-emerald-100/70 leading-relaxed">
+        Menciptakan lulusan berkarakter, berkompeten, dan siap bersaing di era industri global.
+      </p>
+    </div>
+
+    <div>
+      <h4 class="font-bold text-sm text-emerald-300 mb-4 uppercase tracking-wider">Navigasi Cepat</h4>
+      <ul class="space-y-2.5 text-xs text-emerald-100/80 font-medium">
+        <li><a href="index.html" class="hover:text-white hover:underline transition">Beranda</a></li>
+        <li><a href="jurusan.html" class="hover:text-white hover:underline transition">Jurusan & Kurikulum</a></li>
+        <li><a href="persyaratan.html" class="hover:text-white hover:underline transition">Syarat Pendaftaran</a></li>
+        <li><a href="galeri.html" class="hover:text-white hover:underline transition">Galeri Kegiatan</a></li>
+        <li><a href="faq.html" class="hover:text-white hover:underline transition">Pusat Bantuan (FAQ)</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="font-bold text-sm text-emerald-300 mb-4 uppercase tracking-wider">Kontak Sekolah</h4>
+      <p class="text-xs text-emerald-100/80 leading-relaxed flex items-start gap-2">
+        <i data-lucide="map-pin" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+        Jl. Mendungan No.3, Pabelan, Kartasura, Sukoharjo, Jawa Tengah
+      </p>
+
+      <div class="mt-4 pt-3 border-t border-emerald-800/80">
+        <p class="text-xs text-emerald-100/80 mb-2">Informasi pendaftaran:</p>
+        <div class="space-y-1 text-xs text-emerald-200">
+          <p>1. Bu Zulfa: <a href="https://wa.me/6281943215006" target="_blank" class="underline hover:text-white">0819-4321-5006</a></p>
+          <p>2. Pak Wawan: <a href="https://wa.me/6285236838346" target="_blank" class="underline hover:text-white">0852-3683-8346</a></p>
+          <p>3. Bu Yati: <a href="https://wa.me/6282230660060" target="_blank" class="underline hover:text-white">0822-3066-0060</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-12 pt-6 border-t border-emerald-900/80 text-center text-xs text-emerald-200/60 font-medium">
+    © <span id="footer-year"></span> SMK Kasatrian Solo Sukoharjo. All Rights Reserved.
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons();
+    AOS.init({ duration: 800, once: true });
+
+    // Mobile Menu Toggle
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    if (btn && menu) {
+      btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+    }
+
+    // Hak Cipta Tahun Footer Real-time
+    const footerYear = document.getElementById('footer-year');
+    if (footerYear) {
+      footerYear.textContent = new Date().getFullYear();
+    }
+  });
+
+  function scrollSlider(id, distance) {
+    document.getElementById(id).scrollBy({ left: distance, behavior: 'smooth' });
+  }
+
+  function openLightbox(src, title) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox-title').textContent = title;
+    document.getElementById('lightbox-modal').classList.remove('hidden');
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox-modal').classList.add('hidden');
+  }
+</script>
+</body>
+</html>

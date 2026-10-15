@@ -1,0 +1,58 @@
+{
+  "info": {
+    "name": "SPMB Modular API Security Smoke Tests",
+    "description": "Gunakan akun dan data uji. Set baseUrl, email, password, applicantId, otherApplicantId, maliciousFile. Login menyimpan csrfToken.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost" },
+    { "key": "email", "value": "" },
+    { "key": "password", "value": "" },
+    { "key": "csrfToken", "value": "" },
+    { "key": "applicantId", "value": "" },
+    { "key": "otherApplicantId", "value": "" },
+    { "key": "maliciousFile", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Smoke: login",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}", "options": { "raw": { "language": "json" } } },
+        "url": "{{baseUrl}}/api/auth/login.php"
+      },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('login succeeds', () => pm.response.to.have.status(200));", "const body = pm.response.json();", "pm.expect(body.success).to.eql(true);", "pm.collectionVariables.set('csrfToken', body.csrf_token);"] } }]
+    },
+    {
+      "name": "Smoke: current profile",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/auth/me.php" },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('profile succeeds', () => pm.response.to.have.status(200));", "pm.expect(pm.response.json().user).to.have.property('role');"] } }]
+    },
+    {
+      "name": "Security: student cannot list admin data (run as student)",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/admin/list_siswa.php" },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('RBAC blocks this role', () => pm.expect([401, 403]).to.include(pm.response.code));"] } }]
+    },
+    {
+      "name": "Security: student BOLA attempt (run as student)",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/siswa/get_pendaftar_detail.php?id={{otherApplicantId}}" },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('request does not reveal other applicant', () => pm.response.to.have.status(200));", "const body = pm.response.json();", "pm.expect(String(body.pendaftar.id)).to.eql(String(pm.collectionVariables.get('applicantId')));"] } }]
+    },
+    {
+      "name": "Security: SQL injection search",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/admin/list_siswa.php?q=%27%20OR%201%3D1--" },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('SQLi does not cause server error', () => pm.expect(pm.response.code).to.be.below(500));", "if (pm.response.code === 200) pm.expect(pm.response.json()).to.have.property('pagination');"] } }]
+    },
+    {
+      "name": "Security: reject executable upload (run as student; select maliciousFile)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "X-CSRF-Token", "value": "{{csrfToken}}" }],
+        "body": { "mode": "formdata", "formdata": [{ "key": "jenis_dokumen", "value": "surat_lain", "type": "text" }, { "key": "file", "type": "file", "src": "{{maliciousFile}}" }] },
+        "url": "{{baseUrl}}/api/siswa/upload_dokumen.php"
+      },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('executable upload is rejected', () => pm.expect([400, 422]).to.include(pm.response.code));"] } }]
+    }
+  ]
+}

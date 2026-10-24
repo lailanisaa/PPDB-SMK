@@ -14,110 +14,169 @@
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-<!-- Fonts -->
+<!-- Google Fonts: Poppins -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 
+<!-- Style Custom Kustomisasi Tampilan Modern -->
 <style>
   * { font-family: 'Poppins', sans-serif; }
   .nama-sekolah, .nama-sekolah * { font-family: 'Poppins', sans-serif !important; }
+  
+  /* Variabel Warna Tema Utama */
   :root { 
-    --dark-green: #1B4332; 
-    --mint: #D8F5E8; 
-    --accent-green: #22C55E; 
-    --accent-hover: #16A34A;
+    --dark-green: #0F382C; 
+    --mint: #E8F8F0; 
+    --mint-2: #D1F2E2; 
+    --accent-green: #10B981; 
+    --accent-hover: #059669;
+    --yellow: #FBBF24;
   }
-  body { color: var(--dark-green); background: #FAFCFB; }
+  body { color: var(--dark-green); background: #FAFCFB; overflow-x: hidden; }
 
-  /* Accordion Transition */
+  /* Pola Latar Belakang Bintik Grid */
+  .bg-grid-pattern {
+    background-image: radial-gradient(#10b981 1.2px, transparent 1.2px);
+    background-size: 28px 28px;
+  }
+
+  /* Transition & Transisi Akordeon FAQ */
   .faq-answer {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.35s cubic-bezier(0, 1, 0, 1), opacity 0.3s ease;
+    transition: max-height 0.4s cubic-bezier(0, 1, 0, 1), opacity 0.35s ease;
     opacity: 0;
   }
   .faq-answer.open {
-    max-height: 300px;
+    max-height: 350px;
     opacity: 1;
-    transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    transition: max-height 0.45s ease-in-out, opacity 0.45s ease-in-out;
   }
+  
   .faq-card {
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .faq-card:hover {
-    border-color: var(--accent-green);
+    border-color: rgba(16, 185, 129, 0.5);
+    box-shadow: 0 12px 25px -6px rgba(16, 185, 129, 0.15);
+  }
+
+  /* Glassmorphism Panel Transparan */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+  }
+
+  /* Animasi Pulse Glow Latar Belakang */
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.35; transform: scale(1); }
+    50% { opacity: 0.75; transform: scale(1.1); }
+  }
+  .animate-glow {
+    animation: pulse-glow 5s ease-in-out infinite;
+  }
+
+  /* Gradasi Teks Tajam */
+  .gradient-text {
+    background: linear-gradient(135deg, #059669 0%, #10B981 50%, #34D399 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 </style>
 </head>
-<body class="antialiased flex flex-col min-h-screen justify-between selection:bg-emerald-200">
+<body class="antialiased flex flex-col min-h-screen justify-between selection:bg-emerald-200 selection:text-emerald-900">
 
-<!-- NAVBAR -->
-<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100/80 transition-all duration-300">
-  <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-    <a href="index.html" class="flex items-center gap-3 group">
-      <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-11 h-11 object-contain transition-transform duration-300 group-hover:scale-110">
+<!-- ==================== HEADER & NAVBAR MODERN ==================== -->
+<header class="sticky top-0 z-50 bg-white/85 backdrop-blur-xl border-b border-emerald-100/80 transition-all duration-300 shadow-sm">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+    
+    <!-- Logo dan Branding Sekolah -->
+    <a href="index.html" class="flex items-center gap-3.5 group">
+      <div class="relative">
+        <div class="absolute -inset-1 bg-emerald-400/30 rounded-full blur-sm group-hover:bg-emerald-500/40 transition duration-300"></div>
+        <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="relative w-11 h-11 object-contain transition-transform duration-300 group-hover:scale-105">
+      </div>
       <div class="leading-tight nama-sekolah">
-        <p class="text-[16px] text-[var(--dark-green)] font-extrabold tracking-wide">SMK KASATRIAN</p>
-        <p class="text-[14px] text-[var(--dark-green)] -mt-1 font-semibold opacity-90">SOLO SUKOHARJO</p>
+        <p class="text-[17px] text-[var(--dark-green)] font-black tracking-wide">SMK KASATRIAN</p>
+        <p class="text-[13px] text-emerald-700 -mt-1 font-bold opacity-90">SOLO SUKOHARJO</p>
       </div>
     </a>
 
     <!-- Desktop Navigation Links -->
-    <ul class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-700">
-      <li><a href="index.html" class="hover:text-[var(--accent-green)] transition duration-200">Beranda</a></li>
-      <li><a href="jurusan.html" class="hover:text-[var(--accent-green)] transition duration-200">Jurusan</a></li>
-      <li><a href="persyaratan.html" class="hover:text-[var(--accent-green)] transition duration-200">Persyaratan</a></li>
-      <li><a href="galeri.html" class="hover:text-[var(--accent-green)] transition duration-200">Galeri</a></li>
-      <li><a href="faq.html" class="text-[var(--accent-green)] font-bold transition duration-200 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-[var(--accent-green)]">FAQ</a></li>
+    <ul class="hidden md:flex items-center gap-7 text-sm font-semibold text-gray-700">
+      <li><a href="index.html" class="hover:text-[var(--accent-green)] transition duration-200 py-1">Beranda</a></li>
+      <li><a href="jurusan.html" class="hover:text-[var(--accent-green)] transition duration-200 py-1">Jurusan</a></li>
+      <li><a href="persyaratan.html" class="hover:text-[var(--accent-green)] transition duration-200 py-1">Persyaratan</a></li>
+      <li><a href="galeri.html" class="hover:text-[var(--accent-green)] transition duration-200 py-1">Galeri</a></li>
+      <li>
+        <a href="faq.html" class="text-[var(--accent-green)] font-bold transition duration-200 relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[var(--accent-green)] after:rounded-full">
+          FAQ
+        </a>
+      </li>
     </ul>
 
-    <!-- Action Buttons -->
+    <!-- Action Buttons Desktop -->
     <div id="nav-actions-desktop" class="hidden sm:flex items-center gap-3">
-      <a href="pilih_peran.html?mode=login" class="px-5 py-2 rounded-full border-2 border-[var(--dark-green)] text-[var(--dark-green)] font-semibold text-sm hover:bg-emerald-50 hover:shadow-md transition duration-200">Masuk</a>
-      <a href="pilih_peran.html?mode=signup" class="px-5 py-2 rounded-full bg-[var(--accent-green)] hover:bg-[var(--accent-hover)] text-white font-semibold text-sm shadow-md hover:shadow-lg transition duration-200 transform hover:-translate-y-0.5">Daftar SPMB</a>
+      <a href="pilih_peran.html?mode=login" class="px-5 py-2.5 rounded-full border border-emerald-300 text-[var(--dark-green)] font-bold text-xs hover:bg-emerald-50 hover:border-emerald-500 transition duration-200">Masuk</a>
+      <a href="pilih_peran.html?mode=signup" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-700 hover:to-green-600 text-white font-bold text-xs shadow-md shadow-emerald-500/20 hover:shadow-lg transition duration-200 transform hover:-translate-y-0.5">Daftar SPMB</a>
     </div>
 
     <!-- Mobile Hamburger Button -->
-    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-[var(--dark-green)] hover:bg-emerald-50 transition" aria-label="Toggle Menu">
+    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl text-[var(--dark-green)] hover:bg-emerald-50 transition border border-emerald-100" aria-label="Toggle Menu">
       <i data-lucide="menu" class="w-6 h-6"></i>
     </button>
   </nav>
 
   <!-- Mobile Dropdown Menu -->
-  <div id="mobile-menu" class="hidden md:hidden border-t border-emerald-100 bg-white/98 px-6 py-4 space-y-3 shadow-lg">
+  <div id="mobile-menu" class="hidden md:hidden border-t border-emerald-100 bg-white/95 backdrop-blur-lg px-6 py-4 space-y-3 shadow-xl">
     <a href="index.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Beranda</a>
     <a href="jurusan.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Jurusan</a>
     <a href="persyaratan.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Persyaratan</a>
     <a href="galeri.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Galeri</a>
-    <a href="faq.html" class="block py-2 font-semibold text-[var(--accent-green)]">FAQ</a>
-    <div class="pt-3 border-t border-gray-100 flex flex-col gap-2">
-      <a href="pilih_peran.html?mode=login" class="w-full text-center py-2.5 rounded-full border-2 border-[var(--dark-green)] text-[var(--dark-green)] font-semibold text-sm">Masuk</a>
-      <a href="pilih_peran.html?mode=signup" class="w-full text-center py-2.5 rounded-full bg-[var(--accent-green)] text-white font-semibold text-sm">Daftar SPMB</a>
+    <a href="faq.html" class="block py-2 font-bold text-[var(--accent-green)]">FAQ</a>
+    <div class="pt-3 border-t border-gray-100 flex flex-col gap-2.5">
+      <a href="pilih_peran.html?mode=login" class="w-full text-center py-2.5 rounded-xl border border-emerald-300 text-[var(--dark-green)] font-bold text-sm">Masuk</a>
+      <a href="pilih_peran.html?mode=signup" class="w-full text-center py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-sm shadow-md">Daftar SPMB</a>
     </div>
   </div>
 </header>
 
-<!-- HERO HEADER FAQ -->
-<section class="bg-gradient-to-b from-[var(--mint)] to-[#FAFCFB] py-12 border-b border-emerald-100">
-  <div class="max-w-4xl mx-auto px-4 text-center space-y-3" data-aos="fade-down">
-    <span class="px-4 py-1.5 rounded-full bg-emerald-100/80 border border-emerald-200 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider inline-block">Pusat Bantuan</span>
-    <h1 class="text-3xl sm:text-4xl font-extrabold text-[var(--dark-green)]">Pertanyaan Sering Diajukan</h1>
-    <p class="text-xs sm:text-sm text-gray-600 max-w-xl mx-auto">Temukan jawaban cepat mengenai prosedur pendaftaran, dokumen, dan informasi sekolah.</p>
+<!-- ==================== HERO HEADER FAQ ==================== -->
+<section class="relative bg-gradient-to-b from-emerald-100/70 via-emerald-50/30 to-[#FAFCFB] py-14 sm:py-20 border-b border-emerald-100 overflow-hidden">
+  
+  <!-- Latar Grid Pattern & Ambient Glow -->
+  <div class="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none"></div>
+  <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-emerald-300/30 rounded-full blur-3xl pointer-events-none animate-glow"></div>
 
-    <!-- Search Input -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 relative z-10" data-aos="fade-down">
+    <span class="px-4 py-2 rounded-full glass-panel text-[var(--dark-green)] font-extrabold text-xs uppercase tracking-wider inline-flex items-center gap-2 border border-emerald-200/80 shadow-sm">
+      <i data-lucide="help-circle" class="w-3.5 h-3.5 text-emerald-600"></i> Pusat Informasi & Bantuan
+    </span>
+    <h1 class="text-3xl sm:text-5xl font-black text-[var(--dark-green)] tracking-tight">
+      Pertanyaan Sering <span class="gradient-text">Diajukan 💡</span>
+    </h1>
+    <p class="text-xs sm:text-base text-gray-600 max-w-xl mx-auto font-normal leading-relaxed">
+      Temukan jawaban cepat mengenai prosedur pendaftaran, dokumen persyaratannya, dan informasi seputar SMK Kasatrian.
+    </p>
+
+    <!-- Search Input Bar -->
     <div class="max-w-md mx-auto relative pt-4">
-      <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 translate-y-1 text-gray-400"></i>
-      <input id="faq-search" type="text" placeholder="Cari pertanyaan kamu di sini..." class="w-full pl-10 pr-4 py-2.5 rounded-full border border-emerald-200 text-xs focus:outline-none focus:ring-2 focus:ring-[var(--accent-green)] bg-white shadow-sm">
+      <div class="relative flex items-center">
+        <i data-lucide="search" class="w-4 h-4 absolute left-4 text-emerald-600/70 pointer-events-none"></i>
+        <input id="faq-search" type="text" placeholder="Cari pertanyaan kamu di sini..." class="w-full pl-11 pr-4 py-3 rounded-2xl border border-emerald-200 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/80 focus:border-emerald-500 bg-white/90 backdrop-blur-md shadow-sm transition duration-200 placeholder:text-gray-400">
+      </div>
     </div>
   </div>
 </section>
 
-<!-- MAIN CONTENT FAQ ACCORDION -->
-<main class="max-w-3xl mx-auto px-4 py-12 space-y-4 w-full flex-grow" id="faq-container"></main>
+<!-- ==================== MAIN CONTENT: FAQ ACCORDION ==================== -->
+<main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-4 w-full flex-grow" id="faq-container"></main>
 
-<!-- FOOTER -->
+<!-- ==================== FOOTER ==================== -->
 <footer class="bg-[var(--dark-green)] text-white pt-14 pb-8 border-t border-emerald-900 mt-auto">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-3 gap-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-10">
     <div class="space-y-4">
       <div class="flex items-center gap-3">
         <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-11 h-11 object-contain">
@@ -160,12 +219,15 @@
     </div>
   </div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-12 pt-6 border-t border-emerald-900/80 text-center text-xs text-emerald-200/60 font-medium">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-6 border-t border-emerald-900/80 text-center text-xs text-emerald-200/60 font-medium">
     © <span id="footer-year"></span> SMK Kasatrian Solo Sukoharjo. All Rights Reserved.
   </div>
 </footer>
 
+<!-- External App JS File -->
 <script src="app.js"></script>
+
+<!-- Script Logika Internal FAQ (Tetap Utuh) -->
 <script>
   lucide.createIcons();
   AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
@@ -183,6 +245,7 @@
     footerYear.textContent = new Date().getFullYear();
   }
 
+  // Data FAQ Sekolah
   const faqData = [
     {
       q: 'Bagaimana cara melakukan pendaftaran siswa baru secara online?',
@@ -202,21 +265,33 @@
     }
   ];
 
+  // Render Item Akordeon FAQ
   function renderFaq(items) {
     const container = document.getElementById('faq-container');
     if(items.length === 0) {
-      container.innerHTML = `<div class="text-center py-8 text-xs text-gray-500">Pertanyaan tidak ditemukan.</div>`;
+      container.innerHTML = `
+        <div class="text-center py-12 px-4 rounded-3xl border border-emerald-100 bg-white/50 backdrop-blur-sm">
+          <i data-lucide="search-x" class="w-10 h-10 text-emerald-500/60 mx-auto mb-3"></i>
+          <p class="font-bold text-sm text-[var(--dark-green)]">Pertanyaan tidak ditemukan</p>
+          <p class="text-xs text-gray-500 mt-1">Coba gunakan kata kunci lain untuk mencari informasi yang Anda butuhkan.</p>
+        </div>`;
+      lucide.createIcons();
       return;
     }
     
     container.innerHTML = items.map((item, index) => `
-      <div class="faq-card border border-emerald-100 rounded-2xl overflow-hidden bg-white shadow-sm" data-aos="fade-up" data-aos-delay="${(index + 1) * 50}">
-        <button onclick="toggleFaq(${index})" class="w-full p-4 sm:p-5 text-left font-bold text-xs sm:text-sm text-[var(--dark-green)] flex justify-between items-center hover:bg-emerald-50/50 transition gap-4">
-          <span>${item.q}</span>
-          <i id="faq-icon-${index}" data-lucide="chevron-down" class="w-4 h-4 text-emerald-600 transition-transform duration-300 shrink-0"></i>
+      <div class="faq-card border border-emerald-100/80 rounded-2xl overflow-hidden bg-white shadow-sm hover:border-emerald-300" data-aos="fade-up" data-aos-delay="${(index + 1) * 50}">
+        <button onclick="toggleFaq(${index})" class="w-full p-5 text-left font-extrabold text-xs sm:text-sm text-[var(--dark-green)] flex justify-between items-center hover:bg-emerald-50/40 transition gap-4">
+          <span class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-800 text-[11px] font-extrabold flex items-center justify-center shrink-0">${index + 1}</span>
+            ${item.q}
+          </span>
+          <div class="w-7 h-7 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-200">
+            <i id="faq-icon-${index}" data-lucide="chevron-down" class="w-4 h-4 text-emerald-700 transition-transform duration-300"></i>
+          </div>
         </button>
-        <div id="faq-ans-${index}" class="faq-answer px-4 sm:px-5 text-xs text-gray-600 leading-relaxed bg-emerald-50/30">
-          <div class="py-4 border-t border-emerald-100/80">
+        <div id="faq-ans-${index}" class="faq-answer px-5 text-xs sm:text-sm text-gray-600 leading-relaxed bg-gradient-to-b from-emerald-50/30 to-emerald-50/10">
+          <div class="py-4 border-t border-emerald-100/80 text-gray-600 font-normal">
             ${item.a}
           </div>
         </div>
@@ -225,13 +300,14 @@
     lucide.createIcons();
   }
 
+  // Toggle Buka-Tutup Akordeon
   function toggleFaq(index) {
     const ans = document.getElementById(`faq-ans-${index}`);
     const icon = document.getElementById(`faq-icon-${index}`);
     
     const isOpen = ans.classList.contains('open');
     
-    // Close all other accordions
+    // Tutup semua akordeon lainnya
     document.querySelectorAll('.faq-answer').forEach(el => el.classList.remove('open'));
     document.querySelectorAll('[id^="faq-icon-"]').forEach(ic => ic.classList.remove('rotate-180'));
 
@@ -241,6 +317,7 @@
     }
   }
 
+  // Filter Pencarian FAQ Real-time
   document.getElementById('faq-search').addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase();
     const filtered = faqData.filter(f => f.q.toLowerCase().includes(query) || f.a.toLowerCase().includes(query));

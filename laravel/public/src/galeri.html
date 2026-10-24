@@ -14,18 +14,22 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-  <!-- Fonts -->
+  <!-- Google Fonts: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+  <!-- Style Custom Kustomisasi Tampilan Modern -->
   <style>
     * { font-family: 'Poppins', sans-serif; }
     .nama-sekolah, .nama-sekolah * { font-family: 'Poppins', sans-serif !important; }
 
+    /* Variabel Warna Utama Website */
     :root {
-      --dark-green: #1B4332;
-      --mint: #D8F5E8;
-      --accent-green: #22C55E;
-      --yellow: #FFD84D;
+      --dark-green: #0F382C;
+      --mint: #E8F8F0;
+      --mint-2: #D1F2E2;
+      --accent-green: #10B981;
+      --accent-hover: #059669;
+      --yellow: #FBBF24;
     }
 
     body {
@@ -34,327 +38,673 @@
       overflow-x: hidden;
     }
 
-    .gallery-card {
-      transition: all 0.3s ease;
-    }
-    .gallery-card:hover {
-      transform: translateY(-4px);
+    /* Pola Latar Belakang Grid Bintik */
+    .bg-grid-pattern {
+      background-image: radial-gradient(#10b981 1.2px, transparent 1.2px);
+      background-size: 28px 28px;
     }
 
-    /* Hide scrollbar for Chrome, Safari and Opera */
+    /* Micro-interaction & Hover Effect Kartu Foto */
+    .gallery-card {
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .gallery-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 35px -8px rgba(16, 185, 129, 0.18);
+    }
+    .gallery-card:hover .gallery-img {
+      transform: scale(1.08);
+    }
+    .gallery-img {
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Glassmorphism Panel Transparan */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    /* Hide Scrollbar Custom */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
-    /* Hide scrollbar for IE, Edge and Firefox */
     .no-scrollbar {
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Gradasi Teks Tajam */
+    .gradient-text {
+      background: linear-gradient(135deg, #059669 0%, #10B981 50%, #34D399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   </style>
 </head>
 <body class="antialiased flex flex-col min-h-screen justify-between selection:bg-emerald-200 selection:text-emerald-900">
 
 <div>
-  <!-- NAVBAR -->
-  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100/80 transition-all duration-300">
-    <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-3 group">
-        <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-11 h-11 object-contain transition-transform duration-300 group-hover:scale-110">
+  <!-- ==================== HEADER & NAVBAR MODERN ==================== -->
+  <header class="sticky top-0 z-50 bg-white/85 backdrop-blur-xl border-b border-emerald-100/80 transition-all duration-300 shadow-sm">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+      
+      <!-- Logo dan Branding Sekolah -->
+      <a href="index.html" class="flex items-center gap-3.5 group">
+        <div class="relative">
+          <div class="absolute -inset-1 bg-emerald-400/30 rounded-full blur-sm group-hover:bg-emerald-500/40 transition duration-300"></div>
+          <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="relative w-11 h-11 object-contain transition-transform duration-300 group-hover:scale-105">
+        </div>
         <div class="leading-tight nama-sekolah">
-          <p class="text-[16px] text-[var(--dark-green)] font-extrabold tracking-wide">SMK KASATRIAN</p>
-          <p class="text-[14px] text-[var(--dark-green)] -mt-1 font-semibold opacity-90">SOLO SUKOHARJO</p>
+          <p class="text-[17px] text-[var(--dark-green)] font-black tracking-wide">SMK KASATRIAN</p>
+          <p class="text-[13px] text-emerald-700 -mt-1 font-bold opacity-90">SOLO SUKOHARJO</p>
         </div>
       </a>
 
-      <ul class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-700">
-        <li><a href="index.html" class="hover:text-[var(--accent-green)] transition duration-200">Beranda</a></li>
-        <li><a href="jurusan.html" class="hover:text-[var(--accent-green)] transition duration-200">Jurusan</a></li>
-        <li><a href="persyaratan.html" class="hover:text-[var(--accent-green)] transition duration-200">Persyaratan</a></li>
-        <li><a href="galeri.html" class="text-[var(--accent-green)] font-bold transition duration-200 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-[var(--accent-green)]">Galeri</a></li>
-        <li><a href="faq.html" class="hover:text-[var(--accent-green)] transition duration-200">FAQ</a></li>
+      <!-- Desktop Navigation Links -->
+      <ul class="hidden md:flex items-center gap-7 text-sm font-semibold text-gray-700">
+        <li><a href="index.html" class="hover:text-[var(--accent-green)] transition duration-200 py-1">Beranda</a></li>
+        <li><a href="jurusan.html" class="hover:text-[var(--accent-green)] transition duration-200 py-1">Jurusan</a></li>
+        <li><a href="persyaratan.html" class="hover:text-[var(--accent-green)] transition duration-200 py-1">Persyaratan</a></li>
+        <li>
+          <a href="galeri.html" class="text-[var(--accent-green)] font-bold transition duration-200 relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[var(--accent-green)] after:rounded-full">
+            Galeri
+          </a>
+        </li>
+        <li><a href="faq.html" class="hover:text-[var(--accent-green)] transition duration-200 py-1">FAQ</a></li>
       </ul>
 
+      <!-- Action Buttons Desktop -->
       <div id="nav-actions-desktop" class="hidden sm:flex items-center gap-3">
-        <a href="pilih_peran.html?mode=login" class="px-5 py-2 rounded-full border-2 border-[var(--dark-green)] text-[var(--dark-green)] font-semibold text-sm hover:bg-emerald-50">Masuk</a>
-        <a href="pilih_peran.html?mode=signup" class="px-5 py-2 rounded-full bg-[var(--accent-green)] text-white font-semibold text-sm shadow-md">Daftar SPMB</a>
+        <a href="pilih_peran.html?mode=login" class="px-5 py-2.5 rounded-full border border-emerald-300 text-[var(--dark-green)] font-bold text-xs hover:bg-emerald-50 hover:border-emerald-500 transition duration-200">Masuk</a>
+        <a href="pilih_peran.html?mode=signup" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-700 hover:to-green-600 text-white font-bold text-xs shadow-md shadow-emerald-500/20 hover:shadow-lg transition duration-200 transform hover:-translate-y-0.5">Daftar SPMB</a>
       </div>
 
       <!-- Mobile Hamburger Button -->
-      <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-[var(--dark-green)] hover:bg-emerald-50 transition" aria-label="Toggle Menu">
+      <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl text-[var(--dark-green)] hover:bg-emerald-50 transition border border-emerald-100" aria-label="Toggle Menu">
         <i data-lucide="menu" class="w-6 h-6"></i>
       </button>
     </nav>
 
     <!-- Mobile Dropdown Menu -->
-    <div id="mobile-menu" class="hidden md:hidden border-t border-emerald-100 bg-white/98 px-6 py-4 space-y-3 shadow-lg">
+    <div id="mobile-menu" class="hidden md:hidden border-t border-emerald-100 bg-white/95 backdrop-blur-lg px-6 py-4 space-y-3 shadow-xl">
       <a href="index.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Beranda</a>
       <a href="jurusan.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Jurusan</a>
       <a href="persyaratan.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Persyaratan</a>
-      <a href="galeri.html" class="block py-2 font-semibold text-[var(--accent-green)]">Galeri</a>
+      <a href="galeri.html" class="block py-2 font-bold text-[var(--accent-green)]">Galeri</a>
       <a href="faq.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">FAQ</a>
-      <div class="pt-3 border-t border-gray-100 flex flex-col gap-2">
-        <a href="pilih_peran.html?mode=login" class="w-full text-center py-2.5 rounded-full border-2 border-[var(--dark-green)] text-[var(--dark-green)] font-semibold text-sm">Masuk</a>
-        <a href="pilih_peran.html?mode=signup" class="w-full text-center py-2.5 rounded-full bg-[var(--accent-green)] text-white font-semibold text-sm">Daftar SPMB</a>
+      <div class="pt-3 border-t border-gray-100 flex flex-col gap-2.5">
+        <a href="pilih_peran.html?mode=login" class="w-full text-center py-2.5 rounded-xl border border-emerald-300 text-[var(--dark-green)] font-bold text-sm">Masuk</a>
+        <a href="pilih_peran.html?mode=signup" class="w-full text-center py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-sm shadow-md">Daftar SPMB</a>
       </div>
     </div>
   </header>
 
-  <!-- HERO HEADER -->
-  <section class="relative bg-gradient-to-b from-[var(--mint)] via-emerald-50/50 to-white py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center" data-aos="fade-up">
-      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider">
-        <i data-lucide="camera" class="w-4 h-4 text-emerald-600"></i> Dokumentasi Kegiatan
+  <!-- ==================== HERO HEADER ==================== -->
+  <section class="relative bg-gradient-to-b from-emerald-100/70 via-emerald-50/30 to-white py-14 sm:py-20 border-b border-emerald-100 overflow-hidden">
+    
+    <!-- Latar Grid Pattern & Ambient Glow -->
+    <div class="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none"></div>
+    <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-emerald-300/30 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4 relative z-10" data-aos="fade-up">
+      <span class="px-4 py-2 rounded-full glass-panel text-[var(--dark-green)] font-extrabold text-xs uppercase tracking-wider inline-flex items-center gap-2 border border-emerald-200/80 shadow-sm">
+        <i data-lucide="camera" class="w-3.5 h-3.5 text-emerald-600"></i> Dokumentasi Kegiatan
       </span>
-      <h1 class="text-3xl sm:text-5xl font-extrabold text-[var(--dark-green)] mt-3">
-        Galeri & Momen Spesial Sekolah
+      <h1 class="text-3xl sm:text-5xl font-black text-[var(--dark-green)] tracking-tight">
+        Galeri & Momen <span class="gradient-text">Spesial Sekolah 📸</span>
       </h1>
-      <p class="text-gray-600 max-w-2xl mx-auto mt-2 text-xs sm:text-sm">
-        Geser / Slide kepingan foto per kategori untuk melihat ragam aktivitas, prestasi LKS, dan kebanggaan siswa SMK Kasatrian.
+      <p class="text-xs sm:text-base text-gray-600 max-w-2xl mx-auto font-normal leading-relaxed">
+        Lihat ragam dokumentasi per jurusan, prestasi LKS, kegiatan OSIS, dan pelepasan wisudawan SMK Kasatrian.
       </p>
     </div>
   </section>
 
-  <!-- MAIN GALLERY SLIDERS SECTION -->
-  <section class="py-10 bg-white space-y-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
+  <!-- ==================== MAIN GALLERY SLIDERS SECTION ==================== -->
+  <section class="py-14 bg-white space-y-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
 
       <!-- 1. KATEGORI PRESTASI & LOMBA SISWA SLIDER -->
-      <div class="space-y-4" data-aos="fade-up">
-        <div class="flex items-center justify-between">
-          <h2 class="text-xl sm:text-2xl font-bold text-[var(--dark-green)] flex items-center gap-2">
-            🏆 Prestasi & Kejuaraan Siswa
-          </h2>
+      <div class="space-y-5" data-aos="fade-up">
+        <div class="flex items-center justify-between pb-2 border-b border-emerald-100">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold shadow-sm">
+              🏆
+            </div>
+            <div>
+              <h2 class="text-lg sm:text-2xl font-black text-[var(--dark-green)] leading-tight">
+                Prestasi & Kejuaraan Siswa
+              </h2>
+              <p class="text-xs text-gray-500 font-medium hidden sm:block">Dokumentasi piala LKS dan ajang perlombaan bergengsi</p>
+            </div>
+          </div>
+          
           <div class="flex gap-2">
-            <button onclick="scrollSlider('slider-prestasi', -300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+            <button onclick="scrollSlider('slider-prestasi', -320)" class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-900 hover:text-white border border-emerald-200/80 flex items-center justify-center transition duration-200 shadow-sm" aria-label="Scroll Left">
               <i data-lucide="chevron-left" class="w-5 h-5"></i>
             </button>
-            <button onclick="scrollSlider('slider-prestasi', 300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+            <button onclick="scrollSlider('slider-prestasi', 320)" class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-900 hover:text-white border border-emerald-200/80 flex items-center justify-center transition duration-200 shadow-sm" aria-label="Scroll Right">
               <i data-lucide="chevron-right" class="w-5 h-5"></i>
             </button>
           </div>
         </div>
 
-        <div id="slider-prestasi" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth py-2">
-          <!-- FOTO PRESTASI LKS COOKERY -->
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('prestasi_jasaboga.jpeg', 'Juara 1 & 2 LKS Cookery Sukoharjo', 'Prestasi Tata Boga')">
-            <img src="prestasi_jasaboga.jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Juara 1 & 2 LKS Cookery</h3>
-              <p class="text-[11px] text-gray-500">LKS SMK Kab. Sukoharjo Tata Boga.</p>
+        <div id="slider-prestasi" class="flex gap-5 overflow-x-auto no-scrollbar scroll-smooth py-3 px-1">
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('prestasi_jasaboga.jpeg', 'Juara 1 & 2 LKS Cookery Sukoharjo', 'Prestasi Tata Boga')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="prestasi_jasaboga.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-emerald-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Tata Boga</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Juara 1 & 2 LKS Cookery</h3>
+              <p class="text-xs text-gray-500 font-medium">LKS SMK Kab. Sukoharjo Tata Boga.</p>
             </div>
           </div>
-          <!-- FOTO PRESTASI LKS TBSM -->
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('prestasi_tsm.jpeg', 'Juara 1 LKS TBSM Sukoharjo', 'Prestasi Otomotif')">
-            <img src="prestasi_tsm.jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Juara 1 LKS TBSM Otomotif</h3>
-              <p class="text-[11px] text-gray-500">Kompetisi Teknik Sepeda Motor.</p>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('prestasi_tsm.jpeg', 'Juara 1 LKS TBSM Sukoharjo', 'Prestasi Otomotif')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="prestasi_tsm.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-emerald-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Otomotif</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Juara 1 LKS TBSM Otomotif</h3>
+              <p class="text-xs text-gray-500 font-medium">Kompetisi Teknik Sepeda Motor.</p>
             </div>
           </div>
-          <!-- FOTO PRESTASI LKS PERHOTELAN -->
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('prestasi_perhotelan.jpeg', 'Juara LKS Hotel Reception', 'Prestasi Perhotelan')">
-            <img src="prestasi_perhotelan.jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Juara LKS Hotel Reception</h3>
-              <p class="text-[11px] text-gray-500">Penghargaan Solia Hotel Yosodipuro.</p>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('prestasi_perhotelan.jpeg', 'Juara LKS Hotel Reception', 'Prestasi Perhotelan')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="prestasi_perhotelan.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-emerald-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Perhotelan</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Juara LKS Hotel Reception</h3>
+              <p class="text-xs text-gray-500 font-medium">Penghargaan Solia Hotel Yosodipuro.</p>
             </div>
           </div>
-          <!-- FOTO PRESTASI LKS PAI 1 -->
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_siswa (2).jpg', 'Tim Kontingen LKS PAI SMK', 'Prestasi PAI')">
-            <img src="index_siswa (2).jpg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Pentas LKS PAI SMK</h3>
-              <p class="text-[11px] text-gray-500">Tim Prestasi LKS PAI Sukoharjo.</p>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_siswa (2).jpg', 'Tim Kontingen LKS PAI SMK', 'Prestasi PAI')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="index_siswa (2).jpg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-emerald-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">PAI</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Pentas LKS PAI SMK</h3>
+              <p class="text-xs text-gray-500 font-medium">Tim Prestasi LKS PAI Sukoharjo.</p>
             </div>
           </div>
-          <!-- FOTO PRESTASI LKS PAI 2 -->
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_siswa (3).jpeg', 'Juara Lomba Mata Pelajaran PAI', 'Prestasi PAI')">
-            <img src="index_siswa (3).jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Juara MAPSI / LKS PAI</h3>
-              <p class="text-[11px] text-gray-500">Piala Penyerahan Seni Islamic.</p>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_siswa (3).jpeg', 'Juara Lomba Mata Pelajaran PAI', 'Prestasi PAI')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="index_siswa (3).jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-emerald-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">PAI</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Juara MAPSI / LKS PAI</h3>
+              <p class="text-xs text-gray-500 font-medium">Piala Penyerahan Seni Islamic.</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 2. KATEGORI OSIS & EKSKUL SLIDER -->
-      <div class="space-y-4" data-aos="fade-up">
-        <div class="flex items-center justify-between">
-          <h2 class="text-xl sm:text-2xl font-bold text-[var(--dark-green)] flex items-center gap-2">
-            👥 OSIS & Kegiatan Ekskul
-          </h2>
+      <!-- 2. JURUSAN: TEKNIK KOMPUTER & JARINGAN (TKJ) -->
+      <div class="space-y-5" data-aos="fade-up">
+        <div class="flex items-center justify-between pb-2 border-b border-emerald-100">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-blue-100 text-blue-800 flex items-center justify-center font-bold shadow-sm">
+              💻
+            </div>
+            <div>
+              <h2 class="text-lg sm:text-2xl font-black text-[var(--dark-green)] leading-tight">
+                Teknik Komputer & Jaringan (TKJ)
+              </h2>
+              <p class="text-xs text-gray-500 font-medium hidden sm:block">Praktik konfigurasi Mikrotik, jaringan, server & maintenance IT</p>
+            </div>
+          </div>
+
           <div class="flex gap-2">
-            <button onclick="scrollSlider('slider-ekskul', -300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+            <button onclick="scrollSlider('slider-tkj', -320)" class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-900 hover:text-white border border-emerald-200/80 flex items-center justify-center transition duration-200 shadow-sm" aria-label="Scroll Left">
               <i data-lucide="chevron-left" class="w-5 h-5"></i>
             </button>
-            <button onclick="scrollSlider('slider-ekskul', 300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+            <button onclick="scrollSlider('slider-tkj', 320)" class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-900 hover:text-white border border-emerald-200/80 flex items-center justify-center transition duration-200 shadow-sm" aria-label="Scroll Right">
               <i data-lucide="chevron-right" class="w-5 h-5"></i>
             </button>
           </div>
         </div>
 
-        <div id="slider-ekskul" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth py-2">
-          <!-- ITEM 1 -->
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_osis.jpeg', 'Pengurus OSIS', 'OSIS & Ekskul')">
-            <img src="pict_osis.jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Pengurus OSIS</h3>
-              <p class="text-[11px] text-gray-500">Sinergi kepemimpinan siswa.</p>
+        <div id="slider-tkj" class="flex gap-5 overflow-x-auto no-scrollbar scroll-smooth py-3 px-1">
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_tkj.jpeg', 'Praktik Laboratorium Komputer TKJ', 'TKJ')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="pict_tkj.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-blue-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Praktikum TKJ</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Konfigurasi Jaringan & Server</h3>
+              <p class="text-xs text-gray-500 font-medium">Instalasi Mikrotik & Router Board.</p>
             </div>
           </div>
-          <!-- ITEM 2 -->
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_osis.jpg', 'Kebersamaan Pengurus OSIS', 'OSIS & Ekskul')">
-            <img src="pict_osis.jpg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Kebersamaan Pengurus OSIS</h3>
-              <p class="text-[11px] text-gray-500">Potret bersama anggota OSIS.</p>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_tkj2.jpeg', 'Maintenance Hardware & Software TKJ', 'TKJ')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="pict_tkj2.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-blue-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Lab TKJ</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Maintenance Hardware IT</h3>
+              <p class="text-xs text-gray-500 font-medium">Praktik perakitan & Troubleshooting PC.</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 3. KATEGORI PRAKTIK PER JURUSAN & TABLE MANNER SLIDER -->
-      <div class="space-y-4" data-aos="fade-up">
-        <div class="flex items-center justify-between">
-          <h2 class="text-xl sm:text-2xl font-bold text-[var(--dark-green)] flex items-center gap-2">
-            🛠 Praktik Per Jurusan & Table Manner
-          </h2>
+      <!-- 3. JURUSAN: PERHOTELAN -->
+      <div class="space-y-5" data-aos="fade-up">
+        <div class="flex items-center justify-between pb-2 border-b border-emerald-100">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold shadow-sm">
+              🏨
+            </div>
+            <div>
+              <h2 class="text-lg sm:text-2xl font-black text-[var(--dark-green)] leading-tight">
+                Perhotelan & Hospitality
+              </h2>
+              <p class="text-xs text-gray-500 font-medium hidden sm:block">Simulasi Front Office, Housekeeping, dan Table Manner Solia Zigna</p>
+            </div>
+          </div>
+
           <div class="flex gap-2">
-            <button onclick="scrollSlider('slider-jurusan', -300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+            <button onclick="scrollSlider('slider-perhotelan', -320)" class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-900 hover:text-white border border-emerald-200/80 flex items-center justify-center transition duration-200 shadow-sm" aria-label="Scroll Left">
               <i data-lucide="chevron-left" class="w-5 h-5"></i>
             </button>
-            <button onclick="scrollSlider('slider-jurusan', 300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+            <button onclick="scrollSlider('slider-perhotelan', 320)" class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-900 hover:text-white border border-emerald-200/80 flex items-center justify-center transition duration-200 shadow-sm" aria-label="Scroll Right">
               <i data-lucide="chevron-right" class="w-5 h-5"></i>
             </button>
           </div>
         </div>
 
-        <div id="slider-jurusan" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth py-2">
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_perhotelan_tablemanner.jpeg', 'Table Manner Course Guru & Siswa', 'Perhotelan')">
-            <img src="index_perhotelan_tablemanner.jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Table Manner Guru & Siswa</h3>
-              <p class="text-[11px] text-gray-500">Pelatihan etika jamuan makan.</p>
+        <div id="slider-perhotelan" class="flex gap-5 overflow-x-auto no-scrollbar scroll-smooth py-3 px-1">
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_perhotelan_tablemanner.jpeg', 'Table Manner Course Guru & Siswa', 'Perhotelan')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="index_perhotelan_tablemanner.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-amber-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Table Manner</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Table Manner Solia Zigna</h3>
+              <p class="text-xs text-gray-500 font-medium">Pelatihan etika jamuan makan berbintang.</p>
             </div>
           </div>
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_perhotelan_tablemanner (2).jpeg', 'Table Manner Siswi Perhotelan', 'Perhotelan')">
-            <img src="index_perhotelan_tablemanner (2).jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Table Manner Perhotelan</h3>
-              <p class="text-[11px] text-gray-500">Praktik dining etika Solia Zigna.</p>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_perhotelan_tablemanner (2).jpeg', 'Praktik Etika Dining Perhotelan', 'Perhotelan')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="index_perhotelan_tablemanner (2).jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-amber-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Hospitality</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Etika Pelayanan Dining</h3>
+              <p class="text-xs text-gray-500 font-medium">Siswa Perhotelan di Hotel Bintang.</p>
             </div>
           </div>
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_jasaboga3.jpeg', 'Praktik Kuliner', 'Kuliner')">
-            <img src="pict_jasaboga3.jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Praktik Kuliner</h3>
-              <p class="text-[11px] text-gray-500">Seni Tata Boga & Pastry.</p>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_perhotelan2.jpeg', 'Simulasi Front Office Perhotelan', 'Perhotelan')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="pict_perhotelan2.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-amber-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Front Office</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Simulasi Receptionist</h3>
+              <p class="text-xs text-gray-500 font-medium">Pelayanan resepsionis hotel profesional.</p>
             </div>
           </div>
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_tsm4.jpeg', 'Praktik Otomotif TSM', 'Otomotif')">
-            <img src="pict_tsm4.jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Praktik Otomotif TSM</h3>
-              <p class="text-[11px] text-gray-500">Perawatan PGM-FI AHASS.</p>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_perhotelan.jpeg', 'Praktik Housekeeping Siswa', 'Perhotelan')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="pict_perhotelan.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-amber-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Housekeeping</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Praktik Housekeeping</h3>
+              <p class="text-xs text-gray-500 font-medium">Penataan kamar standar hotel berbintang.</p>
             </div>
           </div>
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_perhotelan2.jpeg', 'Simulasi Perhotelan', 'Perhotelan')">
-            <img src="pict_perhotelan2.jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Simulasi Perhotelan</h3>
-              <p class="text-[11px] text-gray-500">Pelayanan Front Office.</p>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('perhotelan.jpeg', 'Gedung Laboratorium Praktik Perhotelan', 'Perhotelan')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="perhotelan.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-amber-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Fasilitas</span>
             </div>
-          </div>
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_tkj.jpeg', 'Praktik Jaringan TKJ', 'TKJ')">
-            <img src="pict_tkj.jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Praktik Jaringan TKJ</h3>
-              <p class="text-[11px] text-gray-500">Konfigurasi Mikrotik & Server.</p>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Lab Praktik Perhotelan</h3>
+              <p class="text-xs text-gray-500 font-medium">Fasilitas miniatur hotel sekolah.</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 4. KATEGORI KEGIATAN & WISUDA SLIDER -->
-      <div class="space-y-4" data-aos="fade-up">
-        <div class="flex items-center justify-between">
-          <h2 class="text-xl sm:text-2xl font-bold text-[var(--dark-green)] flex items-center gap-2">
-            🎉 Kegiatan & Pelepasan Wisuda
-          </h2>
+      <!-- 4. JURUSAN: JASA BOGA / KULINER -->
+      <div class="space-y-5" data-aos="fade-up">
+        <div class="flex items-center justify-between pb-2 border-b border-emerald-100">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-orange-100 text-orange-800 flex items-center justify-center font-bold shadow-sm">
+              🍳
+            </div>
+            <div>
+              <h2 class="text-lg sm:text-2xl font-black text-[var(--dark-green)] leading-tight">
+                Jasa Boga (Kuliner)
+              </h2>
+              <p class="text-xs text-gray-500 font-medium hidden sm:block">Seni olahan kuliner, pastry & bakery, serta food plating</p>
+            </div>
+          </div>
+
           <div class="flex gap-2">
-            <button onclick="scrollSlider('slider-kegiatan', -300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+            <button onclick="scrollSlider('slider-jasaboga', -320)" class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-900 hover:text-white border border-emerald-200/80 flex items-center justify-center transition duration-200 shadow-sm" aria-label="Scroll Left">
               <i data-lucide="chevron-left" class="w-5 h-5"></i>
             </button>
-            <button onclick="scrollSlider('slider-kegiatan', 300)" class="p-2 rounded-full bg-emerald-50 text-[var(--dark-green)] hover:bg-emerald-100">
+            <button onclick="scrollSlider('slider-jasaboga', 320)" class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-900 hover:text-white border border-emerald-200/80 flex items-center justify-center transition duration-200 shadow-sm" aria-label="Scroll Right">
               <i data-lucide="chevron-right" class="w-5 h-5"></i>
             </button>
           </div>
         </div>
 
-        <div id="slider-kegiatan" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth py-2">
-          <!-- DOKUMENTASI PELEPASAN ANGKATAN XXII -->
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_guru.jpeg', 'Pelepasan Murid Kelas XII Angkatan XXII - Bapak Ibu Guru', 'Wisuda')">
-            <img src="index_guru.jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Pelepasan Angkatan XXII Guru</h3>
-              <p class="text-[11px] text-gray-500">Dewan guru di Hotel Solia Zigna.</p>
+        <div id="slider-jasaboga" class="flex gap-5 overflow-x-auto no-scrollbar scroll-smooth py-3 px-1">
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_jasaboga3.jpeg', 'Praktik Memasak Dapur Kuliner', 'Kuliner')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="pict_jasaboga3.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-orange-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Cooking</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Praktik Olahan Masakan</h3>
+              <p class="text-xs text-gray-500 font-medium">Seni Tata Boga & Pastry modern.</p>
             </div>
           </div>
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_guru (2).jpeg', 'Pelepasan Angkatan XXII Dewan Guru', 'Wisuda')">
-            <img src="index_guru (2).jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Pelepasan Angkatan XXII</h3>
-              <p class="text-[11px] text-gray-500">Momen guru & pimpinan sekolah.</p>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_jasaboga2.jpeg', 'Hasil Olahan Kuliner Siswa', 'Kuliner')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="pict_jasaboga2.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-orange-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Plating</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Plating & Presentasi Hidangan</h3>
+              <p class="text-xs text-gray-500 font-medium">Penyajian hidangan cantik berstandar resto.</p>
             </div>
           </div>
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('teknik sepeda motor1.jpeg', 'Pelepasan Murid Kelas XII TSM Angkatan XXII', 'Wisuda')">
-            <img src="teknik sepeda motor1.jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Pelepasan Wisuda TSM</h3>
-              <p class="text-[11px] text-gray-500">Wisudawan Teknik Sepeda Motor.</p>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_jasaboga.jpeg', 'Produk Kemasan Jasa Boga', 'Kuliner')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="pict_jasaboga.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-orange-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Kewirausahaan</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Produk Kemasan Kuliner</h3>
+              <p class="text-xs text-gray-500 font-medium">Inovasi produk makanan siap jual.</p>
             </div>
           </div>
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('ph2.jpeg', 'Pelepasan Wisuda Perhotelan', 'Wisuda')">
-            <img src="ph2.jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Pelepasan Wisuda Perhotelan</h3>
-              <p class="text-[11px] text-gray-500">Pelepasan Jurusan Perhotelan.</p>
+        </div>
+      </div>
+
+      <!-- 5. JURUSAN: TEKNIK SEPEDA MOTOR (TSM) -->
+      <div class="space-y-5" data-aos="fade-up">
+        <div class="flex items-center justify-between pb-2 border-b border-emerald-100">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-red-100 text-red-800 flex items-center justify-center font-bold shadow-sm">
+              🔧
+            </div>
+            <div>
+              <h2 class="text-lg sm:text-2xl font-black text-[var(--dark-green)] leading-tight">
+                Teknik Sepeda Motor (Otomotif)
+              </h2>
+              <p class="text-xs text-gray-500 font-medium hidden sm:block">Perawatan mesin injeksi PGM-FI, kelistrikan & standar AHASS</p>
             </div>
           </div>
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_kuliner2.jpeg', 'Pelepasan Wisuda Kuliner', 'Wisuda')">
-            <img src="index_kuliner2.jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Pelepasan Wisuda Kuliner</h3>
-              <p class="text-[11px] text-gray-500">Pelepasan Jurusan Tata Boga.</p>
+
+          <div class="flex gap-2">
+            <button onclick="scrollSlider('slider-tsm', -320)" class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-900 hover:text-white border border-emerald-200/80 flex items-center justify-center transition duration-200 shadow-sm" aria-label="Scroll Left">
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button onclick="scrollSlider('slider-tsm', 320)" class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-900 hover:text-white border border-emerald-200/80 flex items-center justify-center transition duration-200 shadow-sm" aria-label="Scroll Right">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="slider-tsm" class="flex gap-5 overflow-x-auto no-scrollbar scroll-smooth py-3 px-1">
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_tsm4.jpeg', 'Bengkel Praktik TSM AHASS', 'TSM')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="pict_tsm4.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-red-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Bengkel TSM</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Praktik Servis Injeksi PGM-FI</h3>
+              <p class="text-xs text-gray-500 font-medium">Perawatan berkala sepeda motor standar Honda.</p>
             </div>
           </div>
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('tsm.jpeg', 'Prosesi Pengalungan Samir Wisuda TSM', 'Wisuda')">
-            <img src="tsm.jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Prosesi Pengalungan Samir</h3>
-              <p class="text-[11px] text-gray-[cite: 15]">Penyematan samir wisudawan.</p>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_tsm2.jpeg', 'Praktikum Kelistrikan Otomotif', 'TSM')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="pict_tsm2.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-red-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Kelistrikan</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Diagnosa Kelistrikan Modern</h3>
+              <p class="text-xs text-gray-500 font-medium">Uji kinerjanya sistem kelistrikan motor.</p>
             </div>
           </div>
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_kuliner.jpeg', 'Prosesi Pengalungan Samir Kuliner', 'Wisuda')">
-            <img src="index_kuliner.jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Prosesi Samir Tata Boga</h3>
-              <p class="text-[11px] text-gray-500">Pengalungan samir siswi Kuliner.</p>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_tsm3.jpeg', 'Siswa Honda TSM', 'TSM')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="pict_tsm3.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-red-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Kelas Honda</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Siswa Binaan PT AHM</h3>
+              <p class="text-xs text-gray-500 font-medium">Kurikulum resmi terakreditasi Honda.</p>
             </div>
           </div>
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_siswa.jpg', 'Foto Angkatan Wisudawan di Hotel Solia Zigna', 'Wisuda')">
-            <img src="index_siswa.jpg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Wisudawan & Guru Solia Zigna</h3>
-              <p class="text-[11px] text-gray-500">Foto bersama Ballroom Hotel.</p>
+        </div>
+      </div>
+
+      <!-- 6. OSIS & EKSKUL -->
+      <div class="space-y-5" data-aos="fade-up">
+        <div class="flex items-center justify-between pb-2 border-b border-emerald-100">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-blue-100 text-blue-800 flex items-center justify-center font-bold shadow-sm">
+              👥
+            </div>
+            <div>
+              <h2 class="text-lg sm:text-2xl font-black text-[var(--dark-green)] leading-tight">
+                OSIS & Kegiatan Ekstrakulikuler
+              </h2>
+              <p class="text-xs text-gray-500 font-medium hidden sm:block">Aktivitas organisasi kesiswaan dan pengembangan bakat</p>
             </div>
           </div>
-          <div class="min-w-[260px] sm:min-w-[320px] bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('kuliner (2).jpeg', 'Wisuda Solia Zigna', 'Wisuda')">
-            <img src="kuliner (2).jpeg" class="w-full h-48 object-cover">
-            <div class="p-3">
-              <h3 class="font-bold text-sm text-[var(--dark-green)]">Foto Wisudawan & Guru</h3>
-              <p class="text-[11px] text-gray-500">Hotel Solia Zigna.</p>
+
+          <div class="flex gap-2">
+            <button onclick="scrollSlider('slider-ekskul', -320)" class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-900 hover:text-white border border-emerald-200/80 flex items-center justify-center transition duration-200 shadow-sm" aria-label="Scroll Left">
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button onclick="scrollSlider('slider-ekskul', 320)" class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-900 hover:text-white border border-emerald-200/80 flex items-center justify-center transition duration-200 shadow-sm" aria-label="Scroll Right">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="slider-ekskul" class="flex gap-5 overflow-x-auto no-scrollbar scroll-smooth py-3 px-1">
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_osis.jpeg', 'Pengurus OSIS', 'OSIS & Ekskul')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="pict_osis.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-blue-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">OSIS</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Pengurus OSIS SMK Kasatrian</h3>
+              <p class="text-xs text-gray-500 font-medium">Sinergi kepemimpinan dan jiwa organisasi.</p>
+            </div>
+          </div>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('pict_osis.jpg', 'Kebersamaan Pengurus OSIS', 'OSIS & Ekskul')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="pict_osis.jpg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-blue-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">OSIS</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Kebersamaan Pengurus OSIS</h3>
+              <p class="text-xs text-gray-500 font-medium">Momen keakraban anggota pengurus OSIS.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. KEGIATAN SEKOLAH & PELEPASAN WISUDA -->
+      <div class="space-y-5" data-aos="fade-up">
+        <div class="flex items-center justify-between pb-2 border-b border-emerald-100">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center font-bold shadow-sm">
+              🎓
+            </div>
+            <div>
+              <h2 class="text-lg sm:text-2xl font-black text-[var(--dark-green)] leading-tight">
+                Kegiatan Sekolah & Pelepasan Wisuda
+              </h2>
+              <p class="text-xs text-gray-500 font-medium hidden sm:block">Momen kelulusan wisudawan Angkatan XXII di Hotel Solia Zigna</p>
+            </div>
+          </div>
+
+          <div class="flex gap-2">
+            <button onclick="scrollSlider('slider-kegiatan', -320)" class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-900 hover:text-white border border-emerald-200/80 flex items-center justify-center transition duration-200 shadow-sm" aria-label="Scroll Left">
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button onclick="scrollSlider('slider-kegiatan', 320)" class="w-10 h-10 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-900 hover:text-white border border-emerald-200/80 flex items-center justify-center transition duration-200 shadow-sm" aria-label="Scroll Right">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="slider-kegiatan" class="flex gap-5 overflow-x-auto no-scrollbar scroll-smooth py-3 px-1">
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_guru.jpeg', 'Pelepasan Murid Kelas XII Angkatan XXII - Bapak Ibu Guru', 'Wisuda')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="index_guru.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-purple-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Wisuda</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Pelepasan Angkatan XXII Guru</h3>
+              <p class="text-xs text-gray-500 font-medium">Dewan guru di Hotel Solia Zigna.</p>
+            </div>
+          </div>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_guru (2).jpeg', 'Pelepasan Angkatan XXII Dewan Guru', 'Wisuda')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="index_guru (2).jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-purple-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Wisuda</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Pelepasan Angkatan XXII</h3>
+              <p class="text-xs text-gray-500 font-medium">Momen guru & pimpinan sekolah.</p>
+            </div>
+          </div>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('teknik sepeda motor1.jpeg', 'Pelepasan Murid Kelas XII TSM Angkatan XXII', 'Wisuda')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="teknik sepeda motor1.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-purple-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Wisuda TSM</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Pelepasan Wisuda TSM</h3>
+              <p class="text-xs text-gray-500 font-medium">Wisudawan Teknik Sepeda Motor.</p>
+            </div>
+          </div>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('ph2.jpeg', 'Pelepasan Wisuda Perhotelan', 'Wisuda')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="ph2.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-purple-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Wisuda Hotel</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Pelepasan Wisuda Perhotelan</h3>
+              <p class="text-xs text-gray-500 font-medium">Pelepasan Jurusan Perhotelan.</p>
+            </div>
+          </div>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_kuliner2.jpeg', 'Pelepasan Wisuda Kuliner', 'Wisuda')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="index_kuliner2.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-purple-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Wisuda Kuliner</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Pelepasan Wisuda Kuliner</h3>
+              <p class="text-xs text-gray-500 font-medium">Pelepasan Jurusan Tata Boga.</p>
+            </div>
+          </div>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('tsm.jpeg', 'Prosesi Pengalungan Samir Wisuda TSM', 'Wisuda')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="tsm.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-purple-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Wisuda</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Prosesi Pengalungan Samir</h3>
+              <p class="text-xs text-gray-500 font-medium">Penyematan samir wisudawan TSM.</p>
+            </div>
+          </div>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_kuliner.jpeg', 'Prosesi Pengalungan Samir Kuliner', 'Wisuda')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="index_kuliner.jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-purple-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Wisuda</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Prosesi Samir Tata Boga</h3>
+              <p class="text-xs text-gray-500 font-medium">Pengalungan samir siswi Kuliner.</p>
+            </div>
+          </div>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('index_siswa.jpg', 'Foto Angkatan Wisudawan di Hotel Solia Zigna', 'Wisuda')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="index_siswa.jpg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-purple-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Foto Bersama</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Wisudawan & Guru Solia Zigna</h3>
+              <p class="text-xs text-gray-500 font-medium">Foto bersama Ballroom Hotel.</p>
+            </div>
+          </div>
+
+          <div class="min-w-[280px] sm:min-w-[340px] bg-white rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm gallery-card cursor-pointer shrink-0" onclick="openLightbox('kuliner (2).jpeg', 'Wisuda Solia Zigna', 'Wisuda')">
+            <div class="relative h-52 overflow-hidden">
+              <img src="kuliner (2).jpeg" class="gallery-img w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <span class="absolute top-3 left-3 bg-purple-600/90 backdrop-blur-md text-white text-[11px] font-extrabold px-3 py-1 rounded-xl shadow-md">Kebersamaan</span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)]">Foto Wisudawan & Guru</h3>
+              <p class="text-xs text-gray-500 font-medium">Hotel Solia Zigna.</p>
             </div>
           </div>
         </div>
@@ -364,20 +714,22 @@
   </section>
 </div>
 
-<!-- LIGHTBOX MODAL -->
-<div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/90 hidden flex items-center justify-center p-4">
-  <button onclick="closeLightbox()" class="absolute top-5 right-5 text-white p-2">
-    <i data-lucide="x" class="w-8 h-8"></i>
+<!-- ==================== LIGHTBOX MODAL ==================== -->
+<div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4 transition-all duration-300">
+  <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white/80 hover:text-white p-2.5 rounded-full bg-white/10 hover:bg-white/20 transition duration-200" aria-label="Close Lightbox">
+    <i data-lucide="x" class="w-7 h-7"></i>
   </button>
-  <div class="max-w-3xl w-full text-center">
-    <img id="lightbox-img" src="" class="max-h-[75vh] mx-auto rounded-xl">
-    <h3 id="lightbox-title" class="text-lg font-bold text-white mt-3"></h3>
+  <div class="max-w-4xl w-full text-center space-y-4">
+    <div class="rounded-3xl overflow-hidden border-2 border-white/20 shadow-2xl bg-black/40">
+      <img id="lightbox-img" src="" class="max-h-[75vh] w-auto mx-auto object-contain">
+    </div>
+    <h3 id="lightbox-title" class="text-base sm:text-xl font-bold text-white drop-shadow-md px-4"></h3>
   </div>
 </div>
 
-<!-- FOOTER -->
+<!-- ==================== FOOTER ==================== -->
 <footer class="bg-[var(--dark-green)] text-white pt-14 pb-8 border-t border-emerald-900 mt-auto">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-3 gap-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-10">
     <div class="space-y-4">
       <div class="flex items-center gap-3">
         <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-11 h-11 object-contain">
@@ -420,15 +772,16 @@
     </div>
   </div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-12 pt-6 border-t border-emerald-900/80 text-center text-xs text-emerald-200/60 font-medium">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-6 border-t border-emerald-900/80 text-center text-xs text-emerald-200/60 font-medium">
     © <span id="footer-year"></span> SMK Kasatrian Solo Sukoharjo. All Rights Reserved.
   </div>
 </footer>
 
+<!-- SCRIPT LOGIKA JAVASCRIPT INTERNAL -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
-    AOS.init({ duration: 800, once: true });
+    AOS.init({ duration: 800, once: true, easing: 'ease-out-cubic' });
 
     // Mobile Menu Toggle
     const btn = document.getElementById('mobile-menu-btn');
@@ -444,18 +797,32 @@
     }
   });
 
+  // Fungsi Scroll Slider Horizontal
   function scrollSlider(id, distance) {
-    document.getElementById(id).scrollBy({ left: distance, behavior: 'smooth' });
+    const elem = document.getElementById(id);
+    if (elem) {
+      elem.scrollBy({ left: distance, behavior: 'smooth' });
+    }
   }
 
+  // Fungsi Lightbox Modal Foto
   function openLightbox(src, title) {
-    document.getElementById('lightbox-img').src = src;
-    document.getElementById('lightbox-title').textContent = title;
-    document.getElementById('lightbox-modal').classList.remove('hidden');
+    const modal = document.getElementById('lightbox-modal');
+    const img = document.getElementById('lightbox-img');
+    const titleElem = document.getElementById('lightbox-title');
+    
+    if (modal && img && titleElem) {
+      img.src = src;
+      titleElem.textContent = title;
+      modal.classList.remove('hidden');
+    }
   }
 
   function closeLightbox() {
-    document.getElementById('lightbox-modal').classList.add('hidden');
+    const modal = document.getElementById('lightbox-modal');
+    if (modal) {
+      modal.classList.add('hidden');
+    }
   }
 </script>
 </body>

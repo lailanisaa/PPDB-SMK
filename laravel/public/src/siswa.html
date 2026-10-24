@@ -16,12 +16,10 @@
     .nama-sekolah, .nama-sekolah * { font-family: 'Kavoon', cursive !important; }
     :root {
       --dark-green: #1B4332;
-      --mint: #D8F5E8;
       --mint-2: #C8F0DD;
       --green: #22C55E;
       --purple: #7C3AED;
       --yellow: #FFD84D;
-      --red: #EF4444;
     }
     body {
       color: var(--dark-green);
@@ -761,57 +759,57 @@ const documents = [
   { id:'akte_kematian', label:'Akte Kematian Ortu (Jika Yatim/Piatu)', icon:'file', status:'menunggu', fileName:'' },
 ];
 
-// DATA DUMMY PENGUMUMAN DARI ADMIN
-const dummyAnnouncements = [
-  {
-    id: 1,
-    judul: "Jadwal Wawancara & Tes Minat Bakat Gelombang 1",
-    tanggal: "27 September 2026",
-    isi: "Diberitahukan kepada seluruh calon siswa yang telah mengunggah berkas pendaftaran agar bersiap mengikuti Tes Akademik & Wawancara pada tanggal 20-21 Juni 2026. Bawa kartu pendaftaran yang dapat dicetak dari portal ini.",
-    penting: true
-  },
-  {
-    id: 2,
-    judul: "Info Batas Akhir Verifikasi Dokumen & Berkas",
-    tanggal: "25 September 2026",
-    isi: "Pengunggahan kelengkapan berkas fisik / digital paling lambat diterima oleh panitia SPMB sebelum pelaksanaan tes seleksi. Pastikan format file PDF/JPG berukuran tidak lebih dari 2MB.",
-    penting: false
-  }
-];
-
-const notifications = [
-  { icon:'check-circle-2', text:'Pendaftaran Akun SPMB Berhasil dikonfirmasi.', time:'Baru saja', read:false },
-  { icon:'bell', text:'Lengkapi 14 Field Formulir & Upload Berkas Lampiran.', time:'1 jam lalu', read:false },
-];
+let announcements = [];
+let notifications = [];
+let portalSyncStarted = false;
+let announcementIds = new Set();
+let portalSyncErrorShown = false;
 
 const activeSession = JSON.parse(localStorage.getItem('smk_active_session') || 'null');
 if (!activeSession || activeSession.role !== 'siswa' || !activeSession.api_token) {
-  // Jika tidak ada session, fallback / redirect ke login
+  window.location.replace('login_siswa.html');
 }
-const siswaId = Number(activeSession?.id || 1);
+const siswaId = Number(activeSession?.id || 0);
+
+/* ============ FUNGSI GENERATOR NOMOR PENDAFTARAN OTOMATIS ============ */
+function generateRegistrationNumber(id) {
+  if (activeSession && activeSession.no_pendaftaran && activeSession.no_pendaftaran !== 'Belum diterbitkan') {
+    return activeSession.no_pendaftaran;
+  }
+  const currentYear = new Date().getFullYear();
+  const padId = String(id || siswaId || Math.floor(Math.random() * 90000) + 10000).padStart(5, '0');
+  const generatedNo = `KST-${currentYear}-${padId}`;
+  if (activeSession) {
+    activeSession.no_pendaftaran = generatedNo;
+    localStorage.setItem('smk_active_session', JSON.stringify(activeSession));
+  }
+  return generatedNo;
+}
+
+async function siswaAPI(url, options = {}) {
+  const headers = new Headers(options.headers || {});
+  headers.set('Authorization', `Bearer ${activeSession.api_token}`);
+  if (options.body && !(options.body instanceof FormData)) headers.set('Content-Type', 'application/json');
+  const response = await fetch(url, { ...options, headers });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || payload.success === false) throw new Error(payload.message || `Request gagal (${response.status})`);
+  return payload;
+}
 
 /* ============ STATE FORMULIR LENGKAP ============ */
 const todayStr = new Date().toISOString().split('T')[0];
-const autoRegNo = `KST-2026-${String(Math.floor(Math.random()*90000) + 10000)}`;
-
+let formHydratedFromServer = false;
 const formData = {
-  noPendaftaran: autoRegNo,
-  tglMendaftar: todayStr,
+  noPendaftaran: generateRegistrationNumber(siswaId),
+  tglMendaftar: new Date().toLocaleDateString('id-ID'),
   namaSiswa: activeSession?.nama || 'Siswa SPMB',
-  noHpWa: '081234567890',
-  tempatLahir: 'Surakarta',
-  tglLahir: '2008-05-12',
-  nisn: '0081234567',
-  jenisKelamin: 'L',
+  noHpWa: '', nik: '', tempatLahir: '', tglLahir: '', nisn: '', jenisKelamin: '',
   namaBapak: '', hpBapak: '', kerjaBapak: '', hasilBapak: '',
   namaIbu: '', hpIbu: '', kerjaIbu: '', hasilIbu: '',
-  alamat: '', rtRw: '', kelurahan: '', kecamatan: '', kotaKab: 'Surakarta',
-  modaTransportasi: 'Sepeda Motor',
-  agama: 'Islam',
-  asalSekolah: 'SMP Negeri 1 Surakarta', tahunLulus: '2026',
-  inginBekerja: 'Dalam Negeri',
-  jurusanUtama: 'TKJ', jurusanCadangan: 'KLN',
-  tinggiBadan: '168', beratBadan: '58',
+  alamat: '', rtRw: '', kelurahan: '', kecamatan: '', kotaKab: '',
+  modaTransportasi: '', agama: '', asalSekolah: '', tahunLulus: '',
+  inginBekerja: '', jurusanUtama: '', jurusanCadangan: '',
+  tinggiBadan: '', beratBadan: '',
   jadwalId: 1,
   setuju: false
 };
@@ -830,7 +828,8 @@ function showToast(message, type = 'success') {
   const icon = type === 'success' ? 'check-circle-2' : 'alert-circle';
 
   toast.className = `${bgColor} text-white px-4 py-3 rounded-xl shadow-xl text-xs font-semibold flex items-center gap-2 pointer-events-auto transition-all transform duration-300 translate-y-2 opacity-0`;
-  toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 shrink-0"></i> <span>${message}</span>`;
+  toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 shrink-0"></i> <span></span>`;
+  toast.querySelector('span').textContent = message;
 
   container.appendChild(toast);
   lucide.createIcons();
@@ -847,8 +846,10 @@ const sections = document.querySelectorAll('section[data-page]');
 const navItems = document.querySelectorAll('.nav-item');
 
 function showPage(page){
+  if (document.querySelector('section[data-page="formulir"]:not(.hidden)') && page !== 'formulir') saveInputsToState();
   sections.forEach(s => s.classList.toggle('hidden', s.dataset.page !== page));
   navItems.forEach(n => n.classList.toggle('active', n.dataset.page === page));
+  if (page === 'formulir' && formHydratedFromServer) renderFormulir();
   window.scrollTo({top:0, behavior:'smooth'});
   setTimeout(() => lucide.createIcons(), 50);
 }
@@ -864,8 +865,12 @@ function bindPageNavButtons() {
   });
 }
 
-// INSTRUKSI MODIFIKASI LOGOUT -> Diarahkan ke landing page (index.html)
-document.getElementById('btn-logout').addEventListener('click', () => {
+document.getElementById('btn-logout').addEventListener('click', async () => {
+  try {
+    await siswaAPI('/api/logout.php', { method: 'POST' });
+  } catch (error) {
+    console.error('Token sesi gagal dicabut di server:', error);
+  }
   localStorage.removeItem('smk_active_session');
   showToast('Anda telah keluar. Mengarahkan ke landing page...');
   setTimeout(() => {
@@ -1044,24 +1049,28 @@ document.getElementById('form-password').addEventListener('submit', async (e) =>
 /* ============ RENDER PENGUMUMAN DARI ADMIN ============ */
 function renderAnnouncements() {
   const container = document.getElementById('announcement-list');
-  if (!dummyAnnouncements || dummyAnnouncements.length === 0) {
+  if (!announcements.length) {
     container.innerHTML = `<div class="p-8 text-center text-xs text-gray-400 bg-white rounded-2xl border">Belum ada pengumuman terbaru dari Admin.</div>`;
     return;
   }
 
-  container.innerHTML = dummyAnnouncements.map(a => `
-    <div class="bg-white rounded-2xl p-5 shadow-sm border ${a.penting ? 'border-amber-300 bg-gradient-to-r from-amber-50/40 via-white to-white' : 'border-emerald-100'} space-y-2">
+  container.innerHTML = announcements.map(a => `
+    <article class="bg-white rounded-2xl p-5 shadow-sm border ${a.penting ? 'border-amber-300 bg-amber-50/40' : 'border-emerald-100'} space-y-2">
       <div class="flex items-center justify-between flex-wrap gap-2">
         <h3 class="font-bold text-sm sm:text-base text-[var(--dark-green)] flex items-center gap-2">
           ${a.penting ? '<span class="bg-amber-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">PENTING</span>' : ''}
-          ${a.judul}
+          ${escapeHtml(a.judul)}
         </h3>
-        <span class="text-[11px] text-gray-400 flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${a.tanggal}</span>
+        <span class="text-[11px] text-gray-400 flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${escapeHtml(a.tanggal)}</span>
       </div>
-      <p class="text-xs text-gray-600 leading-relaxed">${a.isi}</p>
-    </div>
+      <p class="text-xs text-gray-600 leading-relaxed whitespace-pre-line">${escapeHtml(a.isi)}</p>
+    </article>
   `).join('');
   lucide.createIcons();
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 }
 
 /* ============ UPLOAD FILE DOKUMEN ============ */
@@ -1076,14 +1085,29 @@ fileInput.addEventListener('change', async (e) => {
   const file = e.target.files[0];
   if (file && selectedDocIdToUpload) {
     const doc = documents.find(d => d.id === selectedDocIdToUpload);
-    if (doc) {
-      doc.fileName = file.name;
-      doc.status = 'menunggu';
+    if (file.size > 2 * 1024 * 1024) {
+      showToast('Ukuran file maksimal 2 MB.', 'error');
+      fileInput.value = '';
+      return;
+    }
+    const body = new FormData();
+    body.append('siswa_id', String(siswaId));
+    body.append('document_id', selectedDocIdToUpload);
+    body.append('file', file);
+    try {
+      const result = await siswaAPI('/api/upload_dokumen.php', { method: 'POST', body });
+      if (doc) {
+        doc.fileName = result.document?.fileName || file.name;
+        doc.status = String(result.document?.status || 'menunggu').toLowerCase();
+      }
       renderBerkasPage();
       renderBerandaDocGrid();
-      if(currentStep === 5) renderFormulir();
+      if (currentStep === 5) renderFormulir();
+      showToast(`File "${file.name}" berhasil disimpan ke berkas pendaftaran.`);
+      await syncStudentPortal();
+    } catch (error) {
+      showToast(error.message || 'Upload dokumen gagal.', 'error');
     }
-    showToast(`File "${file.name}" berhasil diunggah.`);
   }
   fileInput.value = '';
 });
@@ -1133,33 +1157,34 @@ function renderStepList(){
 
 function saveInputsToState() {
   if (currentStep === 1) {
-    formData.namaSiswa = document.getElementById('f-nama')?.value.trim() || formData.namaSiswa;
-    formData.noHpWa = document.getElementById('f-wa')?.value.trim() || formData.noHpWa;
-    formData.tempatLahir = document.getElementById('f-tempat')?.value.trim() || formData.tempatLahir;
-    formData.tglLahir = document.getElementById('f-tgl')?.value || formData.tglLahir;
-    formData.nisn = document.getElementById('f-nisn')?.value.trim() || formData.nisn;
-    formData.jenisKelamin = document.getElementById('f-jk')?.value || formData.jenisKelamin;
-    formData.alamat = document.getElementById('f-alamat')?.value.trim() || formData.alamat;
-    formData.rtRw = document.getElementById('f-rtrw')?.value.trim() || formData.rtRw;
-    formData.kelurahan = document.getElementById('f-kelurahan')?.value.trim() || formData.kelurahan;
-    formData.kecamatan = document.getElementById('f-kecamatan')?.value.trim() || formData.kecamatan;
-    formData.kotaKab = document.getElementById('f-kotakab')?.value.trim() || formData.kotaKab;
-    formData.modaTransportasi = document.getElementById('f-moda')?.value || formData.modaTransportasi;
-    formData.agama = document.getElementById('f-agama')?.value || formData.agama;
-    formData.tinggiBadan = document.getElementById('f-tinggi')?.value || formData.tinggiBadan;
-    formData.beratBadan = document.getElementById('f-berat')?.value || formData.beratBadan;
+    formData.namaSiswa = document.getElementById('f-nama')?.value.trim() ?? formData.namaSiswa;
+    formData.noHpWa = document.getElementById('f-wa')?.value.trim() ?? formData.noHpWa;
+    formData.nik = document.getElementById('f-nik')?.value.trim() ?? formData.nik;
+    formData.tempatLahir = document.getElementById('f-tempat')?.value.trim() ?? formData.tempatLahir;
+    formData.tglLahir = document.getElementById('f-tgl')?.value ?? formData.tglLahir;
+    formData.nisn = document.getElementById('f-nisn')?.value.trim() ?? formData.nisn;
+    formData.jenisKelamin = document.getElementById('f-jk')?.value ?? formData.jenisKelamin;
+    formData.alamat = document.getElementById('f-alamat')?.value.trim() ?? formData.alamat;
+    formData.rtRw = document.getElementById('f-rtrw')?.value.trim() ?? formData.rtRw;
+    formData.kelurahan = document.getElementById('f-kelurahan')?.value.trim() ?? formData.kelurahan;
+    formData.kecamatan = document.getElementById('f-kecamatan')?.value.trim() ?? formData.kecamatan;
+    formData.kotaKab = document.getElementById('f-kotakab')?.value.trim() ?? formData.kotaKab;
+    formData.modaTransportasi = document.getElementById('f-moda')?.value ?? formData.modaTransportasi;
+    formData.agama = document.getElementById('f-agama')?.value ?? formData.agama;
+    formData.tinggiBadan = document.getElementById('f-tinggi')?.value ?? formData.tinggiBadan;
+    formData.beratBadan = document.getElementById('f-berat')?.value ?? formData.beratBadan;
   } else if (currentStep === 2) {
-    formData.namaBapak = document.getElementById('f-bapak')?.value.trim() || formData.namaBapak;
-    formData.hpBapak = document.getElementById('f-hp-bapak')?.value.trim() || formData.hpBapak;
-    formData.kerjaBapak = document.getElementById('f-kerja-bapak')?.value.trim() || formData.kerjaBapak;
-    formData.hasilBapak = document.getElementById('f-hasil-bapak')?.value || formData.hasilBapak;
-    formData.namaIbu = document.getElementById('f-ibu')?.value.trim() || formData.namaIbu;
-    formData.hpIbu = document.getElementById('f-hp-ibu')?.value.trim() || formData.hpIbu;
-    formData.kerjaIbu = document.getElementById('f-kerja-ibu')?.value.trim() || formData.kerjaIbu;
-    formData.hasilIbu = document.getElementById('f-hasil-ibu')?.value || formData.hasilIbu;
+    formData.namaBapak = document.getElementById('f-bapak')?.value.trim() ?? formData.namaBapak;
+    formData.hpBapak = document.getElementById('f-hp-bapak')?.value.trim() ?? formData.hpBapak;
+    formData.kerjaBapak = document.getElementById('f-kerja-bapak')?.value.trim() ?? formData.kerjaBapak;
+    formData.hasilBapak = document.getElementById('f-hasil-bapak')?.value ?? formData.hasilBapak;
+    formData.namaIbu = document.getElementById('f-ibu')?.value.trim() ?? formData.namaIbu;
+    formData.hpIbu = document.getElementById('f-hp-ibu')?.value.trim() ?? formData.hpIbu;
+    formData.kerjaIbu = document.getElementById('f-kerja-ibu')?.value.trim() ?? formData.kerjaIbu;
+    formData.hasilIbu = document.getElementById('f-hasil-ibu')?.value ?? formData.hasilIbu;
   } else if (currentStep === 3) {
-    formData.asalSekolah = document.getElementById('f-sekolah')?.value.trim() || formData.asalSekolah;
-    formData.tahunLulus = document.getElementById('f-tahunlulus')?.value || formData.tahunLulus;
+    formData.asalSekolah = document.getElementById('f-sekolah')?.value.trim() ?? formData.asalSekolah;
+    formData.tahunLulus = document.getElementById('f-tahunlulus')?.value ?? formData.tahunLulus;
     const karirEl = document.querySelector('input[name="f-karir"]:checked');
     if (karirEl) formData.inginBekerja = karirEl.value;
   }
@@ -1170,8 +1195,8 @@ function validateCurrentStep() {
   let isValid = true;
 
   if (currentStep === 1) {
-    if (!formData.namaSiswa || !formData.noHpWa || !formData.nisn || !formData.jenisKelamin || !formData.alamat) {
-      showToast('Harap isi seluruh field wajib pada Data Diri Pribadi', 'error');
+    if (!formData.namaSiswa || !/^\d{16}$/.test(formData.nik) || !formData.noHpWa || !formData.nisn || !formData.jenisKelamin || !formData.alamat) {
+      showToast('Harap isi data diri wajib, termasuk NIK 16 digit.', 'error');
       isValid = false;
     }
   } else if (currentStep === 2) {
@@ -1219,6 +1244,8 @@ function renderStep1(){
     <div class="grid sm:grid-cols-2 gap-4 text-xs">
       <div class="sm:col-span-2"><label class="block font-semibold mb-1">1. Nama Lengkap Siswa *</label>
         <input id="f-nama" type="text" value="${formData.namaSiswa}" class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none"></div>
+      <div><label class="block font-semibold mb-1">NIK (16 Digit) *</label>
+        <input id="f-nik" type="text" inputmode="numeric" maxlength="16" value="${formData.nik}" class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none"></div>
       <div><label class="block font-semibold mb-1">2. No. HP / WhatsApp Siswa *</label>
         <input id="f-wa" type="text" value="${formData.noHpWa}" placeholder="08123456789" class="w-full p-2.5 rounded-xl border focus:ring-2 focus:ring-emerald-500 focus:outline-none"></div>
       <div><label class="block font-semibold mb-1">4. NISN (10 Digit) *</label>
@@ -1470,7 +1497,169 @@ function renderFormulir(){
   const renderers = [renderStep1, renderStep2, renderStep3, renderStep4, renderStep5, renderStep6, renderStep7];
   container.innerHTML = renderers[currentStep-1]();
   lucide.createIcons();
+  bindCurrentFormStep();
+}
 
+
+const readAnnouncementsKey = `spmb_read_announcements_${siswaId}`;
+const knownAnnouncementsKey = `spmb_known_announcements_${siswaId}`;
+let portalSyncInFlight = false;
+
+function readIdSet(key) {
+  try { return new Set(JSON.parse(localStorage.getItem(key) || '[]').map(String)); }
+  catch { return new Set(); }
+}
+
+async function syncStudentPortal() {
+  if (portalSyncInFlight || !activeSession?.api_token) return;
+  portalSyncInFlight = true;
+  try {
+    const data = await siswaAPI('/api/student_portal.php');
+    const student = data.siswa || {};
+    const form = data.formulir || {};
+    const readIds = readIdSet(readAnnouncementsKey);
+    const wasInitialized = portalSyncStarted;
+    const knownIds = wasInitialized ? new Set(announcementIds) : readIdSet(knownAnnouncementsKey);
+    const previousState = (() => {
+      try { return JSON.parse(localStorage.getItem(`spmb_portal_state_${siswaId}`) || 'null'); }
+      catch { return null; }
+    })();
+
+    const assignedNoDaftar = student.no_pendaftaran || activeSession?.no_pendaftaran || generateRegistrationNumber(student.id || siswaId);
+    formData.noPendaftaran = assignedNoDaftar;
+    if (activeSession) {
+      activeSession.no_pendaftaran = assignedNoDaftar;
+      localStorage.setItem('smk_active_session', JSON.stringify(activeSession));
+    }
+
+    formData.namaSiswa = student.nama || formData.namaSiswa;
+    formData.noHpWa = form.no_wa || '';
+    formData.nik = form.nik || '';
+    formData.tempatLahir = form.tempat_lahir || '';
+    formData.tglLahir = form.tanggal_lahir || '';
+    formData.nisn = form.nisn || '';
+    formData.jenisKelamin = form.jenis_kelamin || '';
+    formData.alamat = form.alamat || '';
+    formData.rtRw = form.rt_rw || '';
+    formData.kelurahan = form.kelurahan || '';
+    formData.kecamatan = form.kecamatan || '';
+    formData.kotaKab = form.kota_kab || '';
+    formData.modaTransportasi = form.moda_transportasi || '';
+    formData.agama = form.agama || '';
+    formData.tinggiBadan = form.tinggi_badan || '';
+    formData.beratBadan = form.berat_badan || '';
+    formData.namaBapak = form.nama_ayah || '';
+    formData.hpBapak = form.hp_ayah || '';
+    formData.kerjaBapak = form.kerja_ayah || '';
+    formData.hasilBapak = form.hasil_ayah || '';
+    formData.namaIbu = form.nama_ibu || '';
+    formData.hpIbu = form.hp_ibu || '';
+    formData.kerjaIbu = form.kerja_ibu || '';
+    formData.hasilIbu = form.hasil_ibu || '';
+    formData.asalSekolah = student.sekolah || '';
+    formData.tahunLulus = form.tahun_lulus || '';
+    formData.inginBekerja = form.rencana_karir || '';
+    formData.jurusanUtama = form.jurusan_utama || student.jurusan || '';
+    formData.jurusanCadangan = form.jurusan_cadangan || '';
+    formData.jadwalId = Number(form.jadwal_id || 1);
+    formData.tglMendaftar = student.tanggal_daftar ? new Date(student.tanggal_daftar).toLocaleDateString('id-ID') : new Date().toLocaleDateString('id-ID');
+    if (!wasInitialized) {
+      formHydratedFromServer = true;
+      renderFormulir();
+    }
+
+    const documentRecords = new Map((data.dokumen || []).map(record => [record.document_id, record]));
+    documents.forEach(document => {
+      const record = documentRecords.get(document.id);
+      if (record) {
+        document.fileName = record.nama_file;
+        document.status = String(record.status_dokumen || 'Menunggu').toLowerCase();
+      }
+    });
+
+    document.getElementById('student-greeting').textContent = `Hai, ${formData.namaSiswa}!`;
+    document.getElementById('nav-student-name').textContent = formData.namaSiswa;
+    document.getElementById('profile-name').textContent = formData.namaSiswa;
+    document.getElementById('profile-school').textContent = formData.asalSekolah || '-';
+    document.getElementById('profile-sekolah-detail').textContent = formData.asalSekolah || '-';
+    document.getElementById('profile-wa').textContent = formData.noHpWa || '-';
+    document.getElementById('profile-nisn').textContent = formData.nisn || '-';
+    document.getElementById('profile-agama').textContent = formData.agama || '-';
+    document.getElementById('student-major').textContent = formData.jurusanUtama || 'Belum Memilih';
+    document.getElementById('student-backup-major').textContent = formData.jurusanCadangan || '-';
+    document.getElementById('student-form-status').textContent = form.status_formulir || 'Draft';
+    document.getElementById('student-selection-status').textContent = student.status || 'Menunggu';
+    document.getElementById('student-document-status').textContent = (data.dokumen || []).length ? 'Berkas tersimpan' : 'Belum ada berkas';
+    
+    // Tampilkan Nomor Pendaftaran Otomatis
+    document.getElementById('student-registration-number').textContent = formData.noPendaftaran;
+    document.getElementById('profile-registration-number').textContent = formData.noPendaftaran;
+
+    const currentAnnouncements = data.pengumuman || [];
+    const newlyPublished = currentAnnouncements.filter(item => !knownIds.has(String(item.id)));
+    announcements = currentAnnouncements.map(item => ({
+      id: Number(item.id),
+      judul: item.judul,
+      kategori: item.kategori,
+      isi: item.isi,
+      tanggal: item.created_at ? new Date(item.created_at).toLocaleString('id-ID') : '',
+      penting: String(item.kategori).toLowerCase().includes('kelulusan'),
+      target: item.target
+    }));
+    const previousStatusNotifications = notifications.filter(item => item.type === 'status');
+    const nextStatusNotifications = [];
+    const currentState = {
+      status: student.status || 'Menunggu',
+      documents: Object.fromEntries((data.dokumen || []).map(item => [item.document_id, item.status_dokumen]))
+    };
+    if (wasInitialized && previousState && previousState.status !== currentState.status) {
+      const reviewNote = form.catatan_verifikasi ? ` Catatan panitia: ${form.catatan_verifikasi}` : '';
+      nextStatusNotifications.push({ key: `status-${Date.now()}`, type: 'status', icon: 'badge-check', text: `Status pendaftaran berubah menjadi ${currentState.status}.${reviewNote}`, time: 'Baru saja', read: false });
+      showToast(`Status pendaftaran berubah menjadi ${currentState.status}.${reviewNote}`);
+    }
+    if (wasInitialized && previousState?.documents) {
+      for (const [documentId, status] of Object.entries(currentState.documents)) {
+        if (previousState.documents[documentId] && previousState.documents[documentId] !== status) {
+          nextStatusNotifications.push({ key: `document-${documentId}-${Date.now()}`, type: 'status', icon: 'file-check-2', text: `Status berkas ${documentId} berubah menjadi ${status}.`, time: 'Baru saja', read: false });
+        }
+      }
+    }
+    notifications = [
+      ...announcements.map(item => ({
+        key: `announcement-${item.id}`, announcementId: String(item.id), type: 'announcement',
+        icon: item.penting ? 'badge-check' : 'megaphone', text: item.judul, time: item.tanggal,
+        read: readIds.has(String(item.id))
+      })),
+      ...previousStatusNotifications,
+      ...nextStatusNotifications
+    ];
+
+    if (wasInitialized) {
+      newlyPublished.forEach(item => showToast(`Pengumuman baru: ${item.judul}`));
+    }
+    currentAnnouncements.forEach(item => knownIds.add(String(item.id)));
+    announcementIds = knownIds;
+    localStorage.setItem(knownAnnouncementsKey, JSON.stringify([...knownIds]));
+    localStorage.setItem(`spmb_portal_state_${siswaId}`, JSON.stringify(currentState));
+    portalSyncStarted = true;
+
+    renderAnnouncements();
+    renderNotifPage();
+    renderBerkasPage();
+    renderBerandaDocGrid();
+    updateBellBadge();
+    generateQRCodes();
+    portalSyncErrorShown = false;
+  } catch (error) {
+    if (!portalSyncErrorShown) {
+      showToast(error.message || 'Sinkronisasi portal gagal.', 'error');
+      portalSyncErrorShown = true;
+    }
+  } finally {
+    portalSyncInFlight = false;
+  }
+}
+function bindCurrentFormStep() {
   if(currentStep === 4) bindStep4();
   if(currentStep === 5) bindStep5();
   if(currentStep === 6) bindStep6();
@@ -1494,21 +1683,55 @@ function renderFormulir(){
   });
 
   const kirimBtn = document.getElementById('btn-kirim-formulir');
-  if(kirimBtn) kirimBtn.addEventListener('click', () => {
+  if(kirimBtn) kirimBtn.addEventListener('click', async () => {
     const setuju = document.getElementById('f-setuju').checked;
     formData.setuju = setuju;
     if(!setuju) {
       showToast('Harap beri centang pada pernyataan persetujuan data!', 'error');
       return;
     }
-    showToast('Selamat! Formulir pendaftaran SPMB berhasil dikirim.');
-    showPage('beranda');
+    const payload = {
+      siswa_id: siswaId,
+      no_pendaftaran: formData.noPendaftaran,
+      form: {
+        dataDiri: {
+          nama: formData.namaSiswa, nik: formData.nik, tempat: formData.tempatLahir,
+          tgl: formData.tglLahir, jk: formData.jenisKelamin, wa: formData.noHpWa,
+          alamat: formData.alamat, rtRw: formData.rtRw, kelurahan: formData.kelurahan,
+          kecamatan: formData.kecamatan, kotaKab: formData.kotaKab,
+          modaTransportasi: formData.modaTransportasi, agama: formData.agama,
+          tinggiBadan: formData.tinggiBadan, beratBadan: formData.beratBadan
+        },
+        dataOrtu: {
+          ayah: formData.namaBapak, hpAyah: formData.hpBapak, kerjaAyah: formData.kerjaBapak, hasilAyah: formData.hasilBapak,
+          ibu: formData.namaIbu, hpIbu: formData.hpIbu, kerjaIbu: formData.kerjaIbu, hasilIbu: formData.hasilIbu
+        },
+        asalSekolah: {
+          sekolah: formData.asalSekolah, nisn: formData.nisn,
+          tahunlulus: formData.tahunLulus, rencanaKarir: formData.inginBekerja
+        },
+        jurusanUtama: formData.jurusanUtama,
+        jurusanCadangan: formData.jurusanCadangan,
+        jadwalId: formData.jadwalId
+      }
+    };
+    kirimBtn.disabled = true;
+    try {
+      await siswaAPI('/api/save_formulir.php', { method: 'POST', body: JSON.stringify(payload) });
+      await syncStudentPortal();
+      showToast('Formulir berhasil disimpan ke database dan dikirim ke panitia.');
+      showPage('beranda');
+    } catch (error) {
+      showToast(error.message || 'Formulir gagal dikirim.', 'error');
+    } finally {
+      kirimBtn.disabled = false;
+    }
   });
 }
 
 document.getElementById('btn-simpan-draft').addEventListener('click', () => {
   saveInputsToState();
-  showToast('Draft pendaftaran berhasil disimpan secara lokal!');
+  showToast('Draft tersimpan sementara di perangkat ini. Kirim formulir untuk menyimpan ke database.');
 });
 
 /* ============ RENDER BERKAS & NOTIF ============ */
@@ -1537,18 +1760,31 @@ function renderNotifPage(){
     return;
   }
 
-  listEl.innerHTML = filtered.map((n, i) => `
-    <div class="p-4 flex items-start gap-3 ${n.read?'bg-white':'bg-emerald-50/70'} text-xs cursor-pointer hover:bg-emerald-50 transition" onclick="notifications[${i}].read=true; renderNotifPage(); updateBellBadge();">
+  listEl.innerHTML = filtered.map(n => `
+    <div class="p-4 flex items-start gap-3 ${n.read?'bg-white':'bg-emerald-50/70'} text-xs cursor-pointer hover:bg-emerald-50 transition" onclick="markNotificationRead('${escapeHtml(n.key)}')">
       <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
         <i data-lucide="${n.icon}" class="w-4 h-4"></i>
       </div>
       <div class="flex-1">
-        <p class="${n.read?'text-gray-700':'font-bold text-emerald-950'}">${n.text}</p>
-        <p class="text-[10px] text-gray-400 mt-1">${n.time}</p>
+        <p class="${n.read?'text-gray-700':'font-bold text-emerald-950'}">${escapeHtml(n.text)}</p>
+        <p class="text-[10px] text-gray-400 mt-1">${escapeHtml(n.time)}</p>
       </div>
     </div>
   `).join('');
   lucide.createIcons();
+}
+
+function markNotificationRead(key) {
+  const notification = notifications.find(item => item.key === key);
+  if (!notification) return;
+  notification.read = true;
+  if (notification.announcementId) {
+    const readIds = readIdSet(readAnnouncementsKey);
+    readIds.add(notification.announcementId);
+    localStorage.setItem(readAnnouncementsKey, JSON.stringify([...readIds]));
+  }
+  renderNotifPage();
+  updateBellBadge();
 }
 
 document.getElementById('filter-notif-all').addEventListener('click', (e) => {
@@ -1567,6 +1803,9 @@ document.getElementById('filter-notif-unread').addEventListener('click', (e) => 
 
 document.getElementById('btn-mark-all-read').addEventListener('click', () => {
   notifications.forEach(n => n.read = true);
+  const readIds = readIdSet(readAnnouncementsKey);
+  announcements.forEach(item => readIds.add(String(item.id)));
+  localStorage.setItem(readAnnouncementsKey, JSON.stringify([...readIds]));
   renderNotifPage(); updateBellBadge();
   showToast('Semua notifikasi ditandai sudah dibaca.');
 });
@@ -1593,12 +1832,21 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('profile-agama').textContent = formData.agama;
   document.getElementById('profile-major').textContent = formData.jurusanUtama;
   document.getElementById('profile-backup-major').textContent = formData.jurusanCadangan;
+  document.getElementById('student-registration-number').textContent = formData.noPendaftaran;
   document.getElementById('profile-registration-number').textContent = formData.noPendaftaran;
 
   // Render QR Code Teks Ringkasan saat pertama kali dimuat
   generateQRCodes();
 
   lucide.createIcons();
+  syncStudentPortal();
+});
+
+setInterval(() => {
+  if (!document.hidden) syncStudentPortal();
+}, 5000);
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) syncStudentPortal();
 });
 </script>
 </body>

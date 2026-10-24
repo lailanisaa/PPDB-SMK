@@ -14,185 +14,271 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-  <!-- Fonts -->
+  <!-- Google Fonts: Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+  <!-- CSS Custom untuk Efek Modern Non-AI Look -->
   <style>
     * { font-family: 'Poppins', sans-serif; }
     .nama-sekolah, .nama-sekolah * { font-family: 'Poppins', sans-serif !important; }
 
+    /* Variabel Warna Tema Utama */
     :root {
-      --dark-green: #1B4332;
-      --mint: #D8F5E8;
-      --mint-2: #C8F0DD;
-      --accent-green: #22C55E;
-      --accent-hover: #16A34A;
-      --yellow: #FFD84D;
+      --dark-green: #072AC8;
+      --brand-dark: #0A3225;
+      --mint: #E8F8F0;
+      --accent-green: #10B981;
+      --accent-hover: #059669;
+      --yellow: #FBBF24;
     }
 
     body {
-      color: var(--dark-green);
+      color: var(--brand-dark);
       background-color: #FAFCFB;
       overflow-x: hidden;
     }
 
-    /* Custom Animation Effects */
+    /* Pattern Pola Bintik Latar Belakang Hero */
+    .bg-grid-pattern {
+      background-image: radial-gradient(#10b981 1.2px, transparent 1.2px);
+      background-size: 28px 28px;
+    }
+
+    /* Efek Micro-interaction & Elevasi Card */
     .card-hover {
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .card-hover:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 20px 30px -10px rgba(27, 67, 50, 0.18);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 35px -10px rgba(16, 185, 129, 0.2);
     }
 
-    /* Floating Keyframe Animation */
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-12px) rotate(1deg); }
+    /* Animasi Melayang untuk Frame Foto Kanan */
+    @keyframes float-hero {
+      0%, 100% { transform: translateY(0px) rotate(1deg); }
+      50% { transform: translateY(-12px) rotate(-0.5deg); }
     }
-    .animate-float {
-      animation: float 5s ease-in-out infinite;
-    }
-
-    @keyframes pulse-glow {
-      0%, 100% { opacity: 0.6; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.05); }
-    }
-    .animate-glow {
-      animation: pulse-glow 3s infinite;
+    .animate-hero-float {
+      animation: float-hero 6s ease-in-out infinite;
     }
 
-    /* Glassmorphism Effect */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.5);
+    /* Animasi Ambient Glow Belakang */
+    @keyframes pulse-mesh {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(1.12); }
+    }
+    .animate-mesh {
+      animation: pulse-mesh 5s ease-in-out infinite;
+    }
+
+    /* Glassmorphism / Efek Kaca Transparan */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    /* Gradasi Teks Tajam */
+    .hero-gradient-text {
+      background: linear-gradient(135deg, #059669 0%, #10B981 40%, #047857 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   </style>
 </head>
 <body class="antialiased selection:bg-emerald-200 selection:text-emerald-900 min-h-full flex flex-col justify-between m-0 p-0">
 
 <div class="flex-grow">
-  <!-- NAVBAR -->
-  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100/80 transition-all duration-300">
-    <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-3 group">
-        <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-11 h-11 object-contain transition-transform duration-300 group-hover:scale-110">
+  
+  <!-- ==================== NAVBAR / HEADER ==================== -->
+  <header class="sticky top-0 z-50 bg-white/85 backdrop-blur-xl border-b border-emerald-100/80 transition-all duration-300 shadow-sm">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+      
+      <!-- Logo dan Branding Sekolah -->
+      <a href="index.html" class="flex items-center gap-3.5 group">
+        <div class="relative">
+          <div class="absolute -inset-1 bg-emerald-400/30 rounded-full blur-sm group-hover:bg-emerald-500/40 transition duration-300"></div>
+          <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="relative w-11 h-11 object-contain transition-transform duration-300 group-hover:scale-105">
+        </div>
         <div class="leading-tight nama-sekolah">
-          <p class="text-[16px] text-[var(--dark-green)] font-extrabold tracking-wide">SMK KASATRIAN</p>
-          <p class="text-[14px] text-[var(--dark-green)] -mt-1 font-semibold opacity-90">SOLO SUKOHARJO</p>
+          <p class="text-[17px] text-[var(--brand-dark)] font-black tracking-wide">SMK KASATRIAN</p>
+          <p class="text-[13px] text-emerald-700 -mt-1 font-bold opacity-90">SOLO SUKOHARJO</p>
         </div>
       </a>
 
-      <!-- Desktop Navigation Links -->
-      <ul class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-700">
-        <li><a href="index.html" class="text-[var(--accent-green)] font-bold transition duration-200 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-[var(--accent-green)]">Beranda</a></li>
-        <li><a href="jurusan.html" class="hover:text-[var(--accent-green)] transition duration-200">Jurusan</a></li>
-        <li><a href="persyaratan.html" class="hover:text-[var(--accent-green)] transition duration-200">Persyaratan</a></li>
-        <li><a href="galeri.html" class="hover:text-[var(--accent-green)] transition duration-200">Galeri</a></li>
-        <li><a href="faq.html" class="hover:text-[var(--accent-green)] transition duration-200">FAQ</a></li>
+      <!-- Menu Navigasi Komputer -->
+      <ul class="hidden md:flex items-center gap-7 text-sm font-semibold text-gray-700">
+        <li>
+          <a href="index.html" class="text-[var(--accent-green)] font-bold transition duration-200 relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-[var(--accent-green)] after:rounded-full">
+            Beranda
+          </a>
+        </li>
+        <li><a href="jurusan.html" class="hover:text-[var(--accent-green)] transition duration-200 py-1">Jurusan</a></li>
+        <li><a href="persyaratan.html" class="hover:text-[var(--accent-green)] transition duration-200 py-1">Persyaratan</a></li>
+        <li><a href="galeri.html" class="hover:text-[var(--accent-green)] transition duration-200 py-1">Galeri</a></li>
+        <li><a href="faq.html" class="hover:text-[var(--accent-green)] transition duration-200 py-1">FAQ</a></li>
       </ul>
 
-      <!-- Action Buttons -->
+      <!-- Tombol Aksi Navigasi -->
       <div id="nav-actions-desktop" class="hidden sm:flex items-center gap-3">
-        <a href="pilih_peran.html?mode=login" class="px-5 py-2 rounded-full border-2 border-[var(--dark-green)] text-[var(--dark-green)] font-semibold text-sm hover:bg-emerald-50 hover:shadow-md transition duration-200">Masuk</a>
-        <a href="pilih_peran.html?mode=signup" class="px-5 py-2 rounded-full bg-[var(--accent-green)] hover:bg-[var(--accent-hover)] text-white font-semibold text-sm shadow-md hover:shadow-lg transition duration-200 transform hover:-translate-y-0.5">Daftar SPMB</a>
+        <a href="pilih_peran.html?mode=login" class="px-5 py-2.5 rounded-full border border-emerald-300 text-[var(--brand-dark)] font-bold text-xs hover:bg-emerald-50 hover:border-emerald-500 transition duration-200">
+          Masuk
+        </a>
+        <a href="pilih_peran.html?mode=signup" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-700 hover:to-green-600 text-white font-bold text-xs shadow-md shadow-emerald-500/20 hover:shadow-lg transition duration-200 transform hover:-translate-y-0.5">
+          Daftar SPMB
+        </a>
       </div>
 
-      <!-- Mobile Hamburger Button -->
-      <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-[var(--dark-green)] hover:bg-emerald-50 transition" aria-label="Toggle Menu">
+      <!-- Tombol Hamburger Layar HP -->
+      <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl text-[var(--brand-dark)] hover:bg-emerald-50 transition border border-emerald-100" aria-label="Toggle Menu">
         <i data-lucide="menu" class="w-6 h-6"></i>
       </button>
     </nav>
 
-    <!-- Mobile Dropdown Menu -->
-    <div id="mobile-menu" class="hidden md:hidden border-t border-emerald-100 bg-white/98 px-6 py-4 space-y-3 shadow-lg">
-      <a href="index.html" class="block py-2 font-semibold text-[var(--accent-green)]">Beranda</a>
+    <!-- Menu Dropdown HP -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-emerald-100 bg-white/95 backdrop-blur-lg px-6 py-4 space-y-3 shadow-xl">
+      <a href="index.html" class="block py-2 font-bold text-[var(--accent-green)]">Beranda</a>
       <a href="jurusan.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Jurusan</a>
       <a href="persyaratan.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Persyaratan</a>
       <a href="galeri.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">Galeri</a>
       <a href="faq.html" class="block py-2 font-semibold text-gray-700 hover:text-[var(--accent-green)]">FAQ</a>
-      <div class="pt-3 border-t border-gray-100 flex flex-col gap-2">
-        <a href="pilih_peran.html?mode=login" class="w-full text-center py-2.5 rounded-full border-2 border-[var(--dark-green)] text-[var(--dark-green)] font-semibold text-sm">Masuk</a>
-        <a href="pilih_peran.html?mode=signup" class="w-full text-center py-2.5 rounded-full bg-[var(--accent-green)] text-white font-semibold text-sm">Daftar SPMB</a>
+      <div class="pt-3 border-t border-gray-100 flex flex-col gap-2.5">
+        <a href="pilih_peran.html?mode=login" class="w-full text-center py-2.5 rounded-xl border border-emerald-300 text-[var(--brand-dark)] font-bold text-sm">Masuk</a>
+        <a href="pilih_peran.html?mode=signup" class="w-full text-center py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-sm shadow-md">Daftar SPMB</a>
       </div>
     </div>
   </header>
 
-  <!-- HERO SECTION -->
-  <section class="relative bg-gradient-to-b from-[var(--mint)] via-emerald-50/50 to-white py-16 lg:py-24 overflow-hidden">
-    <div class="absolute top-10 left-10 w-72 h-72 bg-emerald-300/20 rounded-full blur-3xl pointer-events-none animate-glow"></div>
-    <div class="absolute bottom-10 right-10 w-96 h-96 bg-yellow-200/30 rounded-full blur-3xl pointer-events-none animate-glow" style="animation-delay: 1.5s;"></div>
+  <!-- ==================== HERO SECTION (RANCANGAN DESAIN BARU TOTAL) ==================== -->
+  <section class="relative bg-gradient-to-b from-emerald-100/60 via-emerald-50/20 to-white py-14 lg:py-24 overflow-hidden border-b border-emerald-100">
+    
+    <!-- Pola Grid Bintik & Ambient Backlight Glow -->
+    <div class="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none"></div>
+    <div class="absolute -top-32 -left-20 w-[500px] h-[500px] bg-emerald-300/35 rounded-full blur-3xl pointer-events-none animate-mesh"></div>
+    <div class="absolute bottom-0 right-0 w-[550px] h-[550px] bg-amber-200/30 rounded-full blur-3xl pointer-events-none animate-mesh" style="animation-delay: 2.5s;"></div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10">
-      <div class="space-y-6 text-center lg:text-left" data-aos="fade-right" data-aos-duration="1000">
-        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100/90 text-[var(--dark-green)] font-bold text-xs sm:text-sm shadow-sm border border-emerald-200">
-          <i data-lucide="sparkles" class="w-4 h-4 text-emerald-600 animate-spin" style="animation-duration: 8s;"></i>
-          SPMB Tahun Ajaran Resmi Dibuka!
-        </span>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
+      
+      <!-- SISI KIRI: INFORMASI TEKS & JUDUL UTAMA -->
+      <div class="lg:col-span-7 space-y-6 text-center lg:text-left" data-aos="fade-right" data-aos-duration="850">
+        
+        <!-- Live Status Pill SPMB -->
+        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full glass-panel text-emerald-950 font-extrabold text-xs sm:text-sm shadow-sm border border-emerald-200/90">
+          <span class="relative flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-600"></span>
+          </span>
+          <span class="tracking-wide">Penerimaan Siswa Baru (SPMB) Resmi Dibuka!</span>
+        </div>
 
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-[var(--dark-green)] tracking-tight">
+        <!-- Headline Utama -->
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black leading-[1.12] text-[var(--brand-dark)] tracking-tight">
           Jembatan Kerja,<br>
-          <span class="text-[var(--accent-green)] bg-gradient-to-r from-emerald-600 to-green-500 bg-clip-text text-transparent">Sukses Berwirausaha!</span>
+          <span class="hero-gradient-text">Sukses Berwirausaha!</span>
         </h1>
 
-        <p class="nama-sekolah text-xl sm:text-2xl text-[var(--dark-green)] font-extrabold tracking-wide">
-          SMK KASATRIAN SOLO SUKOHARJO
-        </p>
+        <!-- Sub-Heading Nama Sekolah -->
+        <div class="flex items-center justify-center lg:justify-start gap-3">
+          <span class="h-1 w-8 bg-emerald-500 rounded-full hidden sm:inline-block"></span>
+          <p class="nama-sekolah text-lg sm:text-2xl text-emerald-900 font-black tracking-wide">
+            SMK KASATRIAN SOLO SUKOHARJO
+          </p>
+        </div>
 
-        <p class="text-gray-600 leading-relaxed max-w-lg mx-auto lg:mx-0 text-sm sm:text-base">
+        <!-- Deskripsi Penjelas -->
+        <p class="text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0 text-sm sm:text-base font-normal">
           Siapkan karir masa depanmu dengan pendidikan vokasi berbasis keahlian praktis, fasilitas modern, dan jaringan kerja sama industri luas.
         </p>
 
+        <!-- Tombol Aksi Utama (CTA) -->
         <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
-          <a href="pilih_peran.html?mode=signup" class="px-8 py-4 rounded-full bg-[var(--yellow)] hover:bg-amber-400 text-[var(--dark-green)] font-bold text-sm shadow-lg hover:shadow-xl transition duration-300 flex items-center gap-2 transform hover:-translate-y-1">
-            <span>✏ Daftar Sekarang</span>
+          <a href="pilih_peran.html?mode=signup" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-500 hover:to-yellow-600 text-emerald-950 font-black text-sm shadow-xl shadow-amber-400/25 hover:shadow-2xl hover:shadow-amber-400/40 transition duration-300 flex items-center gap-2.5 transform hover:-translate-y-1">
+            <i data-lucide="edit-3" class="w-4 h-4"></i>
+            <span>Daftar Sekarang</span>
           </a>
-          <a href="jurusan.html" class="px-8 py-4 rounded-full border-2 border-[var(--accent-green)] text-[var(--dark-green)] font-bold text-sm hover:bg-emerald-50 transition duration-300 flex items-center gap-2 transform hover:-translate-y-1">
-            <span>📚 Lihat Program Keahlian</span>
+          <a href="jurusan.html" class="px-8 py-4 rounded-2xl border-2 border-emerald-600/80 text-emerald-950 bg-white/80 hover:bg-emerald-50 font-bold text-sm shadow-sm transition duration-300 flex items-center gap-2.5 transform hover:-translate-y-1">
+            <i data-lucide="compass" class="w-4 h-4 text-emerald-600"></i>
+            <span>Lihat Program Keahlian</span>
           </a>
         </div>
 
-        <div class="flex items-center justify-center lg:justify-start gap-6 pt-4 text-xs sm:text-sm font-bold text-[var(--dark-green)]">
-          <span class="flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-lg shadow-sm border border-emerald-100"><i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-600"></i> Terakreditasi A</span>
-          <span class="flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-lg shadow-sm border border-emerald-100"><i data-lucide="award" class="w-5 h-5 text-emerald-600"></i> Pengalaman <span id="hero-exp-years">25+</span> Tahun</span>
+        <!-- Indikator Keunggulan / Trust Chips -->
+        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-3 text-xs sm:text-sm font-bold text-[var(--brand-dark)]">
+          <div class="flex items-center gap-2 bg-white px-4 py-2.5 rounded-xl shadow-sm border border-emerald-100/80">
+            <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+            </div>
+            <span>Terakreditasi A</span>
+          </div>
+
+          <div class="flex items-center gap-2 bg-white px-4 py-2.5 rounded-xl shadow-sm border border-emerald-100/80">
+            <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+              <i data-lucide="award" class="w-4 h-4"></i>
+            </div>
+            <span>Pengalaman <span id="hero-exp-years">25+</span> Tahun</span>
+          </div>
         </div>
+
       </div>
 
-      <!-- FOTO HERO DENGAN OVERLAY GRADIENT HITAM TRANSPARAN -->
-      <div class="relative flex justify-center" data-aos="fade-left" data-aos-duration="1000">
-        <div class="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white max-w-md lg:max-w-none w-full animate-float group">
-          <img src="pict_2.jpeg" alt="Siswa Berprestasi SMK Kasatrian" class="w-full h-80 sm:h-[450px] object-cover object-top group-hover:scale-105 transition duration-700">
-          <!-- Overlay Hitam Transparan -->
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none"></div>
-          <div class="absolute top-4 right-4 bg-emerald-600/90 backdrop-blur-md text-white text-xs font-bold px-3.5 py-1.5 rounded-full shadow-lg border border-emerald-400/30 flex items-center gap-1.5">
-            <i data-lucide="trophy" class="w-3.5 h-3.5 text-yellow-300"></i>
-            <span>Siswa Berprestasi</span>
+      <!-- SISI KANAN: FRAME FOTO MULTI-LAYER & WIDGET INTERAKTIF -->
+      <div class="lg:col-span-5 relative flex justify-center lg:justify-end" data-aos="fade-left" data-aos-duration="850">
+        
+        <div class="relative w-full max-w-sm sm:max-w-md lg:max-w-none">
+          
+          <!-- Lapis Latar Belakang Terorintasi (Layer Off-set Card) -->
+          <div class="absolute inset-0 -rotate-3 bg-gradient-to-tr from-emerald-500/30 to-teal-300/40 rounded-[2.5rem] blur-md"></div>
+          <div class="absolute inset-0 rotate-2 bg-emerald-900/10 rounded-[2.5rem]"></div>
+
+          <!-- Card Container Utama dengan Efek Melayang -->
+          <div class="relative z-10 rounded-[2.2rem] overflow-hidden shadow-2xl border-4 border-white bg-white animate-hero-float group">
+            
+            <img src="pict_2.jpeg" alt="Siswa Berprestasi SMK Kasatrian" class="w-full h-80 sm:h-[470px] object-cover object-top group-hover:scale-105 transition duration-700">
+            
+            <!-- Vignette Overlay Gradasi Transparan -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
+
+            <!-- Widget Kiri Atas: Siswa Berprestasi Badge -->
+            <div class="absolute top-4 left-4 glass-panel text-emerald-950 text-xs font-black px-4 py-2 rounded-2xl shadow-lg border border-white/90 flex items-center gap-2">
+              <div class="w-6 h-6 rounded-lg bg-amber-400 text-emerald-950 flex items-center justify-center font-bold">
+                <i data-lucide="trophy" class="w-3.5 h-3.5"></i>
+              </div>
+              <span>Siswa Berprestasi</span>
+            </div>
+
+            <!-- Widget Kanan Atas: Tag Vokasi -->
+            <div class="absolute top-4 right-4 bg-emerald-700/90 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1.5 rounded-xl shadow-md border border-emerald-400/30">
+              Vokasi Unggulan
+            </div>
+
           </div>
+
+          <!-- Widget Melayang Bawah: 95% Lulusan Tersalurkan -->
+          <div class="absolute -bottom-6 -left-3 sm:-left-6 z-20 glass-panel p-4 rounded-2xl shadow-2xl border border-white flex items-center gap-4 hover:scale-105 transition duration-300">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center font-bold text-2xl shadow-lg shrink-0">
+              🎓
+            </div>
+            <div>
+              <p class="font-black text-sm sm:text-base text-[var(--brand-dark)] leading-tight">95% Lulusan Tersalurkan</p>
+              <p class="text-xs text-gray-600 font-medium mt-0.5">Kerja, Kuliah, & Wirausaha</p>
+            </div>
+          </div>
+
         </div>
 
-        <div class="absolute -bottom-6 -left-2 sm:-left-6 z-20 glass-card p-4 rounded-2xl shadow-xl border border-emerald-100 flex items-center gap-4 hover:scale-105 transition duration-300">
-          <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center font-bold text-2xl shadow-md">
-            🏆
-          </div>
-          <div>
-            <p class="font-extrabold text-sm text-[var(--dark-green)]">95% Lulusan Tersalurkan</p>
-            <p class="text-xs text-gray-600 font-medium">Kerja, Kuliah, & Wirausaha</p>
-          </div>
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- CAROUSEL SLIDER GALERI KEGIATAN -->
+  <!-- ==================== CAROUSEL SLIDER GALERI SISWA ==================== -->
   <section class="py-16 bg-white border-b border-emerald-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-10" data-aos="fade-up">
-        <span class="px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider">
+        <span class="px-4 py-1.5 rounded-full bg-emerald-100/80 text-[var(--brand-dark)] font-extrabold text-xs uppercase tracking-wider border border-emerald-200">
           Galeri & Kegiatan Siswa
         </span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--dark-green)] mt-3">
+        <h2 class="text-3xl sm:text-4xl font-black text-[var(--brand-dark)] mt-3">
           Kehidupan Sekolah & Prestasi
         </h2>
         <p class="text-gray-600 text-sm mt-2">
@@ -201,13 +287,12 @@
       </div>
 
       <div class="relative max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-2xl border-4 border-white group" data-aos="zoom-in" data-aos-delay="100">
-        <div id="main-carousel-track" class="flex transition-transform duration-700 ease-in-out h-[350px] sm:h-[480px]">
+        <div id="main-carousel-track" class="flex transition-transform duration-700 ease-in-out h-[360px] sm:h-[480px]">
           
           <!-- Slide 1 -->
           <div class="w-full shrink-0 relative h-full">
             <img src="pict_osis.jpeg" alt="Pengurus OSIS SMK Kasatrian" class="w-full h-full object-cover">
-            <!-- Overlay Hitam Transparan -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-6 sm:p-10 flex flex-col justify-end text-white">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent p-6 sm:p-10 flex flex-col justify-end text-white">
               <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/90 backdrop-blur-md text-white text-xs font-bold w-max mb-2">👥 Organisasi Siswa</span>
               <h3 class="font-bold text-xl sm:text-3xl text-white drop-shadow-md">Pengurus OSIS & Kepemimpinan Siswa</h3>
               <p class="text-xs sm:text-sm text-gray-200 mt-1 max-w-2xl drop-shadow">Membangun jiwa kepemimpinan, kolaborasi, dan karakter unggul melalui organisasi kesiswaan yang aktif.</p>
@@ -217,8 +302,7 @@
           <!-- Slide 2 -->
           <div class="w-full shrink-0 relative h-full">
             <img src="pict_1.jpeg" alt="Kedisiplinan & Karakter" class="w-full h-full object-cover">
-            <!-- Overlay Hitam Transparan -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-6 sm:p-10 flex flex-col justify-end text-white">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent p-6 sm:p-10 flex flex-col justify-end text-white">
               <span class="inline-block px-3 py-1 rounded-full bg-blue-500/90 backdrop-blur-md text-white text-xs font-bold w-max mb-2">⭐ Kedisiplinan & Karakter</span>
               <h3 class="font-bold text-xl sm:text-3xl text-white drop-shadow-md">Peringatan Hari Besar & Pembentukan Kedisiplinan</h3>
               <p class="text-xs sm:text-sm text-gray-200 mt-1 max-w-2xl drop-shadow">Kegiatan rutin untuk menanamkan kedisiplinan, jiwa nasionalisme, serta etika kerja tinggi.</p>
@@ -228,8 +312,7 @@
           <!-- Slide 3 -->
           <div class="w-full shrink-0 relative h-full">
             <img src="pict_2.jpeg" alt="Prestasi Siswa" class="w-full h-full object-cover object-top">
-            <!-- Overlay Hitam Transparan -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-6 sm:p-10 flex flex-col justify-end text-white">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent p-6 sm:p-10 flex flex-col justify-end text-white">
               <span class="inline-block px-3 py-1 rounded-full bg-yellow-500/90 backdrop-blur-md text-white text-xs font-bold w-max mb-2">🏆 Siswa Berprestasi</span>
               <h3 class="font-bold text-xl sm:text-3xl text-white drop-shadow-md">Generasi Juara & Kompeten</h3>
               <p class="text-xs sm:text-sm text-gray-200 mt-1 max-w-2xl drop-shadow">Ajang penyaluran bakat akademik dan non-akademik hingga meraih penghargaan tingkat regional.</p>
@@ -239,8 +322,7 @@
           <!-- Slide 4 -->
           <div class="w-full shrink-0 relative h-full">
             <img src="pict_3.jpeg" alt="Pelepasan & Kelulusan" class="w-full h-full object-cover">
-            <!-- Overlay Hitam Transparan -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-6 sm:p-10 flex flex-col justify-end text-white">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent p-6 sm:p-10 flex flex-col justify-end text-white">
               <span class="inline-block px-3 py-1 rounded-full bg-purple-500/90 backdrop-blur-md text-white text-xs font-bold w-max mb-2">🎓 Kelulusan & Karir</span>
               <h3 class="font-bold text-xl sm:text-3xl text-white drop-shadow-md">Pelepasan Wisudawan Siap Kerja</h3>
               <p class="text-xs sm:text-sm text-gray-200 mt-1 max-w-2xl drop-shadow">Momen kebanggaan meluluskan calon tenaga kerja profesional dan wirausahawan muda yang mandiri.</p>
@@ -248,10 +330,10 @@
           </div>
         </div>
 
-        <button id="carousel-prev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-white/80 text-white hover:text-[var(--dark-green)] p-3 rounded-full backdrop-blur-md border border-white/30 transition duration-300 opacity-80 hover:opacity-100 shadow-lg">
+        <button id="carousel-prev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-white/90 text-white hover:text-[var(--brand-dark)] p-3 rounded-full backdrop-blur-md border border-white/30 transition duration-300 opacity-80 hover:opacity-100 shadow-lg">
           <i data-lucide="chevron-left" class="w-6 h-6"></i>
         </button>
-        <button id="carousel-next" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-white/80 text-white hover:text-[var(--dark-green)] p-3 rounded-full backdrop-blur-md border border-white/30 transition duration-300 opacity-80 hover:opacity-100 shadow-lg">
+        <button id="carousel-next" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-white/90 text-white hover:text-[var(--brand-dark)] p-3 rounded-full backdrop-blur-md border border-white/30 transition duration-300 opacity-80 hover:opacity-100 shadow-lg">
           <i data-lucide="chevron-right" class="w-6 h-6"></i>
         </button>
 
@@ -264,7 +346,7 @@
       </div>
 
       <div class="mt-8 text-center">
-        <a href="galeri.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--dark-green)] hover:bg-emerald-900 text-white font-bold text-sm shadow-md transition duration-300">
+        <a href="galeri.html" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--brand-dark)] hover:bg-emerald-900 text-white font-bold text-sm shadow-md transition duration-300">
           <span>Lihat Seluruh Galeri Foto</span>
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
@@ -272,50 +354,49 @@
     </div>
   </section>
 
-  <!-- STATS BAR (DINAMIS REAL-TIME) -->
+  <!-- ==================== STATS BAR ==================== -->
   <section class="bg-white border-b border-emerald-100 py-10 relative">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-      <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50/30 border border-emerald-100/60 card-hover" data-aos="zoom-in" data-aos-delay="100">
-        <p id="stat-pengalaman" class="text-3xl sm:text-4xl font-extrabold text-[var(--accent-green)]">25+</p>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50/80 to-teal-50/30 border border-emerald-100/70 card-hover" data-aos="zoom-in" data-aos-delay="100">
+        <p id="stat-pengalaman" class="text-3xl sm:text-4xl font-black text-[var(--accent-green)]">25+</p>
         <p class="text-xs sm:text-sm font-semibold text-gray-600 mt-1">Tahun Pengalaman</p>
       </div>
-      <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50/30 border border-emerald-100/60 card-hover" data-aos="zoom-in" data-aos-delay="200">
-        <p id="stat-jurusan" class="text-3xl sm:text-4xl font-extrabold text-[var(--accent-green)]">4</p>
+      <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50/80 to-teal-50/30 border border-emerald-100/70 card-hover" data-aos="zoom-in" data-aos-delay="200">
+        <p id="stat-jurusan" class="text-3xl sm:text-4xl font-black text-[var(--accent-green)]">4</p>
         <p class="text-xs sm:text-sm font-semibold text-gray-600 mt-1">Jurusan Unggulan</p>
       </div>
-      <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50/30 border border-emerald-100/60 card-hover" data-aos="zoom-in" data-aos-delay="300">
-        <p id="stat-mitra" class="text-3xl sm:text-4xl font-extrabold text-[var(--accent-green)]">50+</p>
+      <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50/80 to-teal-50/30 border border-emerald-100/70 card-hover" data-aos="zoom-in" data-aos-delay="300">
+        <p id="stat-mitra" class="text-3xl sm:text-4xl font-black text-[var(--accent-green)]">50+</p>
         <p class="text-xs sm:text-sm font-semibold text-gray-600 mt-1">Mitra DUDI / Industri</p>
       </div>
-      <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50/30 border border-emerald-100/60 card-hover" data-aos="zoom-in" data-aos-delay="400">
-        <p id="stat-pendaftar-count" class="text-3xl sm:text-4xl font-extrabold text-[var(--accent-green)]">0</p>
+      <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-50/80 to-teal-50/30 border border-emerald-100/70 card-hover" data-aos="zoom-in" data-aos-delay="400">
+        <p id="stat-pendaftar-count" class="text-3xl sm:text-4xl font-black text-[var(--accent-green)]">0</p>
         <p class="text-xs sm:text-sm font-semibold text-gray-600 mt-1">Pendaftar Terdaftar</p>
       </div>
     </div>
   </section>
 
-  <!-- PROGRAM KEAHLIAN PREVIEW -->
+  <!-- ==================== PROGRAM KEAHLIAN PREVIEW ==================== -->
   <section class="py-20 bg-gradient-to-b from-[var(--mint)] to-emerald-50/30" id="program-keahlian">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <div data-aos="fade-up">
-        <span class="px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider">Program Keahlian</span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--dark-green)] mt-3">Pilih Jurusan Masa Depanmu</h2>
+        <span class="px-4 py-1.5 rounded-full bg-emerald-100/80 text-[var(--brand-dark)] font-extrabold text-xs uppercase tracking-wider border border-emerald-200">Program Keahlian</span>
+        <h2 class="text-3xl sm:text-4xl font-black text-[var(--brand-dark)] mt-3">Pilih Jurusan Masa Depanmu</h2>
         <p class="text-gray-600 max-w-xl mx-auto mt-2 text-sm sm:text-base">Kurikulum selaras industri yang membekali siswa dengan keterampilan nyata.</p>
       </div>
 
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-12 text-left">
 
         <!-- 1. KULINER / JASA BOGA -->
-        <div class="jurusan-card bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between card-hover" data-aos="fade-up" data-aos-delay="100">
+        <div class="jurusan-card bg-white rounded-2xl border border-emerald-100/80 overflow-hidden shadow-sm flex flex-col justify-between card-hover" data-aos="fade-up" data-aos-delay="100">
           <div>
             <div class="relative h-52 overflow-hidden group">
               <div id="slider-kuliner" class="w-full h-full flex transition-transform duration-500 ease-in-out">
                 <img src="pict_jasaboga3.jpeg" alt="Kuliner / Jasa Boga" class="jurusan-img w-full h-full object-cover shrink-0">
                 <img src="pict_jasaboga2.jpeg" alt="Praktik Kuliner" class="jurusan-img w-full h-full object-cover shrink-0">
               </div>
-              <!-- Gradient Overlay Black Transparent -->
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none"></div>
-              <div class="absolute top-3 left-3 bg-[var(--dark-green)] text-white p-2.5 rounded-xl shadow-md border border-white/20">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <div class="absolute top-3 left-3 bg-[var(--brand-dark)] text-white p-2.5 rounded-xl shadow-md border border-white/20">
                 <i data-lucide="utensils" class="w-5 h-5"></i>
               </div>
             </div>
@@ -323,7 +404,7 @@
               <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-orange-50 border border-orange-200 text-orange-700 font-semibold text-[11px]">
                 <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Kelas Industri Kasoka Cafe & Resto
               </span>
-              <h3 class="font-bold text-lg text-[var(--dark-green)]">Kuliner / Jasa Boga</h3>
+              <h3 class="font-bold text-lg text-[var(--brand-dark)]">Kuliner / Jasa Boga</h3>
               <p class="text-xs text-gray-600 leading-relaxed">
                 Seni Memasak Modern & Tradisional, Pastry & Bakery, Tata Hidang (Food Plating), Barista, & Management Restoran.
               </p>
@@ -337,16 +418,15 @@
         </div>
 
         <!-- 2. PERHOTELAN -->
-        <div class="jurusan-card bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between card-hover" data-aos="fade-up" data-aos-delay="200">
+        <div class="jurusan-card bg-white rounded-2xl border border-emerald-100/80 overflow-hidden shadow-sm flex flex-col justify-between card-hover" data-aos="fade-up" data-aos-delay="200">
           <div>
             <div class="relative h-52 overflow-hidden group">
               <div id="slider-perhotelan" class="w-full h-full flex transition-transform duration-500 ease-in-out">
                 <img src="pict_perhotelan2.jpeg" alt="Perhotelan" class="jurusan-img w-full h-full object-cover shrink-0">
                 <img src="pict_perhotelan.jpeg" alt="Siswa Perhotelan" class="jurusan-img w-full h-full object-cover shrink-0">
               </div>
-              <!-- Gradient Overlay Black Transparent -->
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none"></div>
-              <div class="absolute top-3 left-3 bg-[var(--dark-green)] text-white p-2.5 rounded-xl shadow-md border border-white/20">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <div class="absolute top-3 left-3 bg-[var(--brand-dark)] text-white p-2.5 rounded-xl shadow-md border border-white/20">
                 <i data-lucide="building-2" class="w-5 h-5"></i>
               </div>
             </div>
@@ -354,7 +434,7 @@
               <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 font-semibold text-[11px]">
                 <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Kelas Industri The Amrani Syariah Hotel
               </span>
-              <h3 class="font-bold text-lg text-[var(--dark-green)]">Perhotelan</h3>
+              <h3 class="font-bold text-lg text-[var(--brand-dark)]">Perhotelan</h3>
               <p class="text-xs text-gray-600 leading-relaxed">
                 Front Office, Housekeeping, Public Relation, Hotel Management, & Service Hospitality Berstandar Hotel Berbintang.
               </p>
@@ -368,16 +448,15 @@
         </div>
 
         <!-- 3. TKJ -->
-        <div class="jurusan-card bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between card-hover" data-aos="fade-up" data-aos-delay="300">
+        <div class="jurusan-card bg-white rounded-2xl border border-emerald-100/80 overflow-hidden shadow-sm flex flex-col justify-between card-hover" data-aos="fade-up" data-aos-delay="300">
           <div>
             <div class="relative h-52 overflow-hidden group">
               <div id="slider-tkj" class="w-full h-full flex transition-transform duration-500 ease-in-out">
                 <img src="pict_tkj.jpeg" alt="TKJ" class="jurusan-img w-full h-full object-cover shrink-0">
                 <img src="pict_tkj2.jpeg" alt="Praktikum TKJ" class="jurusan-img w-full h-full object-cover shrink-0">
               </div>
-              <!-- Gradient Overlay Black Transparent -->
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none"></div>
-              <div class="absolute top-3 left-3 bg-[var(--dark-green)] text-white p-2.5 rounded-xl shadow-md border border-white/20">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <div class="absolute top-3 left-3 bg-[var(--brand-dark)] text-white p-2.5 rounded-xl shadow-md border border-white/20">
                 <i data-lucide="laptop-2" class="w-5 h-5"></i>
               </div>
             </div>
@@ -385,7 +464,7 @@
               <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 border border-blue-200 text-blue-700 font-semibold text-[11px]">
                 <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Kelas Industri CV. Relasi Jaya
               </span>
-              <h3 class="font-bold text-lg text-[var(--dark-green)]">TKJ (Teknik Komputer & Jaringan)</h3>
+              <h3 class="font-bold text-lg text-[var(--brand-dark)]">TKJ (Teknik Komputer & Jaringan)</h3>
               <p class="text-xs text-gray-600 leading-relaxed">
                 Administrator Jaringan, Mikrotik, Cisco, Cybersecurity, Server Management, Cloud Computing, & Maintenance Perangkat IT.
               </p>
@@ -399,16 +478,15 @@
         </div>
 
         <!-- 4. TEKNIK OTOMOTIF / TSM -->
-        <div class="jurusan-card bg-white rounded-2xl border border-emerald-100 overflow-hidden shadow-sm flex flex-col justify-between card-hover" data-aos="fade-up" data-aos-delay="400">
+        <div class="jurusan-card bg-white rounded-2xl border border-emerald-100/80 overflow-hidden shadow-sm flex flex-col justify-between card-hover" data-aos="fade-up" data-aos-delay="400">
           <div>
             <div class="relative h-52 overflow-hidden group">
               <div id="slider-otomotif" class="w-full h-full flex transition-transform duration-500 ease-in-out">
                 <img src="pict_tsm4.jpeg" alt="Teknik Otomotif / TSM" class="jurusan-img w-full h-full object-cover shrink-0">
                 <img src="pict_tsm2.jpeg" alt="Praktikum Otomotif" class="jurusan-img w-full h-full object-cover shrink-0">
               </div>
-              <!-- Gradient Overlay Black Transparent -->
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none"></div>
-              <div class="absolute top-3 left-3 bg-[var(--dark-green)] text-white p-2.5 rounded-xl shadow-md border border-white/20">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+              <div class="absolute top-3 left-3 bg-[var(--brand-dark)] text-white p-2.5 rounded-xl shadow-md border border-white/20">
                 <i data-lucide="wrench" class="w-5 h-5"></i>
               </div>
             </div>
@@ -416,7 +494,7 @@
               <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 text-red-700 font-semibold text-[11px]">
                 <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Kelas Industri PT AHM Jawa Tengah
               </span>
-              <h3 class="font-bold text-lg text-[var(--dark-green)]">Teknik Otomotif / TSM</h3>
+              <h3 class="font-bold text-lg text-[var(--brand-dark)]">Teknik Otomotif / TSM</h3>
               <p class="text-xs text-gray-600 leading-relaxed">
                 Perawatan Mesin Injeksi PGM-FI, Diagnosa Sistem Kelistrikan Modern, Overhaul Engine, & Manajemen Service Standar AHASS.
               </p>
@@ -432,7 +510,7 @@
       </div>
 
       <div class="mt-10 text-center">
-        <a href="jurusan.html" class="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-[var(--dark-green)] hover:bg-emerald-900 text-white font-bold text-sm shadow-md transition duration-300">
+        <a href="jurusan.html" class="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-[var(--brand-dark)] hover:bg-emerald-900 text-white font-bold text-sm shadow-md transition duration-300">
           <span>Selengkapnya di Halaman Jurusan</span>
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
@@ -440,15 +518,15 @@
     </div>
   </section>
 
-  <!-- SEKSI INFORMASI PENDAFTARAN & BIAYA -->
-  <section class="py-20 bg-gradient-to-b from-emerald-50/50 to-white border-b border-emerald-100" id="informasi-spmb">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+  <!-- ==================== INFORMASI PENDAFTARAN & BIAYA ==================== -->
+  <section class="pt-20 bg-gradient-to-b from-emerald-50/50 to-white border-b border-emerald-100" id="informasi-spmb">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
       <div class="text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">
-        <span class="px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider">
+        <span class="px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--brand-dark)] font-extrabold text-xs uppercase tracking-wider">
           Portal Informasi SPMB
         </span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-[var(--dark-green)] mt-3">
+        <h2 class="text-3xl sm:text-4xl font-black text-[var(--brand-dark)] mt-3">
           Informasi Pendaftaran & Perlengkapan
         </h2>
         <p class="text-gray-600 text-sm sm:text-base mt-2">
@@ -456,34 +534,34 @@
         </p>
       </div>
 
-      <!-- BANNER BENEFIT MEMBER GET MEMBER -->
-      <div class="mb-12 bg-gradient-to-r from-[var(--dark-green)] via-emerald-800 to-[var(--dark-green)] rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-emerald-600/30" data-aos="zoom-in">
+      <!-- Banner Benefit Member Get Member -->
+      <div class="mb-12 bg-gradient-to-r from-[var(--brand-dark)] via-emerald-800 to-[var(--brand-dark)] rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-emerald-600/30" data-aos="zoom-in">
         <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-[var(--accent-green)]/20 rounded-full blur-3xl pointer-events-none"></div>
         <div class="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
           <div class="flex items-center gap-5">
-            <div class="w-16 h-16 rounded-2xl bg-[var(--yellow)] text-[var(--dark-green)] flex items-center justify-center font-black text-3xl shadow-lg shrink-0">
+            <div class="w-16 h-16 rounded-2xl bg-[var(--yellow)] text-[var(--brand-dark)] flex items-center justify-center font-black text-3xl shadow-lg shrink-0">
               🎁
             </div>
             <div>
               <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-[var(--yellow)] text-[11px] font-extrabold uppercase tracking-widest border border-white/20">
                 Program Spesial Benefit
               </span>
-              <h3 class="text-2xl font-extrabold text-white mt-1">Member get Member Benefit</h3>
+              <h3 class="text-2xl font-black text-white mt-1">Member get Member Benefit</h3>
               <p class="text-xs sm:text-sm text-emerald-100/90 mt-1 max-w-xl">
                 Dapatkan <strong class="text-[var(--yellow)]">Cashback / Fee sebesar Rp 125.000</strong> pada Gelombang Reguler bagi siswa yang berhasil mengajak teman/siswa lain untuk mendaftar di SMK Kasatrian Solo!
               </p>
             </div>
           </div>
-          <a href="pilih_peran.html?mode=signup" class="px-6 py-3.5 rounded-xl bg-[var(--yellow)] hover:bg-amber-400 text-[var(--dark-green)] font-extrabold text-xs sm:text-sm shadow-lg hover:shadow-xl transition shrink-0 transform hover:-translate-y-0.5">
+          <a href="pilih_peran.html?mode=signup" class="px-6 py-3.5 rounded-xl bg-[var(--yellow)] hover:bg-amber-400 text-[var(--brand-dark)] font-extrabold text-xs sm:text-sm shadow-lg hover:shadow-xl transition shrink-0 transform hover:-translate-y-0.5">
             Ajak Teman Sekarang
           </a>
         </div>
       </div>
 
-      <!-- KARTU SKEMA PENDAFTARAN -->
+      <!-- Kartu Skema Pendaftaran -->
       <div class="grid md:grid-cols-2 gap-8 mb-16" data-aos="fade-up">
         
-        <!-- SKEMA A -->
+        <!-- Skema A -->
         <div class="relative bg-white rounded-3xl border-2 border-[var(--accent-green)] p-6 sm:p-8 shadow-xl flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1">
           <div class="absolute -top-4 right-6 bg-[var(--accent-green)] text-white text-xs font-black px-4 py-1.5 rounded-full shadow-md uppercase tracking-wider flex items-center gap-1.5">
             <i data-lucide="star" class="w-3.5 h-3.5 fill-current text-yellow-300"></i> Kuota Khusus / Utama
@@ -491,11 +569,11 @@
 
           <div>
             <div class="flex items-center gap-3 mb-3">
-              <div class="w-10 h-10 rounded-xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center font-bold text-lg">
+              <div class="w-10 h-10 rounded-xl bg-emerald-100 text-[var(--accent-green)] flex items-center justify-center font-black text-lg">
                 1
               </div>
               <div>
-                <h3 class="text-xl font-extrabold text-[var(--dark-green)]">Pendaftar No. 1 – 33</h3>
+                <h3 class="text-xl font-extrabold text-[var(--brand-dark)]">Pendaftar No. 1 – 33</h3>
                 <p class="text-xs text-emerald-700 font-bold">Kuota Terbatas untuk 33 Pendaftar Pertama</p>
               </div>
             </div>
@@ -506,7 +584,7 @@
               <p class="text-[11px] text-gray-600 mt-1">Bebas seluruh biaya pengembangan sekolah.</p>
             </div>
 
-            <p class="text-xs font-bold text-[var(--dark-green)] mb-3">Hanya Perlu Membayar Seragam & Perlengkapan:</p>
+            <p class="text-xs font-bold text-[var(--brand-dark)] mb-3">Hanya Perlu Membayar Seragam & Perlengkapan:</p>
             <ul class="space-y-2 text-xs text-gray-700 font-medium">
               <li class="flex items-center gap-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[var(--accent-green)] shrink-0"></i> 1 Kain Batik Sekolah</li>
               <li class="flex items-center gap-2.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-[var(--accent-green)] shrink-0"></i> Atribut Sekolah Lengkap</li>
@@ -522,26 +600,26 @@
           </a>
         </div>
 
-        <!-- SKEMA B -->
+        <!-- Skema B -->
         <div class="bg-white rounded-3xl border border-gray-200 p-6 sm:p-8 shadow-sm flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1">
           <div>
             <div class="flex items-center gap-3 mb-3">
-              <div class="w-10 h-10 rounded-xl bg-gray-100 text-gray-700 flex items-center justify-center font-bold text-lg">
+              <div class="w-10 h-10 rounded-xl bg-gray-100 text-gray-700 flex items-center justify-center font-black text-lg">
                 2
               </div>
               <div>
-                <h3 class="text-xl font-extrabold text-[var(--dark-green)]">Pendaftar Reguler / Biasa</h3>
+                <h3 class="text-xl font-extrabold text-[var(--brand-dark)]">Pendaftar Reguler / Biasa</h3>
                 <p class="text-xs text-gray-500 font-semibold">Pendaftar No. 34 – Seterusnya</p>
               </div>
             </div>
 
             <div class="my-5 p-4 rounded-2xl bg-gray-50 border border-gray-200">
               <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">Skema Pembayaran</p>
-              <p class="text-2xl font-black text-[var(--dark-green)] mt-0.5">Pengembangan + Seragam</p>
+              <p class="text-2xl font-black text-[var(--brand-dark)] mt-0.5">Pengembangan + Seragam</p>
               <p class="text-[11px] text-gray-600 mt-1">Rincian lengkap dapat dilihat di Dashboard Siswa setelah mendaftar.</p>
             </div>
 
-            <p class="text-xs font-bold text-[var(--dark-green)] mb-3">Rincian Komponen Pembayaran:</p>
+            <p class="text-xs font-bold text-[var(--brand-dark)] mb-3">Rincian Komponen Pembayaran:</p>
             <ul class="space-y-2 text-xs text-gray-700 font-medium">
               <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0"></i> Kain Batik Sekolah</li>
               <li class="flex items-center gap-2.5"><i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0"></i> Atribut Sekolah Lengkap</li>
@@ -552,16 +630,16 @@
             </ul>
           </div>
 
-          <a href="pilih_peran.html?mode=signup" class="mt-8 w-full py-3.5 rounded-xl bg-[var(--dark-green)] hover:bg-emerald-900 text-white text-center font-bold text-xs shadow-md transition">
+          <a href="pilih_peran.html?mode=signup" class="mt-8 w-full py-3.5 rounded-xl bg-[var(--brand-dark)] hover:bg-emerald-900 text-white text-center font-bold text-xs shadow-md transition">
             Daftar Jalur Reguler
           </a>
         </div>
 
       </div>
 
-  <!-- PROGRAM BEASISWA PENDIDIKAN -->
+  <!-- ==================== PROGRAM BEASISWA PENDIDIKAN ==================== -->
   <section class="py-20 bg-white border-b border-emerald-100" id="info-pendaftaran">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8">
 
       <div class="bg-gradient-to-br from-emerald-50 to-teal-50/50 rounded-3xl border border-emerald-200/80 p-6 sm:p-8 shadow-sm card-hover" data-aos="fade-right">
         <div class="flex items-center gap-4 mb-6">
@@ -570,7 +648,7 @@
           </div>
           <div>
             <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Program Gratis</p>
-            <h2 class="text-2xl font-extrabold text-[var(--dark-green)]">Beasiswa Pendidikan</h2>
+            <h2 class="text-2xl font-black text-[var(--brand-dark)]">Beasiswa Pendidikan</h2>
           </div>
         </div>
         <ul class="space-y-3.5 text-sm text-gray-700 font-medium">
@@ -592,7 +670,7 @@
           </div>
           <div>
             <p class="text-xs font-bold uppercase tracking-wider text-emerald-800">Keunggulan Sekolah</p>
-            <h2 class="text-2xl font-extrabold text-[var(--dark-green)]">Fasilitas & Program</h2>
+            <h2 class="text-2xl font-black text-[var(--brand-dark)]">Fasilitas & Program</h2>
           </div>
         </div>
         <ol class="grid sm:grid-cols-2 gap-x-6 gap-y-2.5 text-xs text-gray-700 font-semibold list-decimal list-inside leading-relaxed">
@@ -615,14 +693,14 @@
     </div>
   </section>
 
-  <!-- SEKSI CONTACT PERSON (3 PANITIA SPMB) -->
+  <!-- ==================== SEKSI KONTAK PANITIA ==================== -->
   <section class="py-16 bg-gradient-to-b from-white to-emerald-50/40 border-b border-emerald-100" id="kontak-panitia">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-10" data-aos="fade-up">
-        <span class="px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--dark-green)] font-bold text-xs uppercase tracking-wider">
+        <span class="px-4 py-1.5 rounded-full bg-emerald-100 text-[var(--brand-dark)] font-extrabold text-xs uppercase tracking-wider">
           Hubungi Kami
         </span>
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-[var(--dark-green)] mt-2">
+        <h2 class="text-2xl sm:text-3xl font-black text-[var(--brand-dark)] mt-2">
           Contact Person Panitia SPMB
         </h2>
         <p class="text-gray-600 text-xs sm:text-sm mt-1">
@@ -632,15 +710,15 @@
 
       <div class="grid sm:grid-cols-3 gap-6 max-w-5xl mx-auto" data-aos="fade-up" data-aos-delay="100">
         
-        <!-- 1. Bu Zulfa -->
-        <div class="bg-white p-6 rounded-2xl border border-emerald-200 shadow-sm hover:shadow-md transition card-hover flex flex-col justify-between">
+        <!-- Bu Zulfa -->
+        <div class="bg-white p-6 rounded-2xl border border-emerald-200/80 shadow-sm hover:shadow-md transition card-hover flex flex-col justify-between">
           <div>
             <div class="flex items-center gap-3 mb-3">
               <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold shadow-md">
                 <i data-lucide="phone" class="w-5 h-5"></i>
               </div>
               <div>
-                <h3 class="font-bold text-base text-[var(--dark-green)]">Bu Zulfa</h3>
+                <h3 class="font-bold text-base text-[var(--brand-dark)]">Bu Zulfa</h3>
                 <p class="text-xs text-emerald-700 font-semibold">Panitia SPMB</p>
               </div>
             </div>
@@ -651,15 +729,15 @@
           </a>
         </div>
 
-        <!-- 2. Pak Wawan -->
-        <div class="bg-white p-6 rounded-2xl border border-emerald-200 shadow-sm hover:shadow-md transition card-hover flex flex-col justify-between">
+        <!-- Pak Wawan -->
+        <div class="bg-white p-6 rounded-2xl border border-emerald-200/80 shadow-sm hover:shadow-md transition card-hover flex flex-col justify-between">
           <div>
             <div class="flex items-center gap-3 mb-3">
               <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold shadow-md">
                 <i data-lucide="phone" class="w-5 h-5"></i>
               </div>
               <div>
-                <h3 class="font-bold text-base text-[var(--dark-green)]">Pak Wawan</h3>
+                <h3 class="font-bold text-base text-[var(--brand-dark)]">Pak Wawan</h3>
                 <p class="text-xs text-emerald-700 font-semibold">Panitia SPMB</p>
               </div>
             </div>
@@ -670,15 +748,15 @@
           </a>
         </div>
 
-        <!-- 3. Bu Yati -->
-        <div class="bg-white p-6 rounded-2xl border border-emerald-200 shadow-sm hover:shadow-md transition card-hover flex flex-col justify-between">
+        <!-- Bu Yati -->
+        <div class="bg-white p-6 rounded-2xl border border-emerald-200/80 shadow-sm hover:shadow-md transition card-hover flex flex-col justify-between">
           <div>
             <div class="flex items-center gap-3 mb-3">
               <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold shadow-md">
                 <i data-lucide="phone" class="w-5 h-5"></i>
               </div>
               <div>
-                <h3 class="font-bold text-base text-[var(--dark-green)]">Bu Yati</h3>
+                <h3 class="font-bold text-base text-[var(--brand-dark)]">Bu Yati</h3>
                 <p class="text-xs text-emerald-700 font-semibold">Panitia SPMB</p>
               </div>
             </div>
@@ -693,36 +771,36 @@
     </div>
   </section>
 
-  <!-- TAHAPAN PENDAFTARAN -->
+  <!-- ==================== TAHAPAN PENDAFTARAN ==================== -->
   <section class="py-20 bg-white">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <div data-aos="fade-up">
-        <h2 class="text-3xl font-extrabold text-[var(--dark-green)]">Alur Pendaftaran SPMB 📅</h2>
+        <h2 class="text-3xl font-black text-[var(--brand-dark)]">Alur Pendaftaran SPMB 📅</h2>
         <p class="text-gray-500 text-sm mt-2">Proses pendaftaran cepat, transparan, dan dapat diakses secara online.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12 relative">
         <div class="p-6 rounded-2xl bg-emerald-50/40 border border-emerald-100 text-center relative z-10 card-hover" data-aos="fade-up" data-aos-delay="100">
           <div class="w-12 h-12 mx-auto rounded-2xl bg-[var(--accent-green)] text-white font-bold text-lg flex items-center justify-center mb-3 shadow-md">1</div>
-          <h4 class="font-bold text-sm text-[var(--dark-green)]">Isi Formulir</h4>
+          <h4 class="font-bold text-sm text-[var(--brand-dark)]">Isi Formulir</h4>
           <p class="text-xs text-gray-500 mt-1">Daftar akun & lengkapi data diri secara online.</p>
         </div>
 
         <div class="p-6 rounded-2xl bg-emerald-50/40 border border-emerald-100 text-center relative z-10 card-hover" data-aos="fade-up" data-aos-delay="200">
           <div class="w-12 h-12 mx-auto rounded-2xl bg-[var(--accent-green)] text-white font-bold text-lg flex items-center justify-center mb-3 shadow-md">2</div>
-          <h4 class="font-bold text-sm text-[var(--dark-green)]">Upload Berkas</h4>
+          <h4 class="font-bold text-sm text-[var(--brand-dark)]">Upload Berkas</h4>
           <p class="text-xs text-gray-500 mt-1">Unggah KK, Ijazah/SKL, & pas foto terbaru.</p>
         </div>
 
         <div class="p-6 rounded-2xl bg-emerald-50/40 border border-emerald-100 text-center relative z-10 card-hover" data-aos="fade-up" data-aos-delay="300">
           <div class="w-12 h-12 mx-auto rounded-2xl bg-[var(--accent-green)] text-white font-bold text-lg flex items-center justify-center mb-3 shadow-md">3</div>
-          <h4 class="font-bold text-sm text-[var(--dark-green)]">Tes & Seleksi</h4>
+          <h4 class="font-bold text-sm text-[var(--brand-dark)]">Tes & Seleksi</h4>
           <p class="text-xs text-gray-500 mt-1">Ikuti tes pemetaan minat & wawancara.</p>
         </div>
 
         <div class="p-6 rounded-2xl bg-emerald-50/40 border border-emerald-100 text-center relative z-10 card-hover" data-aos="fade-up" data-aos-delay="400">
-          <div class="w-12 h-12 mx-auto rounded-2xl bg-[var(--yellow)] text-[var(--dark-green)] font-bold text-lg flex items-center justify-center mb-3 shadow-md">4</div>
-          <h4 class="font-bold text-sm text-[var(--dark-green)]">Pengumuman</h4>
+          <div class="w-12 h-12 mx-auto rounded-2xl bg-[var(--yellow)] text-[var(--brand-dark)] font-bold text-lg flex items-center justify-center mb-3 shadow-md">4</div>
+          <h4 class="font-bold text-sm text-[var(--brand-dark)]">Pengumuman</h4>
           <p class="text-xs text-gray-500 mt-1">Cek hasil seleksi & daftar ulang.</p>
         </div>
       </div>
@@ -737,8 +815,8 @@
 </a>
 
 <!-- FOOTER -->
-<footer class="bg-[var(--dark-green)] text-white pt-14 pb-8 border-t border-emerald-900 mt-auto">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-3 gap-10">
+<footer class="bg-[var(--brand-dark)] text-white pt-14 pb-8 border-t border-emerald-900 mt-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-10">
     <div class="space-y-4">
       <div class="flex items-center gap-3">
         <img src="Logo_SMK.png" alt="Logo SMK Kasatrian" class="w-11 h-11 object-contain">
@@ -781,11 +859,12 @@
     </div>
   </div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-12 pt-6 border-t border-emerald-900/80 text-center text-xs text-emerald-200/60 font-medium">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-6 border-t border-emerald-900/80 text-center text-xs text-emerald-200/60 font-medium">
     © <span id="footer-year"></span> SMK Kasatrian Solo Sukoharjo. All Rights Reserved.
   </div>
 </footer>
 
+<!-- SCRIPT LOGIKA JAVASCRIPT LOKAL DIJAGA TETAP LENGKAP -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -798,7 +877,7 @@
       btn.addEventListener('click', () => menu.classList.toggle('hidden'));
     }
 
-    // 2. STATISTIK DINAMIS & REAL-TIME PENDAFTAR DATABASE INTEGRATION
+    // 2. STATISTIK DINAMIS & REAL-TIME PENDAFTAR
     async function fetchPendaftarRealtimeCount() {
       try {
         let countPendaftar = 0;
@@ -838,14 +917,14 @@
       const mitraElem = document.getElementById('stat-mitra');
       if (mitraElem) mitraElem.textContent = `${totalMitra}+`;
 
-      // D. Jumlah Pendaftar Terdaftar (Di-update Real-Time)
+      // D. Jumlah Pendaftar Terdaftar (Real-Time)
       const count = await fetchPendaftarRealtimeCount();
       const pendaftarElem = document.getElementById('stat-pendaftar-count');
       if (pendaftarElem && pendaftarElem.textContent !== String(count)) {
         pendaftarElem.textContent = count;
       }
 
-      // E. Hak Cipta Tahun Footer Real-time (Otomatis berganti sendiri)
+      // E. Tahun Footer
       const footerYear = document.getElementById('footer-year');
       if (footerYear) footerYear.textContent = currentYear;
     }

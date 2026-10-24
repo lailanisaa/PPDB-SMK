@@ -1,6 +1,8 @@
-# Backend API Modular
+# Backend API Modular (Alternatif Terpisah)
 
-API produksi modular tersedia pada `/api/auth/`, `/api/siswa/`, `/api/verifikator/`, `/api/keuangan/`, dan `/api/admin/`. Endpoint legacy `/api/*.php` sengaja mengembalikan HTTP 410 karena tidak memiliki autentikasi/RBAC yang memadai. Frontend saat ini masih memanggil endpoint legacy dan harus diarahkan ke API modular sebelum deployment.
+Dokumen ini hanya untuk API PHP modular di folder root `api/`, dengan skema `schema.sql`. Implementasi ini terpisah dari aplikasi Laravel di folder `laravel/` dan tidak digunakan oleh frontend aktif di `laravel/public/src`, yang memanggil API Laravel melalui `laravel/routes/api.php`. Jangan mengikuti langkah instalasi ini untuk deployment Laravel kecuali frontend memang sudah dimigrasikan ke API modular.
+
+API modular menyediakan endpoint pada `/api/auth/`, `/api/siswa/`, `/api/verifikator/`, `/api/keuangan/`, dan `/api/admin/`. API ini menggunakan sesi cookie dan token CSRF; mekanismenya berbeda dari API Laravel yang memakai Sanctum.
 
 ## Instalasi
 

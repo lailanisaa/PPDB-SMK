@@ -13,8 +13,9 @@ class EnsureAccountRole
     {
         $user = $request->user();
         $allowed = $role === 'admin' ? $user instanceof Admin : $user instanceof Student;
+        $accountActive = !($user instanceof Admin) || $user->status === 'Aktif';
 
-        if (!$user || !$allowed) {
+        if (!$user || !$allowed || !$accountActive) {
             return response()->json(['success' => false, 'message' => 'Sesi tidak valid atau akses ditolak.'], 401);
         }
 

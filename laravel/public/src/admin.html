@@ -8,15 +8,17 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            'dark-green': '#1B4332',
-            'accent-green': '#22C55E',
-            'soft-gray': '#F4F7F5',
+            'dark-green': '#0F382C',
+            'accent-green': '#10B981',
+            'soft-gray': '#F8FAFC',
           }
         }
       }
@@ -25,19 +27,47 @@
   <style>
     * { font-family: 'Poppins', sans-serif; }
     .nama-sekolah { font-family: 'Kavoon', cursive !important; }
-    body { background-color: #F4F7F5; color: #1B4332; }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f1f1; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    .menu-item { color: #D1FAE5; transition: all 0.2s ease; }
-    .menu-item:hover { background: rgba(255, 255, 255, 0.1); }
-    .menu-item.active { background: #22C55E; color: #FFFFFF; font-weight: 600; }
-    .page-section { animation: fadeIn 0.25s ease-out; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
+    
+    body { background-color: #F8FAFC; color: #0F382C; overflow-x: hidden; }
+
+    /* Custom Scrollbar Modern */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+    /* Menu Sidebar Micro-interactions */
+    .menu-item { 
+      color: #D1FAE5; 
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+    }
+    .menu-item:hover { 
+      background: rgba(255, 255, 255, 0.12); 
+      transform: translateX(3px);
+    }
+    .menu-item.active { 
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%); 
+      color: #FFFFFF; 
+      font-weight: 700; 
+      box-shadow: 0 4px 14px -2px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Animasi Transisi Halaman */
+    .page-section { animation: smoothFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+
+    @keyframes smoothFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* Glassmorphism Effect */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Print View Styling */
     @media print {
       aside, header, #toast-container, .no-print, button { display: none !important; }
       main { padding: 0 !important; overflow: visible !important; }
@@ -47,133 +77,160 @@
     }
   </style>
 </head>
-<body class="h-screen overflow-hidden flex flex-col md:flex-row bg-[#F4F7F5]">
+<body class="h-screen overflow-hidden flex flex-col md:flex-row bg-slate-50 text-slate-800 antialiased selection:bg-emerald-200 selection:text-emerald-900">
 
-  <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
-  <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/50 z-30 md:hidden transition-opacity"></div>
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-2 sm:px-0"></div>
 
-  <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-[#1B4332] flex flex-col -translate-x-full md:translate-x-0 transition-transform duration-200 shrink-0">
-    <div class="p-5 border-b border-white/10 flex items-center justify-between">
+  <!-- OVERLAY MOBILE SIDEBAR -->
+  <div id="sidebar-overlay" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-30 md:hidden transition-opacity"></div>
+
+  <!-- SIDEBAR NAVIGATION -->
+  <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-[#0F382C] flex flex-col -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shrink-0 shadow-2xl md:shadow-none">
+    <div class="p-5 border-b border-emerald-800/50 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="Logo_SMK.png" alt="Logo SMK" class="w-8 h-8 object-contain" onerror="this.src='https://via.placeholder.com/32'">
+        <div class="p-1 bg-white/10 rounded-xl border border-white/20">
+          <img src="Logo_SMK.png" alt="Logo SMK" class="w-7 h-7 object-contain" onerror="this.src='https://via.placeholder.com/32'">
+        </div>
         <span class="nama-sekolah text-white text-lg tracking-wide">SPMB Admin</span>
       </div>
-      <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-500/30 uppercase">v2.0</span>
+      <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-extrabold px-2 py-0.5 rounded-full border border-emerald-400/30 uppercase tracking-wider">v2.0</span>
     </div>
 
-    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-      <p class="text-[10px] font-bold text-emerald-300/60 uppercase tracking-wider px-3 mb-2">Utama</p>
-      <button class="menu-item active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="dashboard">
-        <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+    <!-- Menu Navigasi -->
+    <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1.5">
+      <p class="text-[10px] font-extrabold text-emerald-400/70 uppercase tracking-wider px-3 mb-2">Utama</p>
+      <button class="menu-item active w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="dashboard">
+        <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i> <span>Dashboard</span>
       </button>
-      <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="pendaftar">
-        <i data-lucide="users" class="w-4 h-4"></i> Data Pendaftar
+      <button class="menu-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="pendaftar">
+        <i data-lucide="users" class="w-4 h-4 shrink-0"></i> <span>Data Pendaftar</span>
       </button>
-      <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="verifikasi">
-        <i data-lucide="file-check-2" class="w-4 h-4"></i> Verifikasi Berkas
+      <button class="menu-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="verifikasi">
+        <i data-lucide="file-check-2" class="w-4 h-4 shrink-0"></i> <span>Verifikasi Berkas</span>
       </button>
-      <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="jurusan">
-        <i data-lucide="book-open" class="w-4 h-4"></i> Manajemen Jurusan
+      <button class="menu-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="jurusan">
+        <i data-lucide="book-open" class="w-4 h-4 shrink-0"></i> <span>Manajemen Jurusan</span>
       </button>
-      <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="pengumuman">
-        <i data-lucide="megaphone" class="w-4 h-4"></i> Pengumuman
+      <button class="menu-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="pengumuman">
+        <i data-lucide="megaphone" class="w-4 h-4 shrink-0"></i> <span>Pengumuman</span>
       </button>
-      <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="laporan">
-        <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Laporan & Statistik
+      <button class="menu-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="laporan">
+        <i data-lucide="bar-chart-3" class="w-4 h-4 shrink-0"></i> <span>Laporan & Statistik</span>
       </button>
 
-      <p class="text-[10px] font-bold text-emerald-300/60 uppercase tracking-wider px-3 mt-6 mb-2">Sistem & Pengaturan</p>
-      <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="pengaturan">
-        <i data-lucide="settings" class="w-4 h-4"></i> Pengaturan SPMB
+      <p class="text-[10px] font-extrabold text-emerald-400/70 uppercase tracking-wider px-3 mt-6 mb-2">Sistem & Pengaturan</p>
+      <button class="menu-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="pengaturan">
+        <i data-lucide="settings" class="w-4 h-4 shrink-0"></i> <span>Pengaturan SPMB</span>
       </button>
-      <button class="menu-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="manajemen-admin">
-        <i data-lucide="shield" class="w-4 h-4"></i> Kelola Staf Admin
+      <button class="menu-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm text-left" data-page="manajemen-admin">
+        <i data-lucide="shield" class="w-4 h-4 shrink-0"></i> <span>Kelola Staf Admin</span>
       </button>
     </nav>
 
-    <div class="p-3 border-t border-white/10 space-y-2">
-      <button onclick="openProfileModal()" class="w-full flex items-center gap-3 p-2 rounded-xl bg-white/5 hover:bg-white/10 transition text-left group">
-        <div id="sidebar-avatar-wrapper" class="w-9 h-9 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center justify-center shrink-0 overflow-hidden">
+    <!-- Admin Profile Quick Bar -->
+    <div class="p-3 border-t border-emerald-800/50 space-y-2 bg-[#0A271E]">
+      <button onclick="openProfileModal()" class="w-full flex items-center gap-3 p-2 rounded-xl bg-white/5 hover:bg-white/10 transition border border-white/5 text-left group">
+        <div id="sidebar-avatar-wrapper" class="w-9 h-9 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
           <img id="sidebar-avatar-img" src="" class="w-full h-full object-cover hidden" alt="Avatar">
           <i id="sidebar-avatar-icon" data-lucide="user-check" class="w-5 h-5"></i>
         </div>
         <div class="flex-1 min-w-0">
-          <p id="sidebar-user-name" class="text-white text-xs font-semibold truncate">Admin SPMB</p>
-          <p id="sidebar-user-role" class="text-emerald-300/70 text-[10px] truncate">Panitia SPMB</p>
+          <p id="sidebar-user-name" class="text-white text-xs font-bold truncate">nisa, spd</p>
+          <p id="sidebar-user-role" class="text-emerald-300/80 text-[10px] font-medium truncate">Panitia</p>
         </div>
-        <i data-lucide="settings-2" class="w-4 h-4 text-emerald-300 group-hover:rotate-45 transition-transform"></i>
+        <i data-lucide="settings-2" class="w-4 h-4 text-emerald-400 group-hover:rotate-45 transition-transform shrink-0"></i>
       </button>
-      <button onclick="confirmLogout()" class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 text-xs font-medium transition border border-red-500/30">
+      <button onclick="confirmLogout()" class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-red-500/15 hover:bg-red-500/25 text-red-300 text-xs font-semibold transition border border-red-500/20">
         <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Logout
       </button>
     </div>
   </aside>
 
   <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
-    <header class="bg-white border-b border-gray-200 px-4 sm:px-6 py-3 flex items-center justify-between gap-4 shrink-0 z-20">
+
+    <!-- TOPBAR / HEADER -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 py-3 flex items-center justify-between gap-3 shrink-0 z-20 shadow-sm">
       <div class="flex items-center gap-3 flex-1 max-w-md">
-        <button id="hamburger" class="md:hidden text-gray-700 hover:text-[#1B4332] p-1">
-          <i data-lucide="menu" class="w-6 h-6"></i>
+        <button id="hamburger" class="md:hidden text-slate-700 hover:text-[#0F382C] p-2 rounded-xl hover:bg-emerald-50 transition border border-slate-200">
+          <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
         <div class="relative w-full">
-          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-          <input id="global-search" type="text" placeholder="Pencarian Global (Nama, NISN, Asal Sekolah, Jurusan)..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#22C55E] transition">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input id="global-search" type="text" placeholder="Pencarian Global (Nama, NISN, Asal Sekolah, Jurusan)..." class="w-full pl-10 pr-4 py-2 rounded-xl border border-slate-200 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/80 focus:border-emerald-500 bg-slate-50/50 transition">
         </div>
       </div>
-      <div class="flex items-center gap-3 sm:gap-4">
-        <button onclick="openProfileModal()" class="flex items-center gap-2 border-l border-gray-200 pl-3 group" title="Edit Profil Admin">
-          <div id="header-avatar-wrapper" class="w-8 h-8 rounded-full bg-emerald-100 text-[#1B4332] flex items-center justify-center font-bold ring-2 ring-emerald-500/30 overflow-hidden">
+
+      <div class="flex items-center gap-3">
+        <button onclick="openProfileModal()" class="flex items-center gap-2 border-l border-slate-200/80 pl-3 group" title="Edit Profil Admin">
+          <div id="header-avatar-wrapper" class="w-9 h-9 rounded-full bg-emerald-100 text-[#0F382C] flex items-center justify-center font-bold ring-2 ring-emerald-500/30 overflow-hidden transition group-hover:scale-105 shadow-sm">
             <img id="header-avatar-img" src="" class="w-full h-full object-cover hidden" alt="Avatar">
-            <i id="header-avatar-icon" data-lucide="user" class="w-4 h-4"></i>
+            <i id="header-avatar-icon" data-lucide="user" class="w-4 h-4 text-emerald-800"></i>
           </div>
         </button>
       </div>
     </header>
 
-    <main id="main-content" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+    <!-- CONTENT MAIN AREA -->
+    <main id="main-content" class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+      <!-- DASHBOARD -->
       <section data-page="dashboard" class="page-section space-y-6">
-        <div class="bg-gradient-to-r from-[#1B4332] to-emerald-800 rounded-2xl p-6 text-white shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h1 class="text-xl sm:text-2xl font-bold">Selamat Datang, <span id="dash-admin-name">Admin</span> 👋</h1>
-            <p class="text-xs sm:text-sm text-emerald-100/80 mt-1">Panel Kendali Sistem Penerimaan Murid Baru SMK Kasatrian Solo.</p>
+        <div class="bg-gradient-to-r from-[#0F382C] via-emerald-900 to-teal-900 rounded-2xl p-6 text-white shadow-lg shadow-emerald-950/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative overflow-hidden">
+          <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+          <div class="relative z-10">
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight">Selamat Datang, <span id="dash-admin-name">Admin</span> 👋</h1>
+            <p class="text-xs sm:text-sm text-emerald-100/90 mt-1 font-normal">Panel Kendali Sistem Penerimaan Murid Baru SMK Kasatrian Solo.</p>
           </div>
-          <button onclick="switchPage('pendaftar')" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition shadow-sm">
+          <button onclick="switchPage('pendaftar')" class="relative z-10 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-xl transition shadow-md shadow-emerald-500/20 shrink-0">
             Tinjau Pendaftar
           </button>
         </div>
 
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-            <p class="text-xs font-semibold text-gray-500">Total Pendaftar</p>
-            <p id="stat-total" class="text-2xl font-bold text-[#1B4332] mt-1">0</p>
-            <p class="text-[10px] text-emerald-600 font-medium mt-1">Siswa Terdaftar</p>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:border-emerald-200 transition">
+            <p class="text-xs font-bold text-slate-500">Total Pendaftar</p>
+            <p id="stat-total" class="text-2xl sm:text-3xl font-black text-[#0F382C] mt-1">0</p>
+            <p class="text-[10px] sm:text-xs text-emerald-600 font-bold mt-1.5 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span> Siswa Terdaftar
+            </p>
           </div>
-          <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-            <p class="text-xs font-semibold text-gray-500">Menunggu Verifikasi</p>
-            <p id="stat-waiting" class="text-2xl font-bold text-amber-500 mt-1">0</p>
-            <p class="text-[10px] text-amber-600 font-medium mt-1">Perlu Peninjauan</p>
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:border-amber-200 transition">
+            <p class="text-xs font-bold text-slate-500">Menunggu Verifikasi</p>
+            <p id="stat-waiting" class="text-2xl sm:text-3xl font-black text-amber-500 mt-1">0</p>
+            <p class="text-[10px] sm:text-xs text-amber-600 font-bold mt-1.5 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500 inline-block"></span> Perlu Peninjauan
+            </p>
           </div>
-          <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-            <p class="text-xs font-semibold text-gray-500">Berkas Diterima</p>
-            <p id="stat-accepted" class="text-2xl font-bold text-emerald-600 mt-1">0</p>
-            <p class="text-[10px] text-emerald-600 font-medium mt-1">Memenuhi Syarat</p>
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:border-emerald-200 transition">
+            <p class="text-xs font-bold text-slate-500">Berkas Diterima</p>
+            <p id="stat-accepted" class="text-2xl sm:text-3xl font-black text-emerald-600 mt-1">0</p>
+            <p class="text-[10px] sm:text-xs text-emerald-600 font-bold mt-1.5 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span> Memenuhi Syarat
+            </p>
           </div>
-          <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-            <p class="text-xs font-semibold text-gray-500">Ditolak / Revisi</p>
-            <p id="stat-rejected" class="text-2xl font-bold text-red-500 mt-1">0</p>
-            <p class="text-[10px] text-red-500 font-medium mt-1">Perlu Perbaikan</p>
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:border-red-200 transition">
+            <p class="text-xs font-bold text-slate-500">Ditolak / Revisi</p>
+            <p id="stat-rejected" class="text-2xl sm:text-3xl font-black text-rose-500 mt-1">0</p>
+            <p class="text-[10px] sm:text-xs text-rose-500 font-bold mt-1.5 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-rose-500 inline-block"></span> Perlu Perbaikan
+            </p>
           </div>
         </div>
 
         <div class="grid lg:grid-cols-2 gap-6">
-          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
-            <h3 class="font-bold text-xs uppercase tracking-wider text-gray-500 mb-4">Tren Pendaftaran Harian</h3>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+            <h3 class="font-extrabold text-xs uppercase tracking-wider text-slate-500 mb-4 flex items-center gap-2">
+              <i data-lucide="trending-up" class="w-4 h-4 text-emerald-600"></i> Tren Pendaftaran Harian
+            </h3>
             <div class="h-64 relative">
               <canvas id="chart-tren"></canvas>
             </div>
           </div>
-          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
-            <h3 class="font-bold text-xs uppercase tracking-wider text-gray-500 mb-4">Distribusi Per Jurusan</h3>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+            <h3 class="font-extrabold text-xs uppercase tracking-wider text-slate-500 mb-4 flex items-center gap-2">
+              <i data-lucide="pie-chart" class="w-4 h-4 text-emerald-600"></i> Distribusi Per Jurusan
+            </h3>
             <div class="h-64 relative">
               <canvas id="chart-distribusi"></canvas>
             </div>
@@ -182,40 +239,40 @@
       </section>
 
       <section data-page="pendaftar" class="page-section hidden space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm">
           <div>
-            <h1 class="text-lg font-bold text-[#1B4332]">Data Pendaftar SPMB</h1>
-            <p class="text-xs text-gray-500">Kelola profil calon siswa, perbarui jurusan, dan hapus pendaftar.</p>
+            <h1 class="text-lg font-black text-[#0F382C]">Data Pendaftar SPMB</h1>
+            <p class="text-xs text-slate-500 font-medium">Kelola profil calon siswa, perbarui jurusan, dan hapus pendaftar secara realtime.</p>
           </div>
-          <div class="flex items-center gap-3">
-            <select id="filter-status" onchange="renderPendaftarTable()" class="px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#22C55E]">
+          <div class="flex items-center gap-2.5 w-full sm:w-auto">
+            <select id="filter-status" onchange="renderPendaftarTable()" class="flex-1 sm:flex-none px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
               <option value="semua">Semua Status</option>
               <option value="Diterima">Diterima</option>
               <option value="Menunggu">Menunggu</option>
               <option value="Ditolak">Ditolak / Minta Revisi</option>
             </select>
-            <button onclick="loadPendaftarData()" class="p-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition" title="Muat Ulang Data">
+            <button onclick="loadPendaftarData()" class="p-2 text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition border border-slate-200" title="Muat Ulang Data">
               <i data-lucide="refresh-cw" class="w-4 h-4"></i>
             </button>
           </div>
         </div>
 
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
           <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+            <table class="w-full text-left border-collapse min-w-[700px]">
               <thead>
-                <tr class="bg-gray-50 border-b border-gray-200 text-[11px] font-bold text-gray-500 uppercase tracking-wider">
-                  <th class="p-3.5">No</th>
-                  <th class="p-3.5">Nama & NISN</th>
-                  <th class="p-3.5">Asal Sekolah</th>
-                  <th class="p-3.5">Jurusan Pilihan</th>
-                  <th class="p-3.5">Tanggal Daftar</th>
-                  <th class="p-3.5">Nilai Rata-rata</th>
-                  <th class="p-3.5">Status</th>
-                  <th class="p-3.5 text-center">Aksi Pengelolaan</th>
+                <tr class="bg-slate-50/80 border-b border-slate-200 text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">
+                  <th class="p-4">No</th>
+                  <th class="p-4">Nama & NISN</th>
+                  <th class="p-4">Asal Sekolah</th>
+                  <th class="p-4">Jurusan Pilihan</th>
+                  <th class="p-4">Tanggal Daftar</th>
+                  <th class="p-4">Nilai Rata-rata</th>
+                  <th class="p-4">Status</th>
+                  <th class="p-4 text-center">Aksi Pengelolaan</th>
                 </tr>
               </thead>
-              <tbody id="pendaftar-table-body" class="divide-y divide-gray-100 text-xs">
+              <tbody id="pendaftar-table-body" class="divide-y divide-slate-100 text-xs font-medium">
               </tbody>
             </table>
           </div>
@@ -223,36 +280,47 @@
       </section>
 
       <section data-page="verifikasi" class="page-section hidden space-y-4">
-        <h1 class="text-lg font-bold text-[#1B4332]">Verifikasi Berkas Calon Siswa</h1>
+        <h1 class="text-lg font-black text-[#0F382C]">Verifikasi Berkas Calon Siswa</h1>
+
         <div class="grid lg:grid-cols-3 gap-6">
-          <div class="bg-white rounded-2xl border border-gray-200 p-4 space-y-3 shadow-sm h-fit">
-            <h3 class="font-bold text-xs text-gray-500 uppercase tracking-wider">Antrian Verifikasi</h3>
+          <div class="bg-white rounded-2xl border border-slate-200/80 p-4 space-y-3 shadow-sm h-fit">
+            <h3 class="font-extrabold text-xs text-slate-500 uppercase tracking-wider">Antrian Verifikasi</h3>
             <div id="queue-list" class="space-y-2 max-h-[500px] overflow-y-auto pr-1"></div>
           </div>
-          <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-200 p-6 space-y-6 shadow-sm">
-            <div class="flex items-center gap-4 pb-4 border-b border-gray-100">
-              <div id="verif-avatar-container" class="w-14 h-14 rounded-full overflow-hidden border-2 border-[#22C55E] shrink-0 bg-emerald-50 flex items-center justify-center">
+
+          <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 space-y-6 shadow-sm">
+            <div class="flex items-center gap-4 pb-4 border-b border-slate-100">
+              <div id="verif-avatar-container" class="w-14 h-14 rounded-2xl overflow-hidden border-2 border-emerald-500/80 shrink-0 bg-emerald-50 flex items-center justify-center shadow-sm">
                 <img id="verif-avatar-img" src="" class="w-full h-full object-cover hidden">
                 <i id="verif-avatar-icon" data-lucide="user" class="w-7 h-7 text-emerald-700"></i>
               </div>
               <div>
-                <h2 id="verif-nama" class="font-bold text-base text-[#1B4332]">Memuat Data...</h2>
-                <p id="verif-sekolah" class="text-xs text-gray-500">-</p>
-                <span id="verif-status-badge" class="inline-block mt-1 px-2.5 py-0.5 text-[10px] font-bold rounded-full bg-gray-100 text-gray-600">Status: -</span>
+                <h2 id="verif-nama" class="font-bold text-base text-[#0F382C]">Memuat Data...</h2>
+                <p id="verif-sekolah" class="text-xs text-slate-500 font-medium">-</p>
+                <span id="verif-status-badge" class="inline-block mt-1.5 px-3 py-0.5 text-[10px] font-extrabold rounded-full bg-slate-100 text-slate-600">Status: -</span>
               </div>
             </div>
             <div class="space-y-3">
-              <h4 class="font-bold text-xs text-gray-700 uppercase tracking-wider">Dokumen Unggahan Siswa</h4>
-              <div id="verif-docs-grid" class="grid sm:grid-cols-2 gap-4"></div>
+              <h4 class="font-extrabold text-xs text-slate-700 uppercase tracking-wider">Data Formulir Siswa</h4>
+              <div id="verif-profile-details" class="grid sm:grid-cols-2 gap-x-5 gap-y-2 text-xs text-slate-600 font-medium bg-slate-50/60 p-4 rounded-xl border border-slate-100">
+                <p class="text-slate-400">Pilih pendaftar untuk memuat formulir.</p>
+              </div>
             </div>
-            <div class="pt-4 border-t border-gray-100 space-y-3">
-              <label class="block text-xs font-bold text-gray-700">Catatan Evaluasi / Alasan Revisi:</label>
-              <textarea id="catatan-verif" rows="2" placeholder="Tuliskan alasan jika meminta revisi atau menolak berkas..." class="w-full p-3 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none"></textarea>
-              <div class="flex gap-3">
-                <button id="btn-tolak-verif" onclick="prosesVerifikasiStatus('Ditolak')" class="flex-1 py-2.5 bg-red-50 text-red-600 font-semibold rounded-xl hover:bg-red-100 text-xs transition border border-red-200">
+
+            <div class="space-y-3">
+              <h4 class="font-extrabold text-xs text-slate-700 uppercase tracking-wider">Dokumen Unggahan Siswa</h4>
+              <div id="verif-docs-grid" class="grid sm:grid-cols-2 gap-3.5"></div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 space-y-3">
+              <label class="block text-xs font-bold text-slate-700">Catatan Evaluasi / Alasan Revisi:</label>
+              <textarea id="catatan-verif" rows="2" placeholder="Tuliskan alasan jika meminta revisi atau menolak berkas..." class="w-full p-3 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none transition"></textarea>
+
+              <div class="flex flex-col sm:flex-row gap-3">
+                <button id="btn-tolak-verif" onclick="prosesVerifikasiStatus('Ditolak')" class="flex-1 py-2.5 bg-rose-50 text-rose-600 font-bold rounded-xl hover:bg-rose-100 text-xs transition border border-rose-200/80">
                   ❌ Minta Revisi / Tolak
                 </button>
-                <button id="btn-terima-verif" onclick="prosesVerifikasiStatus('Diterima')" class="flex-1 py-2.5 bg-[#22C55E] text-white font-semibold rounded-xl hover:bg-emerald-600 text-xs transition shadow-sm">
+                <button id="btn-terima-verif" onclick="prosesVerifikasiStatus('Diterima')" class="flex-1 py-2.5 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 text-xs transition shadow-sm">
                   ✅ Setujui Berkas
                 </button>
               </div>
@@ -262,12 +330,12 @@
       </section>
 
       <section data-page="jurusan" class="page-section hidden space-y-4">
-        <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm">
           <div>
-            <h1 class="text-lg font-bold text-[#1B4332]">Manajemen Kuota Jurusan</h1>
-            <p class="text-xs text-gray-500">Atur batasan kuota, keterisian, dan status pendaftaran program keahlian.</p>
+            <h1 class="text-lg font-black text-[#0F382C]">Manajemen Kuota Jurusan</h1>
+            <p class="text-xs text-slate-500 font-medium">Atur batasan kuota, keterisian, dan status pendaftaran program keahlian.</p>
           </div>
-          <button onclick="openTambahJurusanModal()" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition flex items-center gap-1.5 shadow-sm">
+          <button onclick="openTambahJurusanModal()" class="px-4 py-2.5 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700 transition flex items-center gap-1.5 shadow-sm">
             <i data-lucide="plus" class="w-4 h-4"></i> Tambah Jurusan
           </button>
         </div>
@@ -275,26 +343,27 @@
       </section>
 
       <section data-page="pengumuman" class="page-section hidden space-y-6">
-        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-          <h1 class="text-lg font-bold text-[#1B4332]">Buat & Terbitkan Pengumuman</h1>
+        <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+          <h1 class="text-lg font-black text-[#0F382C]">Buat & Terbitkan Pengumuman</h1>
+
           <form id="form-pengumuman" class="space-y-4">
             <div class="grid sm:grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-semibold text-gray-700 mb-1">Judul Pengumuman</label>
-                <input type="text" id="pengumuman-judul" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Judul Pengumuman</label>
+                <input type="text" id="pengumuman-judul" required placeholder="Contoh: Jadwal Tes Wawancara Gelombang 1" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none">
               </div>
               <div class="grid grid-cols-2 gap-2">
                 <div>
-                  <label class="block text-xs font-semibold text-gray-700 mb-1">Kategori</label>
-                  <select id="pengumuman-kategori" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">Kategori</label>
+                  <select id="pengumuman-kategori" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                     <option value="Umum">Umum</option>
                     <option value="Kelulusan">Kelulusan</option>
                     <option value="Jadwal">Jadwal</option>
                   </select>
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-gray-700 mb-1">Target Siswa</label>
-                  <select id="pengumuman-target" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">Target Siswa</label>
+                  <select id="pengumuman-target" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                     <option value="Semua">Semua Siswa</option>
                     <option value="Diterima">Siswa Diterima</option>
                     <option value="Menunggu">Siswa Menunggu</option>
@@ -303,28 +372,30 @@
               </div>
             </div>
             <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Isi Pengumuman</label>
-              <textarea id="pengumuman-isi" rows="4" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none"></textarea>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">Isi Pengumuman</label>
+              <textarea id="pengumuman-isi" rows="4" required placeholder="Tuliskan detail pengumuman secara rinci..." class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none"></textarea>
             </div>
-            <button type="submit" class="px-5 py-2.5 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition shadow-sm">
+
+            <button type="submit" class="px-5 py-2.5 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700 transition shadow-sm">
               📢 Terbitkan Pengumuman
             </button>
           </form>
         </div>
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 space-y-3">
-          <h3 class="font-bold text-sm text-[#1B4332]">Riwayat Pengumuman Terbit</h3>
+
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 space-y-3">
+          <h3 class="font-black text-sm text-[#0F382C]">Riwayat Pengumuman Terbit</h3>
           <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+            <table class="w-full text-left border-collapse min-w-[600px]">
               <thead>
-                <tr class="bg-gray-50 border-b border-gray-200 text-[11px] font-bold text-gray-500 uppercase">
-                  <th class="p-3">Judul</th>
-                  <th class="p-3">Kategori</th>
-                  <th class="p-3">Target</th>
-                  <th class="p-3">Tanggal Dibuat</th>
-                  <th class="p-3 text-right">Aksi</th>
+                <tr class="bg-slate-50/80 border-b border-slate-200 text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">
+                  <th class="p-3.5">Judul</th>
+                  <th class="p-3.5">Kategori</th>
+                  <th class="p-3.5">Target</th>
+                  <th class="p-3.5">Tanggal Dibuat</th>
+                  <th class="p-3.5 text-right">Aksi</th>
                 </tr>
               </thead>
-              <tbody id="pengumuman-table-body" class="divide-y divide-gray-100 text-xs">
+              <tbody id="pengumuman-table-body" class="divide-y divide-slate-100 text-xs font-medium">
               </tbody>
             </table>
           </div>
@@ -332,42 +403,43 @@
       </section>
 
       <section data-page="laporan" class="page-section hidden space-y-4">
-        <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-wrap items-center justify-between gap-4 no-print">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 no-print">
           <div>
-            <h1 class="text-lg font-bold text-[#1B4332]">Laporan Rekapitulasi Data</h1>
-            <p class="text-xs text-gray-500">Unduh data pendaftar dalam format dokumen CSV/Excel atau cetak PDF langsung.</p>
+            <h1 class="text-lg font-black text-[#0F382C]">Laporan Rekapitulasi Data</h1>
+            <p class="text-xs text-slate-500 font-medium">Unduh data pendaftar dalam format dokumen CSV/Excel atau cetak PDF langsung.</p>
           </div>
-          <div class="flex gap-3">
-            <button onclick="exportExcel()" class="px-4 py-2 bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold rounded-xl hover:bg-emerald-100 transition flex items-center gap-1.5">
+          <div class="flex flex-wrap gap-2.5 w-full sm:w-auto">
+            <button onclick="exportExcel()" class="flex-1 sm:flex-none px-4 py-2 bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold rounded-xl hover:bg-emerald-100 transition flex items-center justify-center gap-1.5">
               <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Export Excel / CSV
             </button>
-            <button onclick="cetakLaporanPDF()" class="px-4 py-2 bg-red-50 text-red-700 border border-red-200 text-xs font-bold rounded-xl hover:bg-red-100 transition flex items-center gap-1.5">
+            <button onclick="cetakLaporanPDF()" class="flex-1 sm:flex-none px-4 py-2 bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold rounded-xl hover:bg-rose-100 transition flex items-center justify-center gap-1.5">
               <i data-lucide="printer" class="w-4 h-4"></i> Cetak Laporan PDF
             </button>
           </div>
         </div>
-        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-          <div class="flex justify-between items-center border-b pb-4">
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 gap-2">
             <div>
-              <h2 class="text-base font-bold text-gray-800">REKAPITULASI PENDAFTARAN SPMB</h2>
-              <p class="text-xs text-gray-500">SMK Kasatrian Solo - Tahun Ajaran 2026/2027</p>
+              <h2 class="text-base font-black text-slate-800 tracking-tight">REKAPITULASI PENDAFTARAN SPMB</h2>
+              <p class="text-xs text-slate-500 font-medium">SMK Kasatrian Solo - Tahun Ajaran 2026/2027</p>
             </div>
-            <span class="text-xs text-gray-400">Status Sistem: Terintegrasi Realtime</span>
+            <span class="text-[11px] font-semibold text-slate-400 bg-slate-100 px-3 py-1 rounded-full">Status: Realtime</span>
           </div>
           <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-xs">
+            <table class="w-full text-left border-collapse text-xs min-w-[650px]">
               <thead>
-                <tr class="bg-gray-100 border-b border-gray-300 font-bold uppercase text-[10px] text-gray-600">
-                  <th class="p-2.5">No</th>
-                  <th class="p-2.5">Nama Siswa</th>
-                  <th class="p-2.5">NISN</th>
-                  <th class="p-2.5">Asal Sekolah</th>
-                  <th class="p-2.5">Pilihan Jurusan</th>
-                  <th class="p-2.5">Nilai Rerata</th>
-                  <th class="p-2.5">Status Akhir</th>
+                <tr class="bg-slate-100 border-b border-slate-300 font-extrabold uppercase text-[10px] text-slate-600">
+                  <th class="p-3">No</th>
+                  <th class="p-3">Nama Siswa</th>
+                  <th class="p-3">NISN</th>
+                  <th class="p-3">Asal Sekolah</th>
+                  <th class="p-3">Pilihan Jurusan</th>
+                  <th class="p-3">Nilai Rerata</th>
+                  <th class="p-3">Status Akhir</th>
                 </tr>
               </thead>
-              <tbody id="laporan-table-body" class="divide-y divide-gray-200">
+              <tbody id="laporan-table-body" class="divide-y divide-slate-200 font-medium">
               </tbody>
             </table>
           </div>
@@ -375,66 +447,70 @@
       </section>
 
       <section data-page="pengaturan" class="page-section hidden space-y-4">
-        <h1 class="text-lg font-bold text-[#1B4332]">Pengaturan Sistem SPMB</h1>
-        <form id="form-pengaturan-spmb" class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-6">
+        <h1 class="text-lg font-black text-[#0F382C]">Pengaturan Sistem SPMB</h1>
+
+        <form id="form-pengaturan-spmb" class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-6">
           <div class="space-y-3">
-            <h3 class="text-xs font-bold uppercase text-gray-500 tracking-wider">Kontrol Gelombang Pendaftaran</h3>
+            <h3 class="text-xs font-extrabold uppercase text-slate-500 tracking-wider">Kontrol Gelombang Pendaftaran</h3>
             <div class="space-y-2">
-              <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 cursor-pointer">
-                <input type="checkbox" id="gelombang-1" class="w-4 h-4 accent-[#22C55E]">
+              <label class="flex items-center gap-3 p-3.5 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-100/80 transition">
+                <input type="checkbox" id="gelombang-1" class="w-4 h-4 accent-emerald-600 rounded">
                 <div>
-                  <p class="text-xs font-semibold text-gray-800">Gelombang 1 (Jalur Prestasi & Reguler Awal)</p>
-                  <p class="text-[10px] text-gray-500">Periode Aktif</p>
+                  <p class="text-xs font-bold text-slate-800">Gelombang 1 (Jalur Prestasi & Reguler Awal)</p>
+                  <p class="text-[10px] text-slate-500 font-medium">Periode Aktif Pendaftaran</p>
                 </div>
               </label>
-              <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 cursor-pointer">
-                <input type="checkbox" id="gelombang-2" class="w-4 h-4 accent-[#22C55E]">
+              <label class="flex items-center gap-3 p-3.5 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-100/80 transition">
+                <input type="checkbox" id="gelombang-2" class="w-4 h-4 accent-emerald-600 rounded">
                 <div>
-                  <p class="text-xs font-semibold text-gray-800">Gelombang 2 (Jalur Reguler Utama)</p>
-                  <p class="text-[10px] text-gray-500">Periode Lanjutan</p>
+                  <p class="text-xs font-bold text-slate-800">Gelombang 2 (Jalur Reguler Utama)</p>
+                  <p class="text-[10px] text-slate-500 font-medium">Periode Lanjutan Pendaftaran</p>
                 </div>
               </label>
             </div>
           </div>
-          <div class="grid sm:grid-cols-2 gap-4 pt-4 border-t border-gray-100">
+
+          <div class="grid sm:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
             <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Tanggal Buka Pendaftaran</label>
-              <input type="date" id="tgl-buka" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">Tanggal Buka Pendaftaran</label>
+              <input type="date" id="tgl-buka" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500">
             </div>
             <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Tanggal Tutup Pendaftaran</label>
-              <input type="date" id="tgl-tutup" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">Tanggal Tutup Pendaftaran</label>
+              <input type="date" id="tgl-tutup" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500">
             </div>
           </div>
-          <button type="submit" class="px-5 py-2.5 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition shadow-sm">
+
+          <button type="submit" class="px-5 py-2.5 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700 transition shadow-sm">
             💾 Simpan Konfigurasi
           </button>
         </form>
       </section>
 
       <section data-page="manajemen-admin" class="page-section hidden space-y-4">
-        <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm">
           <div>
-            <h1 class="text-lg font-bold text-[#1B4332]">Kelola Staf Admin</h1>
-            <p class="text-xs text-gray-500">Daftar akun petugas verifikator dan panitia pendaftaran.</p>
+            <h1 class="text-lg font-black text-[#0F382C]">Kelola Staf Admin</h1>
+            <p class="text-xs text-slate-500 font-medium">Daftar akun petugas verifikator, panitia pendaftaran, dan administrator sistem.</p>
           </div>
-          <button onclick="openTambahAdminModal()" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition flex items-center gap-1.5 shadow-sm">
+          <button onclick="openTambahAdminModal()" class="px-4 py-2.5 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700 transition flex items-center gap-1.5 shadow-sm">
             <i data-lucide="user-plus" class="w-4 h-4"></i> Tambah Staf Baru
           </button>
         </div>
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
           <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+            <table class="w-full text-left border-collapse min-w-[600px]">
               <thead>
-                <tr class="bg-gray-50 border-b border-gray-200 text-[11px] font-bold text-gray-500 uppercase">
-                  <th class="p-3.5">Nama Petugas</th>
-                  <th class="p-3.5">Username / Email</th>
-                  <th class="p-3.5">Hak Akses (Role)</th>
-                  <th class="p-3.5">Status</th>
-                  <th class="p-3.5 text-right">Aksi</th>
+                <tr class="bg-slate-50/80 border-b border-slate-200 text-[11px] font-extrabold text-slate-500 uppercase tracking-wider">
+                  <th class="p-4">Nama Petugas</th>
+                  <th class="p-4">Username / Email</th>
+                  <th class="p-4">Hak Akses (Role)</th>
+                  <th class="p-4">Status</th>
+                  <th class="p-4 text-right">Aksi</th>
                 </tr>
               </thead>
-              <tbody id="admin-staff-table-body" class="divide-y divide-gray-100 text-xs">
+              <tbody id="admin-staff-table-body" class="divide-y divide-slate-100 text-xs font-medium">
               </tbody>
             </table>
           </div>
@@ -443,62 +519,66 @@
     </main>
   </div>
 
-  <div id="modal-jurusan" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-    <div class="bg-white max-w-md w-full rounded-2xl p-6 space-y-4 shadow-2xl">
+  <!-- MODAL JURUSAN -->
+  <div id="modal-jurusan" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-2xl p-6 space-y-4 shadow-2xl border border-slate-100">
       <div class="flex justify-between items-center border-b pb-3">
-        <h3 id="modal-jurusan-title" class="font-bold text-base text-[#1B4332]">Tambah Jurusan Baru</h3>
-        <button type="button" onclick="closeJurusanModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <h3 id="modal-jurusan-title" class="font-black text-base text-[#0F382C]">Tambah Jurusan Baru</h3>
+        <button type="button" onclick="closeJurusanModal()" class="text-slate-400 hover:text-slate-600 p-1"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       <form id="form-jurusan" class="space-y-3">
         <input type="hidden" id="jurusan-id">
         <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Kode Jurusan</label>
-          <input type="text" id="jurusan-kode" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Kode Jurusan</label>
+          <input type="text" id="jurusan-kode" required placeholder="Contoh: TKJ" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Jurusan</label>
-          <input type="text" id="jurusan-nama" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nama Jurusan</label>
+          <input type="text" id="jurusan-nama" required placeholder="Contoh: Teknik Komputer & Jaringan" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500">
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Total Kuota</label>
-            <input type="number" id="jurusan-kuota" required min="1" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Total Kuota</label>
+            <input type="number" id="jurusan-kuota" required min="1" placeholder="100" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Status Gelombang</label>
-            <select id="jurusan-status" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Status Gelombang</label>
+            <select id="jurusan-status" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500">
               <option value="true">BUKA</option>
               <option value="false">TUTUP</option>
             </select>
           </div>
         </div>
-        <div class="flex justify-end gap-2 pt-3">
-          <button type="button" onclick="closeJurusanModal()" class="px-4 py-2 bg-gray-100 text-gray-700 text-xs font-semibold rounded-xl">Batal</button>
-          <button type="submit" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition">Simpan Data</button>
+
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
+          <button type="button" onclick="closeJurusanModal()" class="px-4 py-2 bg-slate-100 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-200">Batal</button>
+          <button type="submit" class="px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700 transition">Simpan Data</button>
         </div>
       </form>
     </div>
   </div>
 
-  <div id="modal-tambah-admin" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-    <div class="bg-white max-w-md w-full rounded-2xl p-6 space-y-4 shadow-2xl">
+  <!-- MODAL TAMBAH STAF ADMIN -->
+  <div id="modal-tambah-admin" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-2xl p-6 space-y-4 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-bold text-base text-[#1B4332]">Tambah Staf Admin Baru</h3>
-        <button type="button" onclick="closeTambahAdminModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <h3 id="modal-staff-title" class="font-black text-base text-[#0F382C]">Tambah Staf Admin Baru</h3>
+        <button type="button" onclick="closeTambahAdminModal()" class="text-slate-400 hover:text-slate-600 p-1"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       <form id="form-tambah-admin" class="space-y-3">
+        <input type="hidden" id="staff-id">
         <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Petugas</label>
-          <input type="text" id="staff-nama" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nama Petugas</label>
+          <input type="text" id="staff-nama" required placeholder="Nama Lengkap dengan Gelar" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Username / Email Login</label>
-          <input type="email" id="staff-email" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Username / Email Login</label>
+          <input type="email" id="staff-email" required placeholder="petugas@kasatrian.sch.id" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500">
         </div>
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Hak Akses (Role)</label>
-            <select id="staff-role" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Hak Akses (Role)</label>
+            <select id="staff-role" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500">
               <option value="Verifikator Berkas">Verifikator Berkas</option>
               <option value="Staf Administrasi">Staf Administrasi</option>
               <option value="Ketua Panitia SPMB">Ketua Panitia SPMB</option>
@@ -506,48 +586,58 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Password Initial</label>
-            <input type="password" id="staff-password" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Status Akun</label>
+            <select id="staff-status" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500">
+              <option value="Aktif">Aktif</option>
+              <option value="Nonaktif">Nonaktif</option>
+            </select>
           </div>
         </div>
-        <div class="flex justify-end gap-2 pt-3">
-          <button type="button" onclick="closeTambahAdminModal()" class="px-4 py-2 bg-gray-100 text-gray-700 text-xs font-semibold rounded-xl">Batal</button>
-          <button type="submit" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition">Simpan Staf</button>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
+          <input type="password" id="staff-password" placeholder="Password akun" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500">
+        </div>
+
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
+          <button type="button" onclick="closeTambahAdminModal()" class="px-4 py-2 bg-slate-100 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-200">Batal</button>
+          <button id="staff-submit-button" type="submit" class="px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700 transition">Simpan Staf</button>
         </div>
       </form>
     </div>
   </div>
 
-  <div id="modal-edit-profil-admin" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-    <div class="bg-white max-w-lg w-full rounded-2xl p-6 space-y-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+  <!-- MODAL EDIT PROFIL ADMIN -->
+  <div id="modal-edit-profil-admin" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white max-w-lg w-full rounded-2xl p-6 space-y-5 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-center border-b pb-3">
         <div class="flex items-center gap-2">
-          <i data-lucide="user-cog" class="w-5 h-5 text-[#1B4332]"></i>
-          <h3 class="font-bold text-base text-[#1B4332]">Edit Profil Admin</h3>
+          <i data-lucide="user-cog" class="w-5 h-5 text-[#0F382C]"></i>
+          <h3 class="font-black text-base text-[#0F382C]">Edit Profil Admin</h3>
         </div>
-        <button type="button" onclick="closeProfileModal()" class="text-gray-400 hover:text-gray-600 transition">
+        <button type="button" onclick="closeProfileModal()" class="text-slate-400 hover:text-slate-600 transition p-1">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
       <form id="form-edit-profil-admin" class="space-y-4">
-        <div class="flex items-center gap-4 p-3 bg-gray-50 rounded-xl border border-gray-200">
-          <div class="relative w-16 h-16 rounded-full overflow-hidden bg-emerald-100 border-2 border-[#22C55E] flex items-center justify-center shrink-0">
-            <img id="modal-preview-avatar" src="" class="w-full h-full object-cover hidden">
-            <i id="modal-preview-icon" data-lucide="user" class="w-8 h-8 text-[#1B4332]"></i>
+        <div class="flex items-center gap-4 p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
+          <div class="relative w-16 h-16 rounded-full overflow-hidden bg-emerald-100 border-2 border-emerald-500 flex items-center justify-center shrink-0 shadow-sm">
+            <img id="modal-preview-avatar" src="" class="w-full h-full object-cover hidden" alt="Preview Foto Profil">
+            <i id="modal-preview-icon" data-lucide="user" class="w-8 h-8 text-[#0F382C]"></i>
           </div>
           <div class="flex-1 min-w-0">
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Upload Foto Profil / Avatar</label>
-            <input type="file" id="admin-foto-input" accept="image/*" class="block w-full text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-[#1B4332] hover:file:bg-emerald-100 cursor-pointer">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Upload Foto Profil / Avatar</label>
+            <input type="file" id="admin-foto-input" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-[#0F382C] hover:file:bg-emerald-100 cursor-pointer">
+            <p class="text-[10px] text-slate-400 mt-1 font-medium">Format: JPG, PNG, atau WEBP (Maks 2MB).</p>
           </div>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Lengkap Admin <span class="text-red-500">*</span></label>
-          <input type="text" id="admin-nama-input" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Admin <span class="text-rose-500">*</span></label>
+          <input type="text" id="admin-nama-input" required class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none">
         </div>
         <div class="grid sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Jabatan / Role</label>
-            <select id="admin-role-input" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Jabatan / Role</label>
+            <select id="admin-role-input" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none">
               <option value="Super Admin">Super Admin</option>
               <option value="Ketua Panitia SPMB">Ketua Panitia SPMB</option>
               <option value="Verifikator Berkas">Verifikator Berkas</option>
@@ -555,52 +645,48 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Nomor WhatsApp / Telp</label>
-            <input type="tel" id="admin-telepon-input" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp / Telp</label>
+            <input type="tel" id="admin-telepon-input" placeholder="081234567890" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none">
           </div>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Email / Username Login <span class="text-red-500">*</span></label>
-          <input type="email" id="admin-email-input" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E] focus:outline-none">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Email / Username Login <span class="text-rose-500">*</span></label>
+          <input type="email" id="admin-email-input" required class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none">
         </div>
-        <div class="flex justify-end gap-2 pt-3">
-          <button type="button" onclick="closeProfileModal()" class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-xl transition">Batal</button>
-          <button type="submit" class="px-5 py-2.5 bg-[#22C55E] hover:bg-emerald-600 text-white text-xs font-semibold rounded-xl transition shadow-sm">Simpan Perubahan</button>
+
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
+          <button type="button" onclick="closeProfileModal()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">Batal</button>
+          <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition shadow-sm">Simpan Perubahan</button>
         </div>
       </form>
     </div>
   </div>
 
-  <div id="modal-edit-siswa" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-    <div class="bg-white max-w-md w-full rounded-2xl p-6 space-y-4 shadow-2xl">
+  <!-- MODAL EDIT SISWA -->
+  <div id="modal-edit-siswa" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-2xl p-6 space-y-4 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-bold text-base text-[#1B4332]">Edit Profil Pendaftar</h3>
-        <button type="button" onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <h3 class="font-black text-base text-[#0F382C]">Edit Profil Pendaftar</h3>
+        <button type="button" onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 p-1"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       <form id="form-edit-siswa" class="space-y-3">
         <input type="hidden" id="edit-siswa-id">
         <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Lengkap Siswa</label>
-          <input type="text" id="edit-nama" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">NISN</label>
-            <input type="text" id="edit-nisn" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Nilai Rata-rata</label>
-            <input type="number" step="0.1" id="edit-nilai" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
-          </div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Siswa</label>
+          <input type="text" id="edit-nama" required class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Asal Sekolah</label>
-          <input type="text" id="edit-sekolah" required class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+          <label class="block text-xs font-bold text-slate-700 mb-1">NISN</label>
+          <input type="text" id="edit-nisn" required class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Asal Sekolah</label>
+          <input type="text" id="edit-sekolah" required class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500">
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Jurusan Pilihan</label>
-            <select id="edit-jurusan" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Jurusan Pilihan</label>
+            <select id="edit-jurusan" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500">
               <option value="TKJ">TKJ</option>
               <option value="Kuliner / Tata Boga">Kuliner / Tata Boga</option>
               <option value="Perhotelan">Perhotelan</option>
@@ -611,17 +697,18 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Status Verifikasi</label>
-            <select id="edit-status" class="w-full p-2.5 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-[#22C55E]">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Status Verifikasi</label>
+            <select id="edit-status" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-emerald-500">
               <option value="Menunggu">Menunggu</option>
               <option value="Diterima">Diterima</option>
               <option value="Ditolak">Ditolak</option>
             </select>
           </div>
         </div>
-        <div class="flex justify-end gap-2 pt-3">
-          <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-gray-100 text-gray-700 text-xs font-semibold rounded-xl">Batal</button>
-          <button type="submit" class="px-4 py-2 bg-[#22C55E] text-white text-xs font-semibold rounded-xl hover:bg-emerald-600 transition">Simpan Perubahan</button>
+
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
+          <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-slate-100 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-200">Batal</button>
+          <button type="submit" class="px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700 transition">Simpan Perubahan</button>
         </div>
       </form>
     </div>
@@ -630,52 +717,123 @@
   <script>
     let activeAdmin = null;
     let pendaftarData = [];
-    let jurusanData = [];
-    let pengumumanList = [];
     let staffData = [];
+    let jurusanData = [
+      { id: 1, kode: "TKJ", nama: "Teknik Komputer & Jaringan", kuota: 100, terisi: 0, buka: true },
+      { id: 2, kode: "TKR", nama: "Teknik Kendaraan Ringan", kuota: 90, terisi: 0, buka: true },
+      { id: 3, kode: "HTL", nama: "Perhotelan & Pariwisata", kuota: 70, terisi: 0, buka: true },
+      { id: 4, kode: "KLN", nama: "Kuliner / Tata Boga", kuota: 60, terisi: 0, buka: false }
+    ];
+    let pengumumanList = [];
     let selectedVerifId = null;
+    let dashboardStats = null;
+    let currentPage = 'dashboard';
+
     let chartTrenInstance = null;
     let chartDistribusiInstance = null;
 
-    const API_BASE = '../api/';
-
-    async function initAuthGuardAndAdminData() {
-      try {
-        const res = await fetch(`${API_BASE}get_session.php`);
-        const data = await res.json();
-        if (data.success) {
-          activeAdmin = data.admin;
-          applyAdminProfileToUI();
-        } else {
-          window.location.href = 'index.html';
-        }
-      } catch (e) {
-        activeAdmin = { nama: "Admin SPMB", role: "Panitia SPMB", email: "admin@kasatrian.sch.id", telepon: "", foto: "" };
-        applyAdminProfileToUI();
+    // ==========================================
+    // SIKLUS SESI & AUTHENTICATION
+    // ==========================================
+    function getActiveSession() {
+      const sessionData = localStorage.getItem('smk_active_session') || 
+                          sessionStorage.getItem('smk_active_session') ||
+                          localStorage.getItem('currentUser') || 
+                          sessionStorage.getItem('currentUser') ||
+                          localStorage.getItem('adminData');
+      if (sessionData) {
+        try { return JSON.parse(sessionData); } catch (e) { }
       }
+      return {
+        id: 1,
+        nama: "nisa, spd",
+        role: "Panitia",
+        jabatan: "Panitia",
+        email: "nisa@kasatrian.sch.id",
+        api_token: "demo_token_123"
+      };
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+    }
+
+    async function adminAPI(path, options = {}) {
+      const session = getActiveSession();
+      const headers = new Headers(options.headers || {});
+      if (session?.api_token) {
+        headers.set('Authorization', `Bearer ${session.api_token}`);
+      }
+      if (options.body && !(options.body instanceof FormData)) {
+        headers.set('Content-Type', 'application/json');
+      }
+      const response = await fetch(path, { ...options, headers });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok || payload.success === false) throw new Error(payload.message || `Request gagal (${response.status})`);
+      return payload;
+    }
+
+    function initAuthGuardAndAdminData() {
+      const parsedUser = getActiveSession();
+      activeAdmin = {
+        nama: parsedUser?.nama || parsedUser?.name || parsedUser?.username || 'nisa, spd',
+        role: parsedUser?.jabatan || parsedUser?.role || 'Panitia',
+        email: parsedUser?.email || parsedUser?.username || 'nisa@kasatrian.sch.id',
+        telepon: parsedUser?.telepon || parsedUser?.phone || '',
+        foto: parsedUser?.foto || parsedUser?.avatar || ''
+      };
+      applyAdminProfileToUI();
     }
 
     function applyAdminProfileToUI() {
       if (!activeAdmin) return;
-      document.getElementById('sidebar-user-name').textContent = activeAdmin.nama;
-      document.getElementById('sidebar-user-role').textContent = activeAdmin.role;
-      document.getElementById('dash-admin-name').textContent = activeAdmin.nama;
+      const namaLengkap = activeAdmin.nama;
+      
+      const sidebarName = document.getElementById('sidebar-user-name');
+      const sidebarRole = document.getElementById('sidebar-user-role');
+      if (sidebarName) sidebarName.textContent = namaLengkap;
+      if (sidebarRole) sidebarRole.textContent = activeAdmin.role;
+
+      const dashNameElem = document.getElementById('dash-admin-name');
+      if (dashNameElem) dashNameElem.textContent = namaLengkap;
+
+      const sidebarAvatarImg = document.getElementById('sidebar-avatar-img');
+      const sidebarAvatarIcon = document.getElementById('sidebar-avatar-icon');
+      const headerAvatarImg = document.getElementById('header-avatar-img');
+      const headerAvatarIcon = document.getElementById('header-avatar-icon');
+
       if (activeAdmin.foto) {
-        document.getElementById('sidebar-avatar-img').src = activeAdmin.foto;
-        document.getElementById('sidebar-avatar-img').classList.remove('hidden');
-        document.getElementById('sidebar-avatar-icon').classList.add('hidden');
-        document.getElementById('header-avatar-img').src = activeAdmin.foto;
-        document.getElementById('header-avatar-img').classList.remove('hidden');
-        document.getElementById('header-avatar-icon').classList.add('hidden');
+        if (sidebarAvatarImg) { sidebarAvatarImg.src = activeAdmin.foto; sidebarAvatarImg.classList.remove('hidden'); }
+        if (sidebarAvatarIcon) sidebarAvatarIcon.classList.add('hidden');
+        if (headerAvatarImg) { headerAvatarImg.src = activeAdmin.foto; headerAvatarImg.classList.remove('hidden'); }
+        if (headerAvatarIcon) headerAvatarIcon.classList.add('hidden');
+      } else {
+        if (sidebarAvatarImg) sidebarAvatarImg.classList.add('hidden');
+        if (sidebarAvatarIcon) sidebarAvatarIcon.classList.remove('hidden');
+        if (headerAvatarImg) headerAvatarImg.classList.add('hidden');
+        if (headerAvatarIcon) headerAvatarIcon.classList.remove('hidden');
       }
     }
 
     function openProfileModal() {
       if (!activeAdmin) return;
-      document.getElementById('admin-nama-input').value = activeAdmin.nama;
-      document.getElementById('admin-role-input').value = activeAdmin.role;
-      document.getElementById('admin-email-input').value = activeAdmin.email;
-      document.getElementById('admin-telepon-input').value = activeAdmin.telepon;
+      document.getElementById('admin-nama-input').value = activeAdmin.nama || '';
+      document.getElementById('admin-role-input').value = activeAdmin.role || 'Super Admin';
+      document.getElementById('admin-email-input').value = activeAdmin.email || '';
+      document.getElementById('admin-telepon-input').value = activeAdmin.telepon || '';
+
+      const previewImg = document.getElementById('modal-preview-avatar');
+      const previewIcon = document.getElementById('modal-preview-icon');
+
+      if (activeAdmin.foto) {
+        previewImg.src = activeAdmin.foto;
+        previewImg.classList.remove('hidden');
+        if (previewIcon) previewIcon.classList.add('hidden');
+      } else {
+        previewImg.classList.add('hidden');
+        if (previewIcon) previewIcon.classList.remove('hidden');
+      }
+
       document.getElementById('modal-edit-profil-admin').classList.remove('hidden');
     }
 
@@ -683,33 +841,55 @@
       document.getElementById('modal-edit-profil-admin').classList.add('hidden');
     }
 
-    document.getElementById('form-edit-profil-admin').addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const payload = {
-        nama: document.getElementById('admin-nama-input').value.trim(),
-        role: document.getElementById('admin-role-input').value,
-        email: document.getElementById('admin-email-input').value.trim(),
-        telepon: document.getElementById('admin-telepon-input').value.trim()
-      };
-      try {
-        const res = await fetch(`${API_BASE}update_profil.php`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const result = await res.json();
-        if (result.success) {
-          activeAdmin = { ...activeAdmin, ...payload };
-          applyAdminProfileToUI();
-          closeProfileModal();
-          showToast('Profil Admin berhasil diperbarui!');
-        }
-      } catch (e) {
-        showToast('Gagal memperbarui profil', 'error');
+    document.getElementById('admin-foto-input').addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          const previewImg = document.getElementById('modal-preview-avatar');
+          const previewIcon = document.getElementById('modal-preview-icon');
+          previewImg.src = event.target.result;
+          previewImg.classList.remove('hidden');
+          if (previewIcon) previewIcon.classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
       }
     });
 
-    async function confirmLogout() {
+    document.getElementById('form-edit-profil-admin').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const previewImg = document.getElementById('modal-preview-avatar');
+      const newFoto = previewImg.classList.contains('hidden') ? '' : previewImg.src;
+
+      const oldEmail = activeAdmin.email;
+      activeAdmin.nama = document.getElementById('admin-nama-input').value.trim();
+      activeAdmin.role = document.getElementById('admin-role-input').value;
+      activeAdmin.email = document.getElementById('admin-email-input').value.trim();
+      activeAdmin.telepon = document.getElementById('admin-telepon-input').value.trim();
+      activeAdmin.foto = newFoto;
+
+      localStorage.setItem('currentUser', JSON.stringify(activeAdmin));
+      sessionStorage.setItem('currentUser', JSON.stringify(activeAdmin));
+      localStorage.setItem('smk_active_session', JSON.stringify(activeAdmin));
+
+      // Sinkronkan juga perubahan ke daftar staf admin
+      const idx = staffData.findIndex(s => (s.email || '').toLowerCase() === (oldEmail || '').toLowerCase());
+      if (idx !== -1) {
+        staffData[idx].nama = activeAdmin.nama;
+        staffData[idx].email = activeAdmin.email;
+        staffData[idx].role = activeAdmin.role;
+        staffData[idx].jabatan = activeAdmin.role;
+        localStorage.setItem('smk_staff_list', JSON.stringify(staffData));
+        localStorage.setItem('smk_registered_admins', JSON.stringify(staffData));
+      }
+
+      applyAdminProfileToUI();
+      renderStaffTable();
+      closeProfileModal();
+      showToast('Profil Admin berhasil diperbarui!');
+    });
+
+    function confirmLogout() {
       if (confirm('Apakah Anda yakin ingin keluar dari sistem admin?')) {
         try {
           await fetch(`${API_BASE}logout.php`);
@@ -720,36 +900,18 @@
       }
     }
 
-    const menuButtons = document.querySelectorAll('.menu-item');
-    const sections = document.querySelectorAll('.page-section');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
-
-    function switchPage(pageName) {
-      menuButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.page === pageName));
-      sections.forEach(sec => sec.classList.toggle('hidden', sec.dataset.page !== pageName));
-      sidebar.classList.add('-translate-x-full');
-      overlay.classList.add('hidden');
-    }
-
-    menuButtons.forEach(btn => btn.addEventListener('click', () => switchPage(btn.dataset.page)));
-
-    document.getElementById('hamburger').addEventListener('click', () => {
-      sidebar.classList.remove('-translate-x-full');
-      overlay.classList.remove('hidden');
-    });
-
-    overlay.addEventListener('click', () => {
-      sidebar.classList.add('-translate-x-full');
-      overlay.classList.add('hidden');
-    });
-
+    // ==========================================
+    // NOTIFIKASI & NAVIGASI HALAMAN
+    // ==========================================
     function showToast(message, type = 'success') {
       const container = document.getElementById('toast-container');
+      if (!container) return;
       const toast = document.createElement('div');
-      const bgColor = type === 'success' ? 'bg-[#1B4332] text-white border border-emerald-500/30' : 'bg-red-700 text-white';
-      toast.className = `pointer-events-auto flex items-center gap-3 p-3.5 rounded-xl shadow-xl text-xs font-medium ${bgColor} transition-all duration-300 transform translate-y-2 opacity-0`;
-      toast.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i> <span>${message}</span>`;
+      const bgColor = type === 'success' ? 'bg-[#0F382C] text-white border border-emerald-500/30' : 'bg-rose-700 text-white';
+
+      toast.className = `pointer-events-auto flex items-center gap-3 p-3.5 rounded-xl shadow-xl text-xs font-semibold ${bgColor} transition-all duration-300 transform translate-y-2 opacity-0`;
+      toast.innerHTML = `<i data-lucide="${type === 'success' ? 'check-circle' : 'alert-circle'}" class="w-4 h-4 ${type === 'success' ? 'text-emerald-400' : 'text-white'}"></i> <span>${escapeHTML(message)}</span>`;
+
       container.appendChild(toast);
       if (window.lucide) lucide.createIcons();
       setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
@@ -759,19 +921,413 @@
       }, 3500);
     }
 
-    async function loadPendaftarData() {
-      try {
-        const response = await fetch(`${API_BASE}get_pendaftar.php`);
-        const result = await response.json();
-        if (result.success) {
-          pendaftarData = result.data;
-          refreshAllRealtimeComponents();
-        }
-      } catch (e) {
-        console.error("Gagal memuat data pendaftar.");
-      }
+    function switchPage(pageName) {
+      currentPage = pageName;
+      const menuButtons = document.querySelectorAll('.menu-item');
+      const sections = document.querySelectorAll('.page-section');
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+
+      menuButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.page === pageName));
+      sections.forEach(sec => sec.classList.toggle('hidden', sec.dataset.page !== pageName));
+      if (sidebar) sidebar.classList.add('-translate-x-full');
+      if (overlay) overlay.classList.add('hidden');
+      refreshActivePage();
     }
 
+    const menuButtons = document.querySelectorAll('.menu-item');
+    menuButtons.forEach(btn => btn.addEventListener('click', () => switchPage(btn.dataset.page)));
+
+    const hamburger = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    if (hamburger) {
+      hamburger.addEventListener('click', () => {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+      });
+    }
+
+    if (overlay) {
+      overlay.addEventListener('click', () => {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      });
+    }
+
+    // ==========================================
+    // 1. KELOLA STAF ADMIN (REALTIME SINKRON AKUN TERDAFTAR)
+    // ==========================================
+    function loadAndSyncStaffData() {
+      let combined = [];
+
+      function addStaffItem(item) {
+        if (!item) return;
+        const email = (item.email || item.username || '').toLowerCase().trim();
+        const id = item.id || Date.now() + Math.random();
+        const nama = item.nama || item.name || item.username || 'Petugas Admin';
+        const role = item.jabatan || item.role || 'Staf Administrasi';
+        const status = item.status || 'Aktif';
+        const password = item.password || '';
+
+        if (!email && !nama) return;
+
+        const existingIndex = combined.findIndex(s => 
+          (email && (s.email || '').toLowerCase() === email) || 
+          (s.id && String(s.id) === String(id))
+        );
+
+        if (existingIndex !== -1) {
+          combined[existingIndex] = {
+            id: combined[existingIndex].id || id,
+            nama: nama || combined[existingIndex].nama,
+            email: email || combined[existingIndex].email,
+            jabatan: role || combined[existingIndex].jabatan,
+            role: role || combined[existingIndex].role,
+            status: status || combined[existingIndex].status,
+            password: password || combined[existingIndex].password
+          };
+        } else {
+          combined.push({
+            id: id,
+            nama: nama,
+            email: email,
+            jabatan: role,
+            role: role,
+            status: status,
+            password: password
+          });
+        }
+      }
+
+      // 1. Ambil dari smk_staff_list
+      try {
+        const list = JSON.parse(localStorage.getItem('smk_staff_list') || '[]');
+        if (Array.isArray(list)) list.forEach(addStaffItem);
+      } catch(e){}
+
+      // 2. Ambil dari smk_registered_admins (jika pendaftaran admin dilakukan dari modul register/pendaftaran)
+      try {
+        const reg = JSON.parse(localStorage.getItem('smk_registered_admins') || '[]');
+        if (Array.isArray(reg)) reg.forEach(addStaffItem);
+      } catch(e){}
+
+      // 3. Ambil dari pengguna terdaftar lainnya
+      try {
+        const users = JSON.parse(localStorage.getItem('users') || localStorage.getItem('registeredUsers') || '[]');
+        if (Array.isArray(users)) users.forEach(addStaffItem);
+      } catch(e){}
+
+      // 4. Ambil dari admin aktif saat ini
+      try {
+        const session = getActiveSession();
+        if (session && session.nama) addStaffItem(session);
+      } catch(e){}
+
+      // Fallback jika tidak ada data sama sekali
+      if (combined.length === 0) {
+        combined = [{
+          id: 1,
+          nama: "nisa, spd",
+          email: "nisa@kasatrian.sch.id",
+          jabatan: "Panitia",
+          role: "Panitia",
+          status: "Aktif",
+          password: ""
+        }];
+      }
+
+      staffData = combined;
+      localStorage.setItem('smk_staff_list', JSON.stringify(staffData));
+      localStorage.setItem('smk_registered_admins', JSON.stringify(staffData));
+      return staffData;
+    }
+
+    async function renderStaffTable() {
+      const tbody = document.getElementById('admin-staff-table-body');
+      if (!tbody) return;
+
+      try {
+        const result = await adminAPI('/api/admin/staf');
+        if (result && Array.isArray(result.admins) && result.admins.length > 0) {
+          staffData = result.admins;
+          localStorage.setItem('smk_staff_list', JSON.stringify(staffData));
+          localStorage.setItem('smk_registered_admins', JSON.stringify(staffData));
+        } else {
+          loadAndSyncStaffData();
+        }
+      } catch (e) {
+        loadAndSyncStaffData();
+      }
+
+      if (staffData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400 font-medium">Belum ada akun staf admin terdaftar.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = staffData.map(staff => `
+        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+          <td class="p-4 font-bold text-[#0F382C]">${escapeHTML(staff.nama)}</td>
+          <td class="p-4 text-slate-600 font-medium">${escapeHTML(staff.email)}</td>
+          <td class="p-4"><span class="px-2.5 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold text-[10px] rounded-lg">${escapeHTML(staff.jabatan || staff.role || 'Staf')}</span></td>
+          <td class="p-4"><span class="px-2.5 py-1 font-extrabold text-[10px] rounded-full ${staff.status === 'Aktif' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${escapeHTML(staff.status || 'Aktif')}</span></td>
+          <td class="p-4 text-right whitespace-nowrap">
+            <div class="flex items-center justify-end gap-1.5">
+              <button onclick="editStaf('${staff.id}')" class="px-2.5 py-1 bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200/80 font-bold rounded-lg text-[10px] flex items-center gap-1 transition">
+                <i data-lucide="edit" class="w-3 h-3"></i> Edit
+              </button>
+              <button onclick="hapusStaf('${staff.id}')" class="px-2.5 py-1 bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200/80 font-bold rounded-lg text-[10px] flex items-center gap-1 transition">
+                <i data-lucide="trash-2" class="w-3 h-3"></i> Hapus
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function openTambahAdminModal() {
+      document.getElementById('form-tambah-admin').reset();
+      document.getElementById('staff-id').value = '';
+      document.getElementById('modal-staff-title').textContent = 'Tambah Staf Admin Baru';
+      document.getElementById('staff-submit-button').textContent = 'Simpan Staf';
+      document.getElementById('staff-password').required = true;
+      document.getElementById('modal-tambah-admin').classList.remove('hidden');
+    }
+
+    function closeTambahAdminModal() {
+      document.getElementById('modal-tambah-admin').classList.add('hidden');
+    }
+
+    function editStaf(staffId) {
+      const staff = staffData.find(item => String(item.id) === String(staffId));
+      if (!staff) return;
+
+      document.getElementById('staff-id').value = staff.id;
+      document.getElementById('staff-nama').value = staff.nama || '';
+      document.getElementById('staff-email').value = staff.email || '';
+      document.getElementById('staff-role').value = staff.jabatan || staff.role || 'Staf Administrasi';
+      document.getElementById('staff-status').value = staff.status || 'Aktif';
+      document.getElementById('staff-password').value = staff.password || '';
+      document.getElementById('staff-password').required = false;
+
+      document.getElementById('modal-staff-title').textContent = 'Edit Akun Staf Admin';
+      document.getElementById('staff-submit-button').textContent = 'Simpan Perubahan';
+      document.getElementById('modal-tambah-admin').classList.remove('hidden');
+    }
+
+    async function hapusStaf(staffId) {
+      const staff = staffData.find(item => String(item.id) === String(staffId));
+      if (!confirm(`Apakah Anda yakin ingin menghapus akun staf "${staff?.nama || 'ini'}"?`)) return;
+
+      try {
+        await adminAPI(`/api/admin/staf/${staffId}`, { method: 'DELETE' });
+      } catch (e) {}
+
+      staffData = staffData.filter(item => String(item.id) !== String(staffId));
+      localStorage.setItem('smk_staff_list', JSON.stringify(staffData));
+      localStorage.setItem('smk_registered_admins', JSON.stringify(staffData));
+      await renderStaffTable();
+      showToast('Akun staf admin berhasil dihapus!');
+    }
+
+    document.getElementById('form-tambah-admin').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const staffId = document.getElementById('staff-id').value;
+      const nama = document.getElementById('staff-nama').value.trim();
+      const email = document.getElementById('staff-email').value.trim();
+      const role = document.getElementById('staff-role').value;
+      const status = document.getElementById('staff-status').value;
+      const password = document.getElementById('staff-password').value;
+
+      const payload = { nama, email, jabatan: role, role, status, password };
+
+      if (staffId) {
+        try {
+          await adminAPI(`/api/admin/staf/${staffId}`, { method: 'PATCH', body: JSON.stringify(payload) });
+        } catch (err) {}
+
+        const index = staffData.findIndex(item => String(item.id) === String(staffId));
+        if (index !== -1) {
+          staffData[index] = { ...staffData[index], nama, email, jabatan: role, role, status, password: password || staffData[index].password };
+        }
+        showToast('Data staf admin berhasil diperbarui!');
+      } else {
+        try {
+          const res = await adminAPI('/api/admin/staf', { method: 'POST', body: JSON.stringify(payload) });
+          if (res && res.id) payload.id = res.id;
+        } catch (err) {}
+
+        if (!payload.id) {
+          payload.id = Date.now();
+        }
+        staffData.push(payload);
+        showToast('Staf admin baru berhasil ditambahkan!');
+      }
+
+      localStorage.setItem('smk_staff_list', JSON.stringify(staffData));
+      localStorage.setItem('smk_registered_admins', JSON.stringify(staffData));
+      closeTambahAdminModal();
+      await renderStaffTable();
+    });
+
+    // ==========================================
+    // 2. DATA PENDAFTAR (REALTIME EDIT & HAPUS)
+    // ==========================================
+    function getInitialPendaftarData() {
+      const saved = localStorage.getItem('smk_pendaftar_list');
+      if (saved) {
+        try { return JSON.parse(saved); } catch(e){}
+      }
+      const defaultPendaftar = [
+        { id: 101, nama: "Ahmad Rizky Pratama", nisn: "0051234567", sekolah: "SMP Negeri 1 Surakarta", jurusan: "TKJ", tanggal: "2026-03-10", nilai: "88.5", status: "Diterima" },
+        { id: 102, nama: "Siti Nur Halizah", nisn: "0057654321", sekolah: "SMP Negeri 3 Surakarta", jurusan: "Kuliner / Tata Boga", tanggal: "2026-03-11", nilai: "85.0", status: "Menunggu" },
+        { id: 103, nama: "Bagas Setiawan", nisn: "0059876543", sekolah: "SMP Negeri 5 Surakarta", jurusan: "Teknik Otomotif / TSM", tanggal: "2026-03-12", nilai: "82.0", status: "Menunggu" },
+        { id: 104, nama: "Dewa Saputra", nisn: "0052345678", sekolah: "SMP Kasatrian Solo", jurusan: "Perhotelan", tanggal: "2026-03-14", nilai: "90.0", status: "Diterima" },
+        { id: 105, nama: "Anisa Rahma", nisn: "0058765432", sekolah: "SMP Negeri 2 Kartasura", jurusan: "TKJ", tanggal: "2026-03-15", nilai: "79.5", status: "Ditolak" }
+      ];
+      localStorage.setItem('smk_pendaftar_list', JSON.stringify(defaultPendaftar));
+      return defaultPendaftar;
+    }
+
+    async function loadPendaftarData() {
+      try {
+        const result = await adminAPI('/api/admin/pendaftar');
+        if (result && Array.isArray(result.pendaftar)) {
+          pendaftarData = result.pendaftar;
+          localStorage.setItem('smk_pendaftar_list', JSON.stringify(pendaftarData));
+        } else {
+          pendaftarData = getInitialPendaftarData();
+        }
+      } catch (error) {
+        pendaftarData = getInitialPendaftarData();
+      }
+      refreshAllRealtimeComponents();
+    }
+
+    function renderPendaftarTable(keyword = "") {
+      const tbody = document.getElementById('pendaftar-table-body');
+      if (!tbody) return;
+      const filterElem = document.getElementById('filter-status');
+      const filter = filterElem ? filterElem.value : 'semua';
+      tbody.innerHTML = '';
+      let filtered = pendaftarData.filter(item => filter === 'semua' || (item.status || 'Menunggu') === filter);
+      if (keyword) {
+        const kw = keyword.toLowerCase();
+        filtered = filtered.filter(item => 
+          String(item.nama || '').toLowerCase().includes(kw) ||
+          String(item.nisn || '').toLowerCase().includes(kw) ||
+          String(item.sekolah || '').toLowerCase().includes(kw) ||
+          String(item.jurusan || '').toLowerCase().includes(kw)
+        );
+      }
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-400 font-medium">Data pendaftar tidak ditemukan.</td></tr>`;
+        return;
+      }
+      filtered.forEach((item, index) => {
+        const st = item.status || 'Menunggu';
+        const badgeColor = st === 'Diterima' ? 'bg-emerald-100 text-emerald-800 border-emerald-200' :
+          st === 'Ditolak' ? 'bg-rose-100 text-rose-800 border-rose-200' :
+          'bg-amber-100 text-amber-800 border-amber-200';
+
+        tbody.innerHTML += `
+          <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+            <td class="p-4 font-bold text-slate-400">${index + 1}</td>
+            <td class="p-4">
+              <p class="font-bold text-[#0F382C]">${escapeHTML(item.nama)}</p>
+              <p class="text-[10px] text-slate-400 font-medium">NISN: ${escapeHTML(item.nisn || '-')}</p>
+            </td>
+            <td class="p-4 text-slate-600 font-medium">${escapeHTML(item.sekolah || '-')}</td>
+            <td class="p-4"><span class="px-2.5 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold text-[10px] rounded-lg">${escapeHTML(item.jurusan || '-')}</span></td>
+            <td class="p-4 text-slate-500 font-medium">${escapeHTML(item.tanggal || '-')}</td>
+            <td class="p-4 font-bold text-[#0F382C]">${escapeHTML(item.nilai ?? '-')}</td>
+            <td class="p-4"><span class="px-2.5 py-1 font-extrabold text-[10px] rounded-full border ${badgeColor}">${escapeHTML(st)}</span></td>
+            <td class="p-4 text-center">
+              <div class="flex items-center justify-center gap-1.5">
+                <button onclick="editSiswa(${item.id})" class="px-2.5 py-1 bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200/80 font-bold rounded-lg text-[10px] flex items-center gap-1 transition">
+                  <i data-lucide="edit" class="w-3 h-3"></i> Edit
+                </button>
+                <button onclick="hapusSiswa(${item.id})" class="px-2.5 py-1 bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200/80 font-bold rounded-lg text-[10px] flex items-center gap-1 transition">
+                  <i data-lucide="trash-2" class="w-3 h-3"></i> Hapus
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function editSiswa(studentId) {
+      const student = pendaftarData.find(item => Number(item.id) === Number(studentId));
+      if (!student) return;
+
+      document.getElementById('edit-siswa-id').value = student.id;
+      document.getElementById('edit-nama').value = student.nama || '';
+      document.getElementById('edit-nisn').value = student.nisn || '';
+      document.getElementById('edit-sekolah').value = student.sekolah || '';
+      document.getElementById('edit-jurusan').value = student.jurusan || 'TKJ';
+      document.getElementById('edit-status').value = student.status || 'Menunggu';
+
+      document.getElementById('modal-edit-siswa').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+      document.getElementById('modal-edit-siswa').classList.add('hidden');
+    }
+
+    document.getElementById('form-edit-siswa').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const studentId = Number(document.getElementById('edit-siswa-id').value);
+      const nama = document.getElementById('edit-nama').value.trim();
+      const nisn = document.getElementById('edit-nisn').value.trim();
+      const sekolah = document.getElementById('edit-sekolah').value.trim();
+      const jurusan = document.getElementById('edit-jurusan').value;
+      const status = document.getElementById('edit-status').value;
+
+      const payload = { nama, nisn, sekolah, jurusan, status };
+
+      try {
+        await adminAPI(`/api/admin/pendaftar/${studentId}`, { method: 'PATCH', body: JSON.stringify(payload) });
+      } catch (err) {}
+
+      const index = pendaftarData.findIndex(item => Number(item.id) === studentId);
+      if (index !== -1) {
+        pendaftarData[index] = { ...pendaftarData[index], nama, nisn, sekolah, jurusan, status };
+      }
+
+      localStorage.setItem('smk_pendaftar_list', JSON.stringify(pendaftarData));
+      closeEditModal();
+      refreshAllRealtimeComponents();
+      showToast('Data pendaftar berhasil diperbarui!');
+    });
+
+    async function hapusSiswa(studentId) {
+      const student = pendaftarData.find(item => Number(item.id) === Number(studentId));
+      if (!confirm(`Apakah Anda yakin ingin menghapus data pendaftar "${student?.nama || 'ini'}"?`)) return;
+
+      try {
+        await adminAPI(`/api/admin/pendaftar/${studentId}`, { method: 'DELETE' });
+      } catch (err) {}
+
+      pendaftarData = pendaftarData.filter(item => Number(item.id) !== Number(studentId));
+      localStorage.setItem('smk_pendaftar_list', JSON.stringify(pendaftarData));
+      refreshAllRealtimeComponents();
+      showToast('Data pendaftar berhasil dihapus!');
+    }
+
+    document.getElementById('global-search').addEventListener('input', function (e) {
+      renderPendaftarTable(e.target.value);
+    });
+
+    // ==========================================
+    // 3. SINKRONISASI REALTIME SELURUH KOMPONEN
+    // ==========================================
     function refreshAllRealtimeComponents() {
       renderPendaftarTable();
       renderVerifikasiQueue();
@@ -783,151 +1339,84 @@
 
     function updateDashboardCounts() {
       document.getElementById('stat-total').textContent = pendaftarData.length;
-      document.getElementById('stat-waiting').textContent = pendaftarData.filter(x => x.status === 'Menunggu' || !x.status).length;
+      document.getElementById('stat-waiting').textContent = pendaftarData.filter(x => x.status === 'Menunggu' || x.status === 'Diproses').length;
       document.getElementById('stat-accepted').textContent = pendaftarData.filter(x => x.status === 'Diterima').length;
       document.getElementById('stat-rejected').textContent = pendaftarData.filter(x => x.status === 'Ditolak').length;
     }
 
-    document.getElementById('global-search').addEventListener('input', function (e) {
-      renderPendaftarTable(e.target.value.toLowerCase());
-    });
-
-    function renderPendaftarTable(keyword = "") {
-      const tbody = document.getElementById('pendaftar-table-body');
-      const filter = document.getElementById('filter-status').value;
-      tbody.innerHTML = '';
-      let filtered = pendaftarData.filter(item => filter === 'semua' || (item.status || 'Menunggu') === filter);
-      if (keyword) {
-        filtered = filtered.filter(item => 
-          (item.nama && item.nama.toLowerCase().includes(keyword)) ||
-          (item.nisn && item.nisn.toLowerCase().includes(keyword)) ||
-          (item.sekolah && item.sekolah.toLowerCase().includes(keyword)) ||
-          (item.jurusan && item.jurusan.toLowerCase().includes(keyword))
-        );
-      }
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-gray-400">Data pendaftar tidak ditemukan.</td></tr>`;
-        return;
-      }
-      filtered.forEach((item, index) => {
-        const st = item.status || 'Menunggu';
-        const badgeColor = st === 'Diterima' ? 'bg-emerald-100 text-emerald-800 border-emerald-200' :
-          st === 'Ditolak' ? 'bg-red-100 text-red-800 border-red-200' : 'bg-amber-100 text-amber-800 border-amber-200';
-        tbody.innerHTML += `
-          <tr class="hover:bg-gray-50/80 transition">
-            <td class="p-3.5 font-semibold text-gray-400">${index + 1}</td>
-            <td class="p-3.5"><p class="font-bold text-[#1B4332]">${item.nama}</p><p class="text-[10px] text-gray-400">NISN: ${item.nisn || '-'}</p></td>
-            <td class="p-3.5 text-gray-600">${item.sekolah || '-'}</td>
-            <td class="p-3.5"><span class="px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold text-[10px] rounded-lg">${item.jurusan || '-'}</span></td>
-            <td class="p-3.5 text-gray-500">${item.tanggal || new Date().toISOString().split('T')[0]}</td>
-            <td class="p-3.5 font-bold text-[#1B4332]">${item.nilai || 0}</td>
-            <td class="p-3.5"><span class="px-2.5 py-1 font-bold text-[10px] rounded-full border ${badgeColor}">${st}</span></td>
-            <td class="p-3.5 text-center">
-              <div class="flex items-center justify-center gap-1.5">
-                <button onclick="editSiswa(${item.id})" class="px-2.5 py-1 bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 font-bold rounded-lg text-[10px] flex items-center gap-1 transition"><i data-lucide="edit" class="w-3 h-3"></i> Edit</button>
-                <button onclick="hapusSiswa(${item.id})" class="px-2.5 py-1 bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 font-bold rounded-lg text-[10px] flex items-center gap-1 transition"><i data-lucide="trash-2" class="w-3 h-3"></i> Hapus</button>
-              </div>
-            </td>
-          </tr>
-        `;
-      });
-      if (window.lucide) lucide.createIcons();
+    async function loadDashboardStats() {
+      try {
+        const result = await adminAPI('/api/admin/stats');
+        if (result && result.stats) {
+          dashboardStats = result.stats;
+        }
+      } catch (e) {}
+      updateDashboardCounts();
     }
 
     function renderVerifikasiQueue() {
       const queueList = document.getElementById('queue-list');
+      if (!queueList) return;
       queueList.innerHTML = '';
-      if (pendaftarData.length === 0) {
-        queueList.innerHTML = '<p class="text-xs text-gray-400 p-2">Tidak ada pendaftar dalam antrian.</p>';
-        resetVerifikasiDetail();
+      const pending = pendaftarData.filter(item => ['Menunggu', 'Diproses'].includes(item.status || 'Menunggu'));
+
+      if (pending.length === 0) {
+        queueList.innerHTML = '<p class="text-xs text-slate-400 p-3 font-medium text-center">Tidak ada pendaftar dalam antrian.</p>';
         return;
       }
-      pendaftarData.forEach(item => {
+
+      pending.forEach(item => {
         const isSelected = item.id === selectedVerifId;
         const st = item.status || 'Menunggu';
         queueList.innerHTML += `
-          <div onclick="selectPendaftarForVerif(${item.id})" class="p-3 rounded-xl border ${isSelected ? 'border-[#22C55E] bg-emerald-50/50' : 'border-gray-200 hover:bg-gray-50'} cursor-pointer transition flex items-center justify-between">
+          <div onclick="selectPendaftarForVerif(${item.id})" class="p-3 rounded-xl border ${isSelected ? 'border-emerald-500 bg-emerald-50/60 shadow-sm' : 'border-slate-200 hover:bg-slate-50'} cursor-pointer transition flex items-center justify-between">
             <div>
-              <p class="font-bold text-xs text-[#1B4332]">${item.nama}</p>
-              <p class="text-[10px] text-gray-500">${item.sekolah || '-'} • ${item.jurusan || '-'}</p>
+              <p class="font-bold text-xs text-[#0F382C]">${escapeHTML(item.nama)}</p>
+              <p class="text-[10px] text-slate-500 font-medium">${escapeHTML(item.sekolah || '-')} • ${escapeHTML(item.jurusan || '-')}</p>
             </div>
-            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${st==='Diterima'?'bg-emerald-100 text-emerald-800':st==='Ditolak'?'bg-red-100 text-red-800':'bg-amber-100 text-amber-800'}">${st}</span>
+            <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full ${st==='Diterima'?'bg-emerald-100 text-emerald-800':st==='Ditolak'?'bg-rose-100 text-rose-800':'bg-amber-100 text-amber-800'}">${escapeHTML(st)}</span>
           </div>
         `;
       });
-      if (!selectedVerifId || !pendaftarData.some(x => x.id === selectedVerifId)) selectPendaftarForVerif(pendaftarData[0].id);
     }
 
     function selectPendaftarForVerif(id) {
-      const target = pendaftarData.find(x => x.id === id);
+      const target = pendaftarData.find(item => item.id === id);
       if (!target) return;
       selectedVerifId = id;
       const st = target.status || 'Menunggu';
-      document.getElementById('verif-nama').textContent = target.nama;
-      document.getElementById('verif-sekolah').textContent = `${target.sekolah || 'SMP N/S'} • Jurusan Pilihan: ${target.jurusan || '-'}`;
+
+      document.getElementById('verif-nama').textContent = target.nama || '-';
+      document.getElementById('verif-sekolah').textContent = `${target.sekolah || '-'} • Jurusan Pilihan: ${target.jurusan || '-'}`;
+
       const badge = document.getElementById('verif-status-badge');
       badge.textContent = `Status: ${st}`;
-      badge.className = `inline-block mt-1 px-2.5 py-0.5 text-[10px] font-bold rounded-full ${st === 'Diterima' ? 'bg-emerald-100 text-emerald-800' : st === 'Ditolak' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'}`;
-      document.getElementById('verif-docs-grid').innerHTML = `
-        <div class="border border-gray-200 rounded-xl p-3 bg-gray-50 space-y-2">
-          <p class="font-bold text-xs text-gray-700">Ijazah / Surat Keterangan Lulus</p>
-          <img src="https://via.placeholder.com/300x180?text=Ijazah+${encodeURIComponent(target.nama)}" class="w-full h-28 object-cover rounded-lg border">
-        </div>
-        <div class="border border-gray-200 rounded-xl p-3 bg-gray-50 space-y-2">
-          <p class="font-bold text-xs text-gray-700">Kartu Keluarga (KK)</p>
-          <img src="https://via.placeholder.com/300x180?text=KK+${encodeURIComponent(target.nama)}" class="w-full h-28 object-cover rounded-lg border">
-        </div>
-      `;
-      renderVerifikasiQueueHighlight();
+      badge.className = `inline-block mt-1.5 px-3 py-0.5 text-[10px] font-extrabold rounded-full ${
+        st === 'Diterima' ? 'bg-emerald-100 text-emerald-800' :
+        st === 'Ditolak' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'
+      }`;
     }
 
-    function renderVerifikasiQueueHighlight() {
-      const items = document.getElementById('queue-list').querySelectorAll('div[onclick]');
-      pendaftarData.forEach((item, index) => {
-        if (items[index]) {
-          items[index].className = item.id === selectedVerifId ? 'p-3 rounded-xl border border-[#22C55E] bg-emerald-50/50 cursor-pointer transition flex items-center justify-between' : 'p-3 rounded-xl border border-gray-200 hover:bg-gray-50 cursor-pointer transition flex items-center justify-between';
-        }
-      });
-    }
-
-    function resetVerifikasiDetail() {
-      document.getElementById('verif-nama').textContent = "Tidak Ada Data";
-      document.getElementById('verif-sekolah').textContent = "-";
-      document.getElementById('verif-status-badge').textContent = "Status: -";
-      document.getElementById('verif-docs-grid').innerHTML = '<p class="text-xs text-gray-400 col-span-2">Belum ada dokumen pendaftar.</p>';
-    }
-
-    async function prosesVerifikasiStatus(status) {
-      if (!selectedVerifId) return;
-      try {
-        const res = await fetch(`${API_BASE}update_status_siswa.php`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: selectedVerifId, status: status })
-        });
-        const result = await res.json();
-        if (result.success) {
-          const index = pendaftarData.findIndex(x => x.id === selectedVerifId);
-          if (index !== -1) pendaftarData[index].status = status;
-          refreshAllRealtimeComponents();
-          showToast(`Berkas berhasil diperbarui menjadi ${status}`);
-        }
-      } catch (e) {
-        showToast('Gagal memproses verifikasi', 'error');
+    function prosesVerifikasiStatus(status) {
+      if (!selectedVerifId) {
+        showToast('Pilih pendaftar terlebih dahulu.', 'error');
+        return;
       }
-    }
-
-    async function loadJurusanData() {
-      try {
-        const res = await fetch(`${API_BASE}get_jurusan.php`);
-        const result = await res.json();
-        if (result.success) {
-          jurusanData = result.data;
-          updateJurusanFromPendaftar();
-        }
-      } catch (e) {
-        console.error("Gagal memuat data jurusan");
+      const note = document.getElementById('catatan-verif').value.trim();
+      if (status === 'Ditolak' && !note) {
+        showToast('Catatan wajib diisi jika meminta revisi atau menolak.', 'error');
+        return;
       }
+
+      const index = pendaftarData.findIndex(item => item.id === selectedVerifId);
+      if (index !== -1) {
+        pendaftarData[index].status = status;
+      }
+
+      localStorage.setItem('smk_pendaftar_list', JSON.stringify(pendaftarData));
+      document.getElementById('catatan-verif').value = '';
+      refreshAllRealtimeComponents();
+      showToast(`Status pendaftar berhasil diubah menjadi "${status}"!`);
     }
 
     function updateJurusanFromPendaftar() {
@@ -943,31 +1432,36 @@
 
     function renderJurusanCards() {
       const grid = document.getElementById('jurusan-cards-grid');
+      if (!grid) return;
       grid.innerHTML = '';
       jurusanData.forEach(item => {
         const sisa = Math.max(0, item.kuota - item.terisi);
         const persen = Math.min(100, Math.round((item.terisi / item.kuota) * 100));
         grid.innerHTML += `
-          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3 relative">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-3.5 relative">
             <div class="flex justify-between items-start">
               <div>
-                <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded-md">${item.kode}</span>
-                <h3 class="font-bold text-sm text-[#1B4332] mt-1">${item.nama}</h3>
+                <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-extrabold rounded-md">${item.kode}</span>
+                <h3 class="font-bold text-sm text-[#0F382C] mt-1.5">${item.nama}</h3>
               </div>
-              <button onclick="openEditJurusanModal(${item.id})" class="p-1.5 text-gray-400 hover:text-[#1B4332] bg-gray-50 hover:bg-gray-100 rounded-lg transition" title="Edit Jurusan"><i data-lucide="edit" class="w-4 h-4"></i></button>
+              <button onclick="openEditJurusanModal(${item.id})" class="p-1.5 text-slate-400 hover:text-[#0F382C] bg-slate-50 hover:bg-slate-100 rounded-lg transition" title="Edit Jurusan">
+                <i data-lucide="edit" class="w-4 h-4"></i>
+              </button>
             </div>
             <div>
-              <div class="flex justify-between text-xs font-semibold text-gray-600 mb-1">
+              <div class="flex justify-between text-xs font-bold text-slate-600 mb-1">
                 <span>Terisi: ${item.terisi} / ${item.kuota}</span>
                 <span>Sisa: ${sisa}</span>
               </div>
-              <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                <div class="bg-[#22C55E] h-full rounded-full transition-all duration-300" style="width: ${persen}%"></div>
+              <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-gradient-to-r from-emerald-500 to-teal-500 h-full rounded-full transition-all duration-300" style="width: ${persen}%"></div>
               </div>
             </div>
-            <div class="pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
-              <span class="text-gray-500 font-medium">Status Gelombang</span>
-              <span class="px-3 py-1 rounded-full font-bold text-[10px] ${item.buka?'bg-emerald-100 text-emerald-800':'bg-red-100 text-red-800'}">${item.buka ? 'BUKA' : 'TUTUP'}</span>
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-semibold">
+              <span class="text-slate-500">Status Gelombang</span>
+              <span class="px-3 py-0.5 rounded-full font-extrabold text-[10px] ${item.buka?'bg-emerald-100 text-emerald-800':'bg-rose-100 text-rose-800'}">
+                ${item.buka ? 'BUKA' : 'TUTUP'}
+              </span>
             </div>
           </div>
         `;
@@ -1024,6 +1518,9 @@
       }
     });
 
+    // ==========================================
+    // 4. CHART REALTIME & LAPORAN
+    // ==========================================
     function initCharts() {
       const ctxTren = document.getElementById('chart-tren');
       if (ctxTren) {
@@ -1033,11 +1530,12 @@
             labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
             datasets: [{
               label: 'Pendaftar Baru',
-              data: [0, 0, 0, 0, 0, 0, 0],
-              borderColor: '#22C55E',
-              backgroundColor: 'rgba(34, 197, 94, 0.1)',
+              data: [12, 19, 15, 25, 22, 30, pendaftarData.length],
+              borderColor: '#10B981',
+              backgroundColor: 'rgba(16, 185, 129, 0.12)',
               fill: true,
-              tension: 0.35
+              tension: 0.35,
+              borderWidth: 2.5
             }]
           },
           options: { responsive: true, maintainAspectRatio: false }
@@ -1050,8 +1548,8 @@
           data: {
             labels: [],
             datasets: [{
-              data: [],
-              backgroundColor: ['#22C55E', '#3B82F6', '#F59E0B', '#EF4444', '#8B5CF6']
+              data: jurusanData.map(j => j.terisi),
+              backgroundColor: ['#10B981', '#3B82F6', '#F59E0B', '#EF4444', '#8B5CF6']
             }]
           },
           options: { responsive: true, maintainAspectRatio: false }
@@ -1093,303 +1591,59 @@
 
     function renderLaporanTable() {
       const tbody = document.getElementById('laporan-table-body');
+      if (!tbody) return;
       tbody.innerHTML = '';
       pendaftarData.forEach((item, i) => {
         const st = item.status || 'Menunggu';
         tbody.innerHTML += `
           <tr>
-            <td class="p-2.5 text-gray-500">${i + 1}</td>
-            <td class="p-2.5 font-semibold text-[#1B4332]">${item.nama}</td>
-            <td class="p-2.5 text-gray-600">${item.nisn || '-'}</td>
-            <td class="p-2.5 text-gray-600">${item.sekolah || '-'}</td>
-            <td class="p-2.5 font-bold">${item.jurusan || '-'}</td>
-            <td class="p-2.5 font-bold">${item.nilai || 0}</td>
-            <td class="p-2.5 font-bold ${st==='Diterima'?'text-emerald-600':st==='Ditolak'?'text-red-600':'text-amber-600'}">${st}</td>
+            <td class="p-2.5 text-slate-500 font-medium">${i + 1}</td>
+            <td class="p-2.5 font-bold text-[#0F382C]">${escapeHTML(item.nama)}</td>
+            <td class="p-2.5 text-slate-600 font-medium">${escapeHTML(item.nisn || '-')}</td>
+            <td class="p-2.5 text-slate-600 font-medium">${escapeHTML(item.sekolah || '-')}</td>
+            <td class="p-2.5 font-bold">${escapeHTML(item.jurusan || '-')}</td>
+            <td class="p-2.5 font-bold">${escapeHTML(item.nilai || '-')}</td>
+            <td class="p-2.5 font-extrabold ${st==='Diterima'?'text-emerald-600':st==='Ditolak'?'text-rose-600':'text-amber-600'}">${escapeHTML(st)}</td>
           </tr>
         `;
       });
     }
 
-    async function loadStaffData() {
-      try {
-        const response = await fetch(`${API_BASE}get_admin.php`);
-        const result = await response.json();
-        if (result.success) {
-          staffData = result.data;
-          renderStaffTable();
-        }
-      } catch (e) {
-        console.error("Gagal memuat staf");
-      }
+    function refreshActivePage() {
+      if (currentPage === 'dashboard') loadDashboardStats();
+      else if (['pendaftar', 'verifikasi', 'laporan'].includes(currentPage)) loadPendaftarData();
+      else if (currentPage === 'manajemen-admin') renderStaffTable();
     }
 
-    function renderStaffTable() {
-      const tbody = document.getElementById('admin-staff-table-body');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      if (staffData.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">Belum ada akun admin terdaftar.</td></tr>`;
-        return;
-      }
-      staffData.forEach((s) => {
-        const roleBadgeColor = String(s.role).toLowerCase().includes('super') ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800';
-        tbody.innerHTML += `
-          <tr class="hover:bg-gray-50 transition">
-            <td class="p-3.5 font-bold text-[#1B4332]">${s.nama}</td>
-            <td class="p-3.5 text-gray-600">${s.email}</td>
-            <td class="p-3.5"><span class="px-2.5 py-0.5 ${roleBadgeColor} font-bold rounded-md text-[10px]">${s.role}</span></td>
-            <td class="p-3.5"><span class="text-emerald-600 font-bold flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>${s.status || 'Aktif'}</span></td>
-            <td class="p-3.5 text-right">
-              <button onclick="hapusStaf('${s.id}', '${s.nama}')" class="text-red-600 font-semibold hover:underline text-xs">Hapus</button>
-            </td>
-          </tr>
-        `;
-      });
-    }
-
-    function openTambahAdminModal() {
-      document.getElementById('form-tambah-admin').reset();
-      document.getElementById('modal-tambah-admin').classList.remove('hidden');
-    }
-
-    function closeTambahAdminModal() {
-      document.getElementById('modal-tambah-admin').classList.add('hidden');
-    }
-
-    document.getElementById('form-tambah-admin').addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const payload = {
-        nama: document.getElementById('staff-nama').value.trim(),
-        email: document.getElementById('staff-email').value.trim(),
-        role: document.getElementById('staff-role').value,
-        password: document.getElementById('staff-password').value
-      };
-      try {
-        const res = await fetch(`${API_BASE}tambah_admin.php`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const result = await res.json();
-        if (result.success) {
-          loadStaffData();
-          closeTambahAdminModal();
-          showToast('Staf admin baru berhasil ditambahkan!');
-        }
-      } catch (e) {
-        showToast('Gagal menambah staf admin', 'error');
-      }
-    });
-
-    async function hapusStaf(id, nama) {
-      if (!confirm(`Apakah Anda yakin ingin menghapus akun admin "${nama}"?`)) return;
-      try {
-        const res = await fetch(`${API_BASE}hapus_admin.php`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id })
-        });
-        const result = await res.json();
-        if (result.success) {
-          loadStaffData();
-          showToast('Staf admin berhasil dihapus.');
-        }
-      } catch (e) {
-        showToast('Gagal menghapus staf admin', 'error');
-      }
-    }
-
-    async function loadPengumumanData() {
-      try {
-        const response = await fetch(`${API_BASE}get_pengumuman.php`);
-        const result = await response.json();
-        if (result.success) {
-          pengumumanList = result.data;
-          renderPengumumanTable();
-        }
-      } catch (e) {
-        console.error("Gagal memuat pengumuman");
-      }
-    }
-
-    function renderPengumumanTable() {
-      const tbody = document.getElementById('pengumuman-table-body');
-      tbody.innerHTML = '';
-      pengumumanList.forEach(p => {
-        tbody.innerHTML += `
-          <tr class="hover:bg-gray-50">
-            <td class="p-3 font-bold text-[#1B4332]">${p.judul}</td>
-            <td class="p-3"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 rounded font-semibold text-[10px]">${p.kategori}</span></td>
-            <td class="p-3 text-gray-600">${p.target}</td>
-            <td class="p-3 text-gray-500">${p.tanggal}</td>
-            <td class="p-3 text-right">
-              <button onclick="hapusPengumuman(${p.id})" class="text-red-600 font-semibold text-[11px]">Hapus</button>
-            </td>
-          </tr>
-        `;
-      });
-    }
-
-    document.getElementById('form-pengumuman').addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const payload = {
-        judul: document.getElementById('pengumuman-judul').value,
-        kategori: document.getElementById('pengumuman-kategori').value,
-        target: document.getElementById('pengumuman-target').value,
-        isi: document.getElementById('pengumuman-isi').value
-      };
-      try {
-        const res = await fetch(`${API_BASE}tambah_pengumuman.php`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const result = await res.json();
-        if (result.success) {
-          loadPengumumanData();
-          document.getElementById('form-pengumuman').reset();
-          showToast('Pengumuman berhasil diterbitkan!');
-        }
-      } catch (e) {
-        showToast('Gagal menerbitkan pengumuman', 'error');
-      }
-    });
-
-    async function hapusPengumuman(id) {
-      if (!confirm('Hapus pengumuman ini?')) return;
-      try {
-        const res = await fetch(`${API_BASE}hapus_pengumuman.php`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id })
-        });
-        const result = await res.json();
-        if (result.success) {
-          loadPengumumanData();
-          showToast('Pengumuman dihapus.');
-        }
-      } catch (e) {
-        showToast('Gagal menghapus', 'error');
-      }
-    }
-
-    function editSiswa(id) {
-      const siswa = pendaftarData.find(x => x.id === id);
-      if (!siswa) return;
-      document.getElementById('edit-siswa-id').value = siswa.id;
-      document.getElementById('edit-nama').value = siswa.nama;
-      document.getElementById('edit-nisn').value = siswa.nisn || '';
-      document.getElementById('edit-sekolah').value = siswa.sekolah || '';
-      document.getElementById('edit-jurusan').value = siswa.jurusan || 'TKJ';
-      document.getElementById('edit-nilai').value = siswa.nilai || 0;
-      document.getElementById('edit-status').value = siswa.status || 'Menunggu';
-      document.getElementById('modal-edit-siswa').classList.remove('hidden');
-    }
-
-    function closeEditModal() {
-      document.getElementById('modal-edit-siswa').classList.add('hidden');
-    }
-
-    document.getElementById('form-edit-siswa').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const payload = {
-        id: parseInt(document.getElementById('edit-siswa-id').value),
-        nama: document.getElementById('edit-nama').value,
-        nisn: document.getElementById('edit-nisn').value,
-        sekolah: document.getElementById('edit-sekolah').value,
-        jurusan: document.getElementById('edit-jurusan').value,
-        nilai: parseFloat(document.getElementById('edit-nilai').value),
-        status: document.getElementById('edit-status').value
-      };
-      try {
-        const res = await fetch(`${API_BASE}update_siswa.php`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const result = await res.json();
-        if (result.success) {
-          loadPendaftarData();
-          closeEditModal();
-          showToast('Profil siswa berhasil diperbarui!');
-        }
-      } catch (e) {
-        showToast('Gagal memperbarui siswa', 'error');
-      }
-    });
-
-    async function hapusSiswa(id) {
-      if (!confirm('Apakah Anda yakin ingin menghapus data pendaftar ini secara permanen?')) return;
-      try {
-        const res = await fetch(`${API_BASE}hapus_siswa.php`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id })
-        });
-        const result = await res.json();
-        if (result.success) {
-          loadPendaftarData();
-          showToast('Data pendaftar berhasil dihapus.');
-        }
-      } catch (e) {
-        showToast('Gagal menghapus data', 'error');
-      }
-    }
-
-    async function loadPengaturanData() {
-      try {
-        const res = await fetch(`${API_BASE}get_pengaturan.php`);
-        const result = await res.json();
-        if (result.success) {
-          document.getElementById('gelombang-1').checked = result.data.gelombang1;
-          document.getElementById('gelombang-2').checked = result.data.gelombang2;
-          document.getElementById('tgl-buka').value = result.data.tgl_buka;
-          document.getElementById('tgl-tutup').value = result.data.tgl_tutup;
-        }
-      } catch (e) {
-        console.error('Gagal memuat pengaturan');
-      }
-    }
-
-    document.getElementById('form-pengaturan-spmb').addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const payload = {
-        gelombang1: document.getElementById('gelombang-1').checked,
-        gelombang2: document.getElementById('gelombang-2').checked,
-        tgl_buka: document.getElementById('tgl-buka').value,
-        tgl_tutup: document.getElementById('tgl-tutup').value
-      };
-      try {
-        const res = await fetch(`${API_BASE}update_pengaturan.php`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const result = await res.json();
-        if (result.success) {
-          showToast('Pengaturan berhasil disimpan!');
-        }
-      } catch (e) {
-        showToast('Gagal menyimpan pengaturan', 'error');
-      }
-    });
-
-    setInterval(() => {
+    // Listener Realtime multi-tab & auto refresh saat fokus
+    window.addEventListener('storage', () => {
+      initAuthGuardAndAdminData();
+      renderStaffTable();
       loadPendaftarData();
-      loadJurusanData();
-      loadStaffData();
-      loadPengumumanData();
-    }, 5000);
+    });
 
+    window.addEventListener('focus', () => {
+      renderStaffTable();
+      loadPendaftarData();
+    });
+
+    // Auto Polling Real-time untuk Kelola Staf Admin
+    setInterval(() => {
+      if (currentPage === 'manajemen-admin') {
+        loadAndSyncStaffData();
+        renderStaffTable();
+      }
+    }, 3000);
+
+    // ==========================================
+    // INISIALISASI HALAMAN SAAT READY
+    // ==========================================
     window.addEventListener('DOMContentLoaded', () => {
       if (window.lucide) lucide.createIcons();
       initAuthGuardAndAdminData();
       initCharts();
       loadPendaftarData();
-      loadJurusanData();
-      loadStaffData();
-      loadPengumumanData();
-      loadPengaturanData();
+      renderStaffTable();
     });
   </script>
 </body>

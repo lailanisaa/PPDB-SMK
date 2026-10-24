@@ -68,6 +68,48 @@ class LegacyApiController extends Controller
         ]);
     }
 
+    public function studentPortal(Request $request)
+    {
+        $studentId = (int) $request->user()->getAuthIdentifier();
+        $student = DB::table('siswa')->where('id', $studentId)->first();
+        if (!$student) return $this->reply(false, 'Siswa tidak ditemukan.', [], 404);
+
+        $form = DB::table('formulir_siswa')->where('siswa_id', $studentId)->first();
+        $documents = DB::table('dokumen_siswa')->where('siswa_id', $studentId)
+            ->orderBy('document_id')->get(['id','document_id','nama_file','status_dokumen','updated_at']);
+        $status = mb_strtolower((string) $student->status);
+        $announcements = DB::table('pengumuman')->orderByDesc('created_at')->get()
+            ->filter(function ($announcement) use ($status) {
+                $target = mb_strtolower(trim((string) $announcement->target));
+                if (in_array($target, ['', 'semua', 'semua siswa', 'all', 'siswa'], true)) return true;
+                if (str_contains($target, 'diterima')) return $status === 'diterima';
+                if (str_contains($target, 'menunggu')) return in_array($status, ['menunggu', 'diproses'], true);
+                return false;
+            })->values()->map(fn ($announcement) => [
+                'id' => (int) $announcement->id,
+                'judul' => $announcement->judul,
+                'kategori' => $announcement->kategori,
+                'target' => $announcement->target,
+                'isi' => $announcement->isi,
+                'created_at' => $announcement->created_at,
+            ]);
+
+        return $this->reply(true, 'Portal siswa berhasil disinkronkan.', [
+            'siswa' => [
+                'id' => (int) $student->id,
+                'nama' => $student->nama,
+                'sekolah' => $student->sekolah_asal,
+                'jurusan' => $student->jurusan,
+                'email' => $student->email,
+                'status' => $student->status,
+                'tanggal_daftar' => $student->tanggal_daftar,
+            ],
+            'formulir' => $form,
+            'dokumen' => $documents,
+            'pengumuman' => $announcements,
+        ]);
+    }
+
     public function listDokumen(Request $request)
     {
         $id = (int) $request->query('siswa_id', 0);
@@ -81,7 +123,7 @@ class LegacyApiController extends Controller
                 'mimeType' => $document->mime_type,
                 'size' => (int) $document->ukuran,
                 'status' => Str::lower($document->status_dokumen),
-                'url' => url('/storage/uploads/' . rawurlencode($document->nama_file_server)),
+                'download_url' => url('/api/admin/dokumen/' . $document->id . '/download'),
             ]);
 
         return $this->reply(true, 'Dokumen berhasil diambil.', ['documents' => $documents]);
@@ -257,7 +299,7 @@ class LegacyApiController extends Controller
         $personal = is_array($form['dataDiri'] ?? null) ? $form['dataDiri'] : [];
         $parents = is_array($form['dataOrtu'] ?? null) ? $form['dataOrtu'] : [];
         $school = is_array($form['asalSekolah'] ?? null) ? $form['asalSekolah'] : [];
-        if ($studentId < 1 || trim((string) ($personal['nama'] ?? '')) === '' || strlen((string) ($personal['nik'] ?? '')) !== 16 || trim((string) ($school['sekolah'] ?? '')) === '') {
+        if ($studentId < 1 || trim((string) ($personal['nama'] ?? '')) === '' || !preg_match('/^\d{16}$/', (string) ($personal['nik'] ?? '')) || trim((string) ($school['sekolah'] ?? '')) === '') {
             return $this->reply(false, 'Data formulir belum lengkap.', [], 422);
         }
         if ($studentId !== (int) $request->user()->id) return $this->reply(false, 'Akses data siswa ditolak.', [], 403);
@@ -266,12 +308,22 @@ class LegacyApiController extends Controller
         $year = (int) ($school['tahunlulus'] ?? date('Y'));
         if ($year < 1901 || $year > 2155) $year = (int) date('Y');
         $gender = in_array($personal['jk'] ?? '', ['L', 'P'], true) ? $personal['jk'] : 'L';
+        $optionalInteger = static fn ($value) => filter_var($value, FILTER_VALIDATE_INT) !== false ? (int) $value : null;
         $payload = [
             'nik' => trim((string) $personal['nik']), 'tempat_lahir' => trim((string) ($personal['tempat'] ?? '')),
             'tanggal_lahir' => ($personal['tgl'] ?? '') ?: null, 'jenis_kelamin' => $gender,
             'no_wa' => trim((string) ($personal['wa'] ?? '')), 'alamat' => trim((string) ($personal['alamat'] ?? '')),
             'nama_ayah' => trim((string) ($parents['ayah'] ?? '')), 'nama_ibu' => trim((string) ($parents['ibu'] ?? '')),
+            'hp_ayah' => trim((string) ($parents['hpAyah'] ?? '')), 'kerja_ayah' => trim((string) ($parents['kerjaAyah'] ?? '')),
+            'hasil_ayah' => trim((string) ($parents['hasilAyah'] ?? '')), 'hp_ibu' => trim((string) ($parents['hpIbu'] ?? '')),
+            'kerja_ibu' => trim((string) ($parents['kerjaIbu'] ?? '')), 'hasil_ibu' => trim((string) ($parents['hasilIbu'] ?? '')),
+            'rt_rw' => trim((string) ($personal['rtRw'] ?? '')), 'kelurahan' => trim((string) ($personal['kelurahan'] ?? '')),
+            'kecamatan' => trim((string) ($personal['kecamatan'] ?? '')), 'kota_kab' => trim((string) ($personal['kotaKab'] ?? '')),
+            'moda_transportasi' => trim((string) ($personal['modaTransportasi'] ?? '')), 'agama' => trim((string) ($personal['agama'] ?? '')),
+            'tinggi_badan' => $optionalInteger($personal['tinggiBadan'] ?? null),
+            'berat_badan' => is_numeric($personal['beratBadan'] ?? null) ? (float) $personal['beratBadan'] : null,
             'nisn' => trim((string) ($school['nisn'] ?? '')), 'tahun_lulus' => $year,
+            'rencana_karir' => trim((string) ($school['rencanaKarir'] ?? '')),
             'jurusan_utama' => trim((string) ($form['jurusanUtama'] ?? '')),
             'jurusan_cadangan' => trim((string) ($form['jurusanCadangan'] ?? '')),
             'jadwal_id' => (int) ($form['jadwalId'] ?? 0), 'status_formulir' => 'Terkirim', 'updated_at' => now(),
@@ -279,6 +331,7 @@ class LegacyApiController extends Controller
         DB::transaction(function () use ($studentId, $school, $form, $payload) {
             DB::table('formulir_siswa')->updateOrInsert(['siswa_id' => $studentId], $payload);
             DB::table('siswa')->where('id', $studentId)->update([
+                'nama' => trim((string) ($form['dataDiri']['nama'] ?? '')),
                 'sekolah_asal' => trim((string) $school['sekolah']),
                 'jurusan' => trim((string) ($form['jurusanUtama'] ?? '')), 'status' => 'Diproses',
             ]);
@@ -306,7 +359,7 @@ class LegacyApiController extends Controller
         if (!$this->studentExists($studentId)) return $this->reply(false, 'Siswa tidak ditemukan.', [], 404);
 
         $storedName = $studentId . '_' . $documentId . '_' . Str::random(16) . '.' . $extension;
-        $file->storeAs('uploads', $storedName, 'public');
+        $file->storeAs('uploads', $storedName, 'local');
         DB::table('dokumen_siswa')->updateOrInsert(
             ['siswa_id' => $studentId, 'document_id' => $documentId],
             ['nama_file' => basename($file->getClientOriginalName()), 'nama_file_server' => $storedName,

@@ -55,19 +55,24 @@ statistik pendaftaran — semuanya dalam satu platform terpadu.
 | Desain UI | Figma |
 | Deployment | (menyesuaikan server sekolah) |
 
-## Menjalankan di Laragon
+## Menjalankan Lokal dan Deployment
 
-Backend PHP modular dan petunjuk migrasi integrasi frontend tersedia di [`docs/backend-api.md`](docs/backend-api.md). Endpoint legacy yang sebelumnya dipakai halaman HTML kini nonaktif (HTTP 410); alihkan request frontend ke endpoint modular sebelum deployment.
+Frontend aktif berada di `laravel/public/src` dan menggunakan API Laravel yang terdaftar di `laravel/routes/api.php`. API PHP modular di folder `api/` adalah implementasi terpisah; panduan dan skemanya ada di [`docs/backend-api.md`](docs/backend-api.md). Jangan mencampur kedua API atau mengimpor `schema.sql` untuk deployment Laravel.
 
-1. Start **MySQL** dari Laragon.
-2. Untuk struktur lama Laravel, impor `database.sql`; untuk API PHP modular, impor juga `schema.sql` melalui HeidiSQL/phpMyAdmin.
-3. Buka terminal pada folder `laravel`, lalu jalankan `composer install` jika folder `vendor` belum ada.
-4. Salin `.env.example` menjadi `.env`, atur koneksi database dan `ADMIN_ACCESS_CODE`, kemudian jalankan `php artisan key:generate`.
-5. Jalankan `php artisan migrate` dan `php artisan storage:link`.
-6. Jalankan `php artisan serve --host=127.0.0.1 --port=8002`.
-7. Buka `http://localhost:8002`.
+### Lokal dengan Laragon
+1. Start **MySQL** dan buat database kosong.
+2. Buka terminal pada folder `laravel`, lalu jalankan `composer install` jika dependensi belum tersedia.
+3. Salin `.env.example` menjadi `.env`, atur koneksi database dan `ADMIN_ACCESS_CODE`, kemudian jalankan `php artisan key:generate`.
+4. Jalankan `php artisan migrate`.
+5. Jalankan `php artisan serve --host=127.0.0.1 --port=8002`, lalu buka `http://localhost:8002`.
 
-Frontend HTML tetap berada di `laravel/public/src`; API Laravel mempertahankan URL lama di `/api/*.php`.
+### Produksi
+- Gunakan PHP 8.1+, Composer, dan MySQL yang sesuai dengan konfigurasi Laravel.
+- Arahkan document root domain ke folder `laravel/public`, bukan ke root repository.
+- Atur `.env` produksi, termasuk `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL`, kredensial database, dan `ADMIN_ACCESS_CODE`. Jangan unggah `.env` ke Git atau web root.
+- Jalankan `composer install --no-dev --optimize-autoloader` dan `php artisan migrate --force`; pastikan `storage/` dan `bootstrap/cache/` dapat ditulis oleh PHP.
+- Jangan jalankan `php artisan storage:link` untuk berkas pendaftaran. Upload baru disimpan privat dan hanya boleh diunduh melalui endpoint yang memeriksa otorisasi.
+- Jika sebelumnya sudah ada upload di `storage/app/public/uploads`, pindahkan berkas tersebut ke `storage/app/uploads` dan pastikan salinan publik serta symlink `public/storage` tidak lagi menyajikannya sebelum membuka situs.
 
 ---
 

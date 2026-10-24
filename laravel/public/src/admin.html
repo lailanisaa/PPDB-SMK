@@ -5,8 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel | SPMB SMK Kasatrian Solo</title>
   <link rel="icon" type="image/png" href="Logo_SMK.png">
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Kavoon&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -24,6 +28,7 @@
       }
     }
   </script>
+
   <style>
     * { font-family: 'Poppins', sans-serif; }
     .nama-sekolah { font-family: 'Kavoon', cursive !important; }
@@ -147,6 +152,7 @@
     </div>
   </aside>
 
+  <!-- MAIN WRAPPER -->
   <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
 
     <!-- TOPBAR / HEADER -->
@@ -238,6 +244,7 @@
         </div>
       </section>
 
+      <!-- DATA PENDAFTAR -->
       <section data-page="pendaftar" class="page-section hidden space-y-4">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm">
           <div>
@@ -279,6 +286,7 @@
         </div>
       </section>
 
+      <!-- VERIFIKASI BERKAS SECTION -->
       <section data-page="verifikasi" class="page-section hidden space-y-4">
         <h1 class="text-lg font-black text-[#0F382C]">Verifikasi Berkas Calon Siswa</h1>
 
@@ -300,6 +308,7 @@
                 <span id="verif-status-badge" class="inline-block mt-1.5 px-3 py-0.5 text-[10px] font-extrabold rounded-full bg-slate-100 text-slate-600">Status: -</span>
               </div>
             </div>
+
             <div class="space-y-3">
               <h4 class="font-extrabold text-xs text-slate-700 uppercase tracking-wider">Data Formulir Siswa</h4>
               <div id="verif-profile-details" class="grid sm:grid-cols-2 gap-x-5 gap-y-2 text-xs text-slate-600 font-medium bg-slate-50/60 p-4 rounded-xl border border-slate-100">
@@ -329,6 +338,7 @@
         </div>
       </section>
 
+      <!-- MANAJEMEN JURUSAN -->
       <section data-page="jurusan" class="page-section hidden space-y-4">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm">
           <div>
@@ -339,9 +349,11 @@
             <i data-lucide="plus" class="w-4 h-4"></i> Tambah Jurusan
           </button>
         </div>
+
         <div id="jurusan-cards-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
       </section>
 
+      <!-- PENGUMUMAN SECTION -->
       <section data-page="pengumuman" class="page-section hidden space-y-6">
         <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
           <h1 class="text-lg font-black text-[#0F382C]">Buat & Terbitkan Pengumuman</h1>
@@ -371,6 +383,7 @@
                 </div>
               </div>
             </div>
+
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1.5">Isi Pengumuman</label>
               <textarea id="pengumuman-isi" rows="4" required placeholder="Tuliskan detail pengumuman secara rinci..." class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none"></textarea>
@@ -402,6 +415,7 @@
         </div>
       </section>
 
+      <!-- LAPORAN & STATISTIK SECTION -->
       <section data-page="laporan" class="page-section hidden space-y-4">
         <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 no-print">
           <div>
@@ -426,6 +440,7 @@
             </div>
             <span class="text-[11px] font-semibold text-slate-400 bg-slate-100 px-3 py-1 rounded-full">Status: Realtime</span>
           </div>
+
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse text-xs min-w-[650px]">
               <thead>
@@ -446,6 +461,7 @@
         </div>
       </section>
 
+      <!-- PENGATURAN SPMB SECTION -->
       <section data-page="pengaturan" class="page-section hidden space-y-4">
         <h1 class="text-lg font-black text-[#0F382C]">Pengaturan Sistem SPMB</h1>
 
@@ -487,6 +503,7 @@
         </form>
       </section>
 
+      <!-- MANAJEMEN STAF ADMIN SECTION -->
       <section data-page="manajemen-admin" class="page-section hidden space-y-4">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm">
           <div>
@@ -516,6 +533,7 @@
           </div>
         </div>
       </section>
+
     </main>
   </div>
 
@@ -526,6 +544,7 @@
         <h3 id="modal-jurusan-title" class="font-black text-base text-[#0F382C]">Tambah Jurusan Baru</h3>
         <button type="button" onclick="closeJurusanModal()" class="text-slate-400 hover:text-slate-600 p-1"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
+
       <form id="form-jurusan" class="space-y-3">
         <input type="hidden" id="jurusan-id">
         <div>
@@ -565,6 +584,7 @@
         <h3 id="modal-staff-title" class="font-black text-base text-[#0F382C]">Tambah Staf Admin Baru</h3>
         <button type="button" onclick="closeTambahAdminModal()" class="text-slate-400 hover:text-slate-600 p-1"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
+
       <form id="form-tambah-admin" class="space-y-3">
         <input type="hidden" id="staff-id">
         <div>
@@ -618,6 +638,7 @@
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
+
       <form id="form-edit-profil-admin" class="space-y-4">
         <div class="flex items-center gap-4 p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
           <div class="relative w-16 h-16 rounded-full overflow-hidden bg-emerald-100 border-2 border-emerald-500 flex items-center justify-center shrink-0 shadow-sm">
@@ -630,10 +651,12 @@
             <p class="text-[10px] text-slate-400 mt-1 font-medium">Format: JPG, PNG, atau WEBP (Maks 2MB).</p>
           </div>
         </div>
+
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Admin <span class="text-rose-500">*</span></label>
           <input type="text" id="admin-nama-input" required class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none">
         </div>
+
         <div class="grid sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Jabatan / Role</label>
@@ -649,6 +672,7 @@
             <input type="tel" id="admin-telepon-input" placeholder="081234567890" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none">
           </div>
         </div>
+
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">Email / Username Login <span class="text-rose-500">*</span></label>
           <input type="email" id="admin-email-input" required class="w-full p-2.5 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none">
@@ -669,6 +693,7 @@
         <h3 class="font-black text-base text-[#0F382C]">Edit Profil Pendaftar</h3>
         <button type="button" onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 p-1"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
+
       <form id="form-edit-siswa" class="space-y-3">
         <input type="hidden" id="edit-siswa-id">
         <div>
@@ -714,7 +739,11 @@
     </div>
   </div>
 
+  <!-- SCRIPT INTEGRASI REALTIME DINAMIS SINKRON -->
   <script>
+    // ==========================================
+    // GLOBAL STATE & REALTIME VARIABLES
+    // ==========================================
     let activeAdmin = null;
     let pendaftarData = [];
     let staffData = [];
@@ -891,12 +920,12 @@
 
     function confirmLogout() {
       if (confirm('Apakah Anda yakin ingin keluar dari sistem admin?')) {
-        try {
-          await fetch(`${API_BASE}logout.php`);
-          window.location.href = 'index.html';
-        } catch (e) {
-          window.location.href = 'index.html';
-        }
+        sessionStorage.clear();
+        localStorage.removeItem('adminData');
+        localStorage.removeItem('loggedInAdmin');
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('smk_active_session');
+        window.location.href = 'index.html';
       }
     }
 
@@ -914,6 +943,7 @@
 
       container.appendChild(toast);
       if (window.lucide) lucide.createIcons();
+
       setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
       setTimeout(() => {
         toast.classList.add('opacity-0', 'translate-y-2');
@@ -1214,7 +1244,9 @@
       const filterElem = document.getElementById('filter-status');
       const filter = filterElem ? filterElem.value : 'semua';
       tbody.innerHTML = '';
+
       let filtered = pendaftarData.filter(item => filter === 'semua' || (item.status || 'Menunggu') === filter);
+
       if (keyword) {
         const kw = keyword.toLowerCase();
         filtered = filtered.filter(item => 
@@ -1224,10 +1256,12 @@
           String(item.jurusan || '').toLowerCase().includes(kw)
         );
       }
+
       if (filtered.length === 0) {
         tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-400 font-medium">Data pendaftar tidak ditemukan.</td></tr>`;
         return;
       }
+
       filtered.forEach((item, index) => {
         const st = item.status || 'Menunggu';
         const badgeColor = st === 'Diterima' ? 'bg-emerald-100 text-emerald-800 border-emerald-200' :
@@ -1434,9 +1468,11 @@
       const grid = document.getElementById('jurusan-cards-grid');
       if (!grid) return;
       grid.innerHTML = '';
+
       jurusanData.forEach(item => {
         const sisa = Math.max(0, item.kuota - item.terisi);
         const persen = Math.min(100, Math.round((item.terisi / item.kuota) * 100));
+
         grid.innerHTML += `
           <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-3.5 relative">
             <div class="flex justify-between items-start">
@@ -1471,14 +1507,18 @@
 
     function openTambahJurusanModal() {
       document.getElementById('modal-jurusan-title').textContent = "Tambah Jurusan Baru";
-      document.getElementById('form-jurusan').reset();
       document.getElementById('jurusan-id').value = "";
+      document.getElementById('jurusan-kode').value = "";
+      document.getElementById('jurusan-nama').value = "";
+      document.getElementById('jurusan-kuota').value = "";
+      document.getElementById('jurusan-status').value = "true";
       document.getElementById('modal-jurusan').classList.remove('hidden');
     }
 
     function openEditJurusanModal(id) {
       const item = jurusanData.find(x => x.id === id);
       if (!item) return;
+
       document.getElementById('modal-jurusan-title').textContent = "Edit Data Jurusan";
       document.getElementById('jurusan-id').value = item.id;
       document.getElementById('jurusan-kode').value = item.kode;
@@ -1492,30 +1532,28 @@
       document.getElementById('modal-jurusan').classList.add('hidden');
     }
 
-    document.getElementById('form-jurusan').addEventListener('submit', async function (e) {
+    document.getElementById('form-jurusan').addEventListener('submit', function (e) {
       e.preventDefault();
-      const payload = {
-        id: document.getElementById('jurusan-id').value,
-        kode: document.getElementById('jurusan-kode').value.trim(),
-        nama: document.getElementById('jurusan-nama').value.trim(),
-        kuota: parseInt(document.getElementById('jurusan-kuota').value) || 0,
-        buka: document.getElementById('jurusan-status').value === "true"
-      };
-      try {
-        const res = await fetch(`${API_BASE}${payload.id ? 'update_jurusan.php' : 'tambah_jurusan.php'}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const result = await res.json();
-        if (result.success) {
-          loadJurusanData();
-          closeJurusanModal();
-          showToast('Data jurusan berhasil disimpan!');
+      const id = document.getElementById('jurusan-id').value;
+      const kode = document.getElementById('jurusan-kode').value.trim();
+      const nama = document.getElementById('jurusan-nama').value.trim();
+      const kuota = parseInt(document.getElementById('jurusan-kuota').value) || 0;
+      const buka = document.getElementById('jurusan-status').value === "true";
+
+      if (id) {
+        const index = jurusanData.findIndex(x => x.id === parseInt(id));
+        if (index !== -1) {
+          jurusanData[index] = { ...jurusanData[index], kode, nama, kuota, buka };
+          showToast('Data jurusan berhasil diperbarui!');
         }
-      } catch (e) {
-        showToast('Gagal menyimpan data jurusan', 'error');
+      } else {
+        const newId = jurusanData.length ? Math.max(...jurusanData.map(x => x.id)) + 1 : 1;
+        jurusanData.push({ id: newId, kode, nama, kuota, terisi: 0, buka });
+        showToast('Jurusan baru berhasil ditambahkan!');
       }
+
+      updateJurusanFromPendaftar();
+      closeJurusanModal();
     });
 
     // ==========================================
@@ -1541,12 +1579,13 @@
           options: { responsive: true, maintainAspectRatio: false }
         });
       }
+
       const ctxDistribusi = document.getElementById('chart-distribusi');
       if (ctxDistribusi) {
         chartDistribusiInstance = new Chart(ctxDistribusi.getContext('2d'), {
           type: 'doughnut',
           data: {
-            labels: [],
+            labels: jurusanData.map(j => j.kode),
             datasets: [{
               data: jurusanData.map(j => j.terisi),
               backgroundColor: ['#10B981', '#3B82F6', '#F59E0B', '#EF4444', '#8B5CF6']
@@ -1563,6 +1602,7 @@
         chartDistribusiInstance.data.datasets[0].data = jurusanData.map(j => j.terisi);
         chartDistribusiInstance.update();
       }
+
       if (chartTrenInstance) {
         chartTrenInstance.data.datasets[0].data[6] = pendaftarData.length;
         chartTrenInstance.update();
@@ -1570,19 +1610,26 @@
     }
 
     function exportExcel() {
-      if (pendaftarData.length === 0) return alert('Tidak ada data pendaftar.');
+      if (pendaftarData.length === 0) {
+        alert('Tidak ada data pendaftar untuk diexport.');
+        return;
+      }
+
       let csvContent = "data:text/csv;charset=utf-8,No,Nama Siswa,NISN,Asal Sekolah,Pilihan Jurusan,Nilai Rerata,Status Akhir\n";
+
       pendaftarData.forEach((item, index) => {
         csvContent += `${index + 1},"${item.nama}","${item.nisn || ''}","${item.sekolah || ''}","${item.jurusan || ''}",${item.nilai || 0},"${item.status || 'Menunggu'}"\n`;
       });
+
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement("a");
       link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "Rekapitulasi_SPMB.csv");
+      link.setAttribute("download", "Rekapitulasi_SPMB_SMK_Kasatrian_Solo.csv");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      showToast('Laporan berhasil diunduh.');
+
+      showToast('Laporan berhasil diunduh dalam format CSV/Excel.');
     }
 
     function cetakLaporanPDF() {
@@ -1593,6 +1640,7 @@
       const tbody = document.getElementById('laporan-table-body');
       if (!tbody) return;
       tbody.innerHTML = '';
+
       pendaftarData.forEach((item, i) => {
         const st = item.status || 'Menunggu';
         tbody.innerHTML += `

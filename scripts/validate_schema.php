@@ -21,10 +21,10 @@ try {
         }
     }
     $tables = $adminPdo->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN);
-    if (count($tables) !== 12) {
-        throw new RuntimeException('Schema smoke test expected 12 tables, found ' . count($tables) . '.');
+    if (count($tables) !== 13) {
+        throw new RuntimeException('Schema smoke test expected 13 tables, found ' . count($tables) . '.');
     }
-    echo "Schema smoke test passed: 12 tables created.\n";
+    echo "Schema smoke test passed: 13 tables created.\n";
 } finally {
     $adminPdo->exec("DROP DATABASE IF EXISTS `$database`");
 }

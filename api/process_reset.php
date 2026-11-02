@@ -15,7 +15,7 @@ if (!preg_match('/^[a-f0-9]{64}$/i', $token) || strlen($newPassword) < 6 || strl
 try {
     $pdo->beginTransaction();
     $statement = $pdo->prepare(
-        'SELECT id, email FROM password_resets
+        'SELECT id, account_type, email FROM password_resets
          WHERE token_hash = ? AND is_used = 0 AND expires_at > NOW()
          LIMIT 1 FOR UPDATE'
     );
@@ -32,9 +32,10 @@ try {
         throw new RuntimeException('Password hashing failed.');
     }
 
-    $updateStudent = $pdo->prepare('UPDATE siswa SET password = ? WHERE email = ?');
-    $updateStudent->execute([$passwordHash, $reset['email']]);
-    if ($updateStudent->rowCount() !== 1) {
+    $accountTable = $reset['account_type'] === 'admin' ? 'admin' : 'siswa';
+    $updateAccount = $pdo->prepare("UPDATE {$accountTable} SET password = ? WHERE email = ?");
+    $updateAccount->execute([$passwordHash, $reset['email']]);
+    if ($updateAccount->rowCount() !== 1) {
         $pdo->rollBack();
         api_json(false, 'Akun siswa tidak ditemukan.', [], 404);
     }
@@ -49,4 +50,4 @@ try {
     api_json(false, 'Password baru gagal disimpan.', [], 500);
 }
 
-api_json(true, 'Password berhasil diubah. Silakan login dengan password baru.');
+api_json(true, 'Password berhasil diubah. Silakan login dengan password baru.', ['role' => $reset['account_type']]);

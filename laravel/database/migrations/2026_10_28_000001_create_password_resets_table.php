@@ -14,6 +14,7 @@ return new class extends Migration
 
         Schema::create('password_resets', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->enum('account_type', ['siswa', 'admin'])->default('siswa');
             $table->string('email', 254);
             $table->char('token_hash', 64)->unique();
             $table->timestamp('created_at')->useCurrent();

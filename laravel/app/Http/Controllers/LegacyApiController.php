@@ -228,15 +228,25 @@ class LegacyApiController extends Controller
 
     public function requestReset(Request $request)
     {
-        $data = $request->validate(['identifier' => ['required', 'email']]);
-        $account = DB::table('siswa')->whereRaw('LOWER(email) = ?', [strtolower($data['identifier'])])->first();
+        $data = $request->validate([
+            'identifier' => ['required', 'email'],
+            'role' => ['sometimes', 'in:siswa,admin'],
+        ]);
+        $accountType = $data['role'] ?? 'siswa';
+        $accountQuery = DB::table($accountType === 'admin' ? 'admin' : 'siswa')
+            ->whereRaw('LOWER(email) = ?', [strtolower($data['identifier'])]);
+        if ($accountType === 'admin') {
+            $accountQuery->where('status', 'Aktif');
+        }
+        $account = $accountQuery->first();
         $genericMessage = 'Jika email tersebut terdaftar, tautan reset akan dikirim ke alamat email itu.';
         if (!$account) return $this->reply(true, $genericMessage);
 
-        DB::table('password_resets')->where('email', $account->email)->where('is_used', 0)
+        DB::table('password_resets')->where('account_type', $accountType)->where('email', $account->email)->where('is_used', 0)
             ->update(['is_used' => 1]);
         $token = bin2hex(random_bytes(32));
         $resetId = DB::table('password_resets')->insertGetId([
+            'account_type' => $accountType,
             'email' => $account->email,
             'token_hash' => hash('sha256', $token),
             'expires_at' => now()->addHour(),
@@ -246,7 +256,7 @@ class LegacyApiController extends Controller
 
         try {
             $baseUrl = rtrim((string) config('app.url'), '/');
-            $url = $baseUrl . '/src/reset-password.html?token=' . urlencode($token);
+            $url = $baseUrl . '/src/reset-password.html?token=' . urlencode($token) . '&role=' . urlencode($accountType);
             $username = (string) config('mail.mailers.smtp.username');
             $password = (string) config('mail.mailers.smtp.password');
             if ($username === '' || $password === '') {
@@ -306,35 +316,37 @@ class LegacyApiController extends Controller
             'password_baru' => ['required', 'string', 'min:6', 'max:72'],
         ]);
 
-        $updated = DB::transaction(function () use ($data) {
+        $accountType = DB::transaction(function () use ($data) {
             $reset = DB::table('password_resets')->where('token_hash', hash('sha256', $data['token']))
                 ->where('is_used', 0)->where('expires_at', '>', now())->lockForUpdate()->first();
             if (!$reset) return false;
 
+            $accountType = $reset->account_type === 'admin' ? 'admin' : 'siswa';
             $passwordHash = password_hash($data['password_baru'], PASSWORD_BCRYPT);
             if ($passwordHash === false) {
                 throw new \RuntimeException('Password hashing failed.');
             }
 
-            $student = DB::table('siswa')->select('id')->whereRaw('LOWER(email) = ?', [strtolower($reset->email)])
+            $account = DB::table($accountType)->select('id')->whereRaw('LOWER(email) = ?', [strtolower($reset->email)])
                 ->lockForUpdate()->first();
-            if (!$student) return false;
+            if (!$account) return false;
 
-            $changed = DB::table('siswa')->where('id', $student->id)
+            $changed = DB::table($accountType)->where('id', $account->id)
                 ->update(['password' => $passwordHash]);
             if ($changed !== 1) return false;
 
+            $tokenModel = $accountType === 'admin' ? Admin::class : Student::class;
             DB::table('personal_access_tokens')
-                ->where('tokenable_type', Student::class)
-                ->where('tokenable_id', $student->id)
+                ->where('tokenable_type', $tokenModel)
+                ->where('tokenable_id', $account->id)
                 ->delete();
             DB::table('password_resets')->where('id', $reset->id)->update(['is_used' => 1]);
-            return true;
+            return $accountType;
         });
 
-        if (!$updated) return $this->reply(false, 'Token reset tidak valid, sudah kedaluwarsa, atau akun tidak ditemukan.', [], 400);
+        if (!$accountType) return $this->reply(false, 'Token reset tidak valid, sudah kedaluwarsa, atau akun tidak ditemukan.', [], 400);
 
-        return $this->reply(true, 'Password berhasil diperbarui.');
+        return $this->reply(true, 'Password berhasil diperbarui.', ['role' => $accountType]);
     }
 
     public function updatePassword(Request $request)

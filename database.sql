@@ -73,6 +73,7 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
 
 CREATE TABLE IF NOT EXISTS password_resets (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    account_type ENUM('siswa', 'admin') NOT NULL DEFAULT 'siswa',
     email VARCHAR(254) NOT NULL,
     token_hash CHAR(64) NOT NULL UNIQUE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

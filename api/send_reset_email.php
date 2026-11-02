@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../config/email.php';
 
-function sendResetEmail(string $email, string $token): void
+function sendResetEmail(string $email, string $token, string $accountType = 'siswa'): void
 {
     $autoload = __DIR__ . '/../laravel/vendor/autoload.php';
     if (!is_file($autoload)) {
@@ -21,7 +21,8 @@ function sendResetEmail(string $email, string $token): void
         throw new RuntimeException('MAIL_USERNAME and MAIL_PASSWORD must be configured.');
     }
 
-    $link = rtrim(RESET_APP_URL, '/') . '/src/reset-password.html?token=' . rawurlencode($token);
+    $link = rtrim(RESET_APP_URL, '/') . '/src/reset-password.html?token=' . rawurlencode($token)
+        . '&role=' . rawurlencode($accountType);
     $mailer = new \PHPMailer\PHPMailer\PHPMailer(true);
     $mailer->isSMTP();
     $mailer->Host = RESET_SMTP_HOST;

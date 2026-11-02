@@ -162,3 +162,14 @@ CREATE TABLE IF NOT EXISTS login_attempts (
     PRIMARY KEY (ip_hash, email_hash),
     INDEX idx_login_window (window_started)
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS password_resets (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(254) NOT NULL,
+    token_hash CHAR(64) NOT NULL UNIQUE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expires_at DATETIME NOT NULL,
+    is_used TINYINT(1) NOT NULL DEFAULT 0,
+    INDEX idx_password_resets_email_used (email, is_used),
+    INDEX idx_password_resets_expiry (expires_at)
+) ENGINE=InnoDB;

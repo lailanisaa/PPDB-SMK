@@ -22,6 +22,7 @@ Route::post('/login_admin.php', [LegacyApiController::class, 'loginAdmin']);
 Route::post('/register_siswa.php', [LegacyApiController::class, 'registerSiswa']);
 Route::post('/register_admin.php', [LegacyApiController::class, 'registerAdmin']);
 Route::post('/request_reset.php', [LegacyApiController::class, 'requestReset']);
+Route::post('/process_reset.php', [LegacyApiController::class, 'processReset']);
 Route::post('/reset_password.php', [LegacyApiController::class, 'resetPassword']);
 Route::post('/logout.php', [LegacyApiController::class, 'logout'])->middleware('auth:sanctum');
 

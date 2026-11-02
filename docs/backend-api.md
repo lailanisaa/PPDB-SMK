@@ -4,6 +4,8 @@ Dokumen ini hanya untuk API PHP modular di folder root `api/`, dengan skema `sch
 
 API modular menyediakan endpoint pada `/api/auth/`, `/api/siswa/`, `/api/verifikator/`, `/api/keuangan/`, dan `/api/admin/`. API ini menggunakan sesi cookie dan token CSRF; mekanismenya berbeda dari API Laravel yang memakai Sanctum.
 
+Endpoint reset password legacy berada di `api/request_reset.php` dan `api/process_reset.php` untuk skema siswa pada `database.sql`, bukan tabel `users` pada skema modular. Token disimpan sebagai SHA-256 hash dan endpoint permintaan reset memakai respons generik agar email akun tidak dapat ditebak. Endpoint ini memakai PHPMailer dari dependensi Composer di folder `laravel/`; jalankan `composer install` dari folder tersebut. Atur `APP_URL`, `MAIL_USERNAME`, `MAIL_PASSWORD` (Gmail App Password), dan `MAIL_FROM_ADDRESS` di environment PHP. Aplikasi Laravel aktif menggunakan rute API Laravel dengan migrasi tabel `password_resets`.
+
 ## Instalasi
 
 1. Impor `schema.sql` ke MySQL 8+ atau MariaDB versi yang mendukung `CHECK` constraints. Skema ini menggunakan InnoDB dan UTF-8.

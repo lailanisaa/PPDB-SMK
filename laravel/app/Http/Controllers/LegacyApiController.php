@@ -7,8 +7,9 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use PHPMailer\PHPMailer\PHPMailer;
 use Throwable;
 
 class LegacyApiController extends Controller
@@ -228,50 +229,110 @@ class LegacyApiController extends Controller
     public function requestReset(Request $request)
     {
         $data = $request->validate(['identifier' => ['required', 'email']]);
-        $accountType = 'siswa';
         $account = DB::table('siswa')->whereRaw('LOWER(email) = ?', [strtolower($data['identifier'])])->first();
-        if (!$account) {
-            $accountType = 'admin';
-            $account = DB::table('admin')->whereRaw('LOWER(email) = ?', [strtolower($data['identifier'])])->first();
-        }
-        if (!$account) return $this->reply(false, 'Akun dengan email tersebut tidak ditemukan.', [], 404);
+        $genericMessage = 'Jika email tersebut terdaftar, tautan reset akan dikirim ke alamat email itu.';
+        if (!$account) return $this->reply(true, $genericMessage);
 
-        DB::table('password_reset_tokens')->where('account_type', $accountType)->where('account_id', $account->id)
-            ->whereNull('used_at')->update(['used_at' => now()]);
-        $token = Str::random(64);
-        DB::table('password_reset_tokens')->insert([
-            'account_type' => $accountType, 'account_id' => $account->id, 'token_hash' => hash('sha256', $token),
-            'expires_at' => date('Y-m-d H:i:s', time() + 900),
+        DB::table('password_resets')->where('email', $account->email)->where('is_used', 0)
+            ->update(['is_used' => 1]);
+        $token = bin2hex(random_bytes(32));
+        $resetId = DB::table('password_resets')->insertGetId([
+            'email' => $account->email,
+            'token_hash' => hash('sha256', $token),
+            'expires_at' => now()->addHour(),
+            'is_used' => 0,
+            'created_at' => now(),
         ]);
 
         try {
-            $url = url('/src/reset-password.html') . '?token=' . urlencode($token);
-            Mail::raw("Gunakan tautan berikut untuk mengatur ulang password Anda. Tautan berlaku selama 15 menit:\n\n$url", function ($message) use ($account) {
-                $message->to($account->email)->subject('Reset password SPMB SMK Kasatrian');
-            });
+            $baseUrl = rtrim((string) config('app.url'), '/');
+            $url = $baseUrl . '/src/reset-password.html?token=' . urlencode($token);
+            $username = (string) config('mail.mailers.smtp.username');
+            $password = (string) config('mail.mailers.smtp.password');
+            if ($username === '' || $password === '') {
+                throw new \RuntimeException('Gmail SMTP username and app password are not configured.');
+            }
+
+            $mailer = new PHPMailer(true);
+            $mailer->isSMTP();
+            $mailer->Host = (string) config('mail.mailers.smtp.host', 'smtp.gmail.com');
+            $mailer->SMTPAuth = true;
+            $mailer->Username = $username;
+            $mailer->Password = $password;
+            $encryption = strtolower((string) config('mail.mailers.smtp.encryption', 'tls'));
+            if ($encryption === 'ssl') {
+                $mailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            } elseif ($encryption === 'tls') {
+                $mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            } else {
+                throw new \RuntimeException('MAIL_ENCRYPTION must be configured as tls or ssl.');
+            }
+            $mailer->Port = (int) config('mail.mailers.smtp.port', 587);
+            $mailer->CharSet = 'UTF-8';
+            $mailer->setFrom($username, (string) config('mail.from.name', 'SPMB SMK Kasatrian'));
+            $mailer->addAddress($account->email);
+            $mailer->isHTML(true);
+            $mailer->Subject = 'Reset Password SPMB SMK Kasatrian';
+            $escapedUrl = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
+            $mailer->Body = '<!doctype html><html lang="id"><body style="font-family:Arial,sans-serif;color:#1B4332">'
+                . '<h2>Reset Password SPMB SMK Kasatrian</h2>'
+                . '<p>Klik tombol berikut untuk membuat password baru. Tautan ini berlaku selama 1 jam.</p>'
+                . '<p><a href="' . $escapedUrl . '" style="display:inline-block;background:#22C55E;color:#fff;padding:12px 18px;text-decoration:none;border-radius:6px">Buat Password Baru</a></p>'
+                . '<p>Jika Anda tidak meminta reset password, abaikan email ini.</p></body></html>';
+            $mailer->AltBody = "Buat password baru melalui tautan ini (berlaku 1 jam): $url\nJika Anda tidak meminta reset password, abaikan email ini.";
+            $mailer->send();
         } catch (Throwable $exception) {
-            DB::table('password_reset_tokens')->where('token_hash', hash('sha256', $token))->update(['used_at' => now()]);
-            return $this->reply(false, 'Email reset gagal dikirim. Periksa konfigurasi email.', [], 503);
+            DB::table('password_resets')->where('id', $resetId)->update(['is_used' => 1]);
+            Log::error('Password reset email delivery failed.', ['exception' => $exception]);
+            $message = str_contains($exception->getMessage(), 'Could not authenticate')
+                ? 'Login SMTP Gmail gagal. Pastikan MAIL_USERNAME adalah hello.floraisa@gmail.com dan MAIL_PASSWORD adalah App Password Gmail, bukan password login Gmail.'
+                : 'Email reset gagal dikirim. Periksa konfigurasi email.';
+            return $this->reply(false, $message, [], 503);
         }
 
-        return $this->reply(true, 'Tautan reset password berhasil dikirim ke email Anda.');
+        return $this->reply(true, $genericMessage);
     }
 
     public function resetPassword(Request $request)
     {
-        $data = $request->validate([
-            'token' => ['required', 'regex:/^[a-f0-9]{64}$/i'], 'password' => ['required', 'string', 'min:6'],
-        ]);
-        $tokenHash = hash('sha256', $data['token']);
-        $record = DB::table('password_reset_tokens')->where('token_hash', $tokenHash)->whereNull('used_at')
-            ->where('expires_at', '>', now())->first();
-        if (!$record) return $this->reply(false, 'Token reset tidak valid atau sudah kedaluwarsa.', [], 400);
+        $request->merge(['password_baru' => $request->input('password_baru', $request->input('password'))]);
+        return $this->processReset($request);
+    }
 
-        $table = $record->account_type === 'admin' ? 'admin' : 'siswa';
-        DB::transaction(function () use ($record, $table, $tokenHash, $data) {
-            DB::table($table)->where('id', $record->account_id)->update(['password' => Hash::make($data['password'])]);
-            DB::table('password_reset_tokens')->where('token_hash', $tokenHash)->update(['used_at' => now()]);
+    public function processReset(Request $request)
+    {
+        $data = $request->validate([
+            'token' => ['required', 'regex:/^[a-f0-9]{64}$/i'],
+            'password_baru' => ['required', 'string', 'min:6', 'max:72'],
+        ]);
+
+        $updated = DB::transaction(function () use ($data) {
+            $reset = DB::table('password_resets')->where('token_hash', hash('sha256', $data['token']))
+                ->where('is_used', 0)->where('expires_at', '>', now())->lockForUpdate()->first();
+            if (!$reset) return false;
+
+            $passwordHash = password_hash($data['password_baru'], PASSWORD_BCRYPT);
+            if ($passwordHash === false) {
+                throw new \RuntimeException('Password hashing failed.');
+            }
+
+            $student = DB::table('siswa')->select('id')->whereRaw('LOWER(email) = ?', [strtolower($reset->email)])
+                ->lockForUpdate()->first();
+            if (!$student) return false;
+
+            $changed = DB::table('siswa')->where('id', $student->id)
+                ->update(['password' => $passwordHash]);
+            if ($changed !== 1) return false;
+
+            DB::table('personal_access_tokens')
+                ->where('tokenable_type', Student::class)
+                ->where('tokenable_id', $student->id)
+                ->delete();
+            DB::table('password_resets')->where('id', $reset->id)->update(['is_used' => 1]);
+            return true;
         });
+
+        if (!$updated) return $this->reply(false, 'Token reset tidak valid, sudah kedaluwarsa, atau akun tidak ditemukan.', [], 400);
 
         return $this->reply(true, 'Password berhasil diperbarui.');
     }

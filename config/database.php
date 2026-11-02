@@ -1,11 +1,13 @@
 <?php
 declare(strict_types=1);
 
-$host = getenv('DB_HOST') ?: '127.0.0.1';
-$dbname = getenv('DB_DATABASE') ?: 'spmb_kasatrian';
-$username = getenv('DB_USERNAME') ?: 'root';
-$password = getenv('DB_PASSWORD') ?: '';
-$environment = getenv('APP_ENV') ?: 'development';
+require_once __DIR__ . '/environment.php';
+
+$host = appConfigValue('DB_HOST', '127.0.0.1');
+$dbname = appConfigValue('DB_DATABASE', 'spmb_kasatrian');
+$username = appConfigValue('DB_USERNAME', 'root');
+$password = appConfigValue('DB_PASSWORD');
+$environment = appConfigValue('APP_ENV', 'development');
 
 if ($environment === 'production' && ($username === 'root' || $password === '')) {
     http_response_code(500);

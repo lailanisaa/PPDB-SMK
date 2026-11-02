@@ -71,6 +71,17 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
     INDEX idx_reset_expiry (expires_at)
 );
 
+CREATE TABLE IF NOT EXISTS password_resets (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(254) NOT NULL,
+    token_hash CHAR(64) NOT NULL UNIQUE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expires_at DATETIME NOT NULL,
+    is_used TINYINT(1) NOT NULL DEFAULT 0,
+    INDEX idx_password_resets_email_used (email, is_used),
+    INDEX idx_password_resets_expiry (expires_at)
+);
+
 CREATE TABLE IF NOT EXISTS jadwal_tes (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     tanggal DATE NOT NULL,
